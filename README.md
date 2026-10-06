@@ -16,8 +16,10 @@ Desenvolver um sistema integrado para gestão de estoque e produção, relaciona
 ## Documentação
 A documentação de requisitos, modelagem e arquitetura está disponível na pasta [`docs/`](docs/).
 
+- [Atores, casos de uso e regras de negócio](docs/02-requisitos/atores-casos-de-uso-regras-de-negocio.md) — proposta de modelagem referente ao issue #2, pendente de revisão com o grupo.
+
 ## Planejamento
-O cronograma do projeto está disponível na pasta [`planejamento/`](planejamento/).
+O cronograma do projeto está disponível na pasta [`docs/planejamento/`](docs/planejamento/).
 
 ## Equipe
 - Eduardo Gonçalves Moreira
