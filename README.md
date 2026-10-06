@@ -41,6 +41,8 @@ A documentação do projeto está organizada na pasta [`docs/`](docs/).
 
 Algumas dessas pastas serão adicionadas conforme o desenvolvimento do TCC avançar.
 
+- [Atores, casos de uso e regras de negócio](docs/02-requisitos/atores-casos-de-uso-regras-de-negocio.md) — proposta de modelagem referente ao issue #2, pendente de revisão com o grupo.
+
 ## Planejamento
 
 O cronograma do projeto está disponível em:
