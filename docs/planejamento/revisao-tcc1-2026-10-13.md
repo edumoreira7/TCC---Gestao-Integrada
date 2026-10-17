@@ -4,6 +4,8 @@
 **Apresentação final do TCC1:** 17/11/2026<br>
 **Status:** Planejamento de referência, sujeito à validação do grupo.
 
+**Atualização de 17/10/2026:** o solicitante confirmou a revisão coletiva da base do PR #13, já integrado à `main`. O milestone do TCC1 foi alinhado à entrega em 17/11/2026. As datas abaixo são a referência planejada; as evidências de execução estão na [revisão de consistência](revisao-de-consistencia-2026-10-17.md).
+
 Esta revisão incorpora o resumo da discussão e o macrofluxo fornecidos pelo grupo. As datas estão refletidas no [cronograma e Gantt semanal](Cronograma_TCC_Gestao_Integrada.xlsx). O planejamento do TCC2 permanece conforme a versão anterior.
 
 ## Atividades do TCC1
@@ -35,7 +37,7 @@ Os períodos podem se sobrepor, mas as datas não dispensam a resolução das de
 4. Revisar a contribuição associada à Issue #2; somente após aprovação coletiva considerar seu fechamento/merge.
 5. Elaborar casos de uso e consolidar classes e DER após aprovação do macrofluxo; depois verificar atividades, estados e sequência contra os mesmos requisitos.
 
-Esta revisão local não altera, encerra ou aprova issues e pull requests no GitHub.
+Este documento registra o planejamento. O estado efetivo das issues e PRs deve ser consultado no GitHub e nas evidências da revisão de consistência.
 
 ## Metodologia de validação no TCC1
 

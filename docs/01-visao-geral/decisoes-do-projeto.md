@@ -164,4 +164,6 @@ Esses itens não devem ser considerados definidos até serem discutidos e docume
 
 ## Registro da revisão
 
-Em 13/10/2026, este documento foi atualizado com o resumo da discussão e a imagem do macrofluxo. Nesta revisão, foi confirmada pelo solicitante a obrigatoriedade de criar uma ordem para todo pedido, inclusive com estoque acabado suficiente. A validação coletiva do fluxo e das demais pendências continua necessária.
+Em 13/10/2026, este documento foi atualizado com o resumo da discussão e a imagem do macrofluxo. Naquela revisão, foi confirmada pelo solicitante a obrigatoriedade de criar uma ordem para todo pedido, inclusive com estoque acabado suficiente. A validação coletiva do fluxo ainda estava pendente àquela data.
+
+Em 17/10/2026, o solicitante confirmou que a revisão do grupo sobre a base consolidada no PR #13 já ocorreu. Essa confirmação atualiza o status da base e do macrofluxo; as decisões listadas como pendentes continuam abertas. O PDF de visão geral foi alinhado ao acesso exclusivamente interno e ao financeiro simplificado.

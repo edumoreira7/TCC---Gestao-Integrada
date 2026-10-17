@@ -1,7 +1,7 @@
 # Fluxo Macro do Sistema
 
-**Revisão:** 13/10/2026<br>
-**Status:** Versão de trabalho baseada no resumo da discussão e no diagrama enviado pelo grupo; aguardando validação coletiva.
+**Revisão:** 17/10/2026<br>
+**Status:** Base consolidada; revisão do grupo sobre o PR #13 confirmada pelo solicitante em 17/10/2026. Detalhamentos pendentes continuam identificados abaixo.
 
 ![Fluxo macro revisado](fluxo-macro.png)
 
@@ -49,4 +49,4 @@ Produção e expedição parciais, validade/FEFO, contas a pagar/receber e conta
 
 Cancelamento durante produção, reservas/concorrência e detalhes financeiros permanecem pendentes conforme o [escopo](../../02-requisitos/escopo-e-requisitos.md). Motivo e situação de produtos/insumos devem ser registrados no cancelamento; as movimentações dessa exceção serão detalhadas antes de modelá-la.
 
-Aprovar o macrofluxo e revisar a Issue #2 são dependências para consolidar classes e DER. A regra obrigatória de ordem para todo pedido deve constar nesses modelos. O cronograma e os critérios de revisão estão no [planejamento do TCC1](../../planejamento/revisao-tcc1-2026-10-13.md).
+A revisão da base do macrofluxo foi confirmada pelo solicitante em 17/10/2026. Classes e DER deverão utilizar essa base, o [diagrama de casos de uso](../casos-de-uso/README.md) e as pendências documentadas. A regra obrigatória de ordem para todo pedido deve constar nesses modelos. O cronograma e os critérios de revisão estão no [planejamento do TCC1](../../planejamento/revisao-tcc1-2026-10-13.md).

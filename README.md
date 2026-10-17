@@ -50,8 +50,10 @@ Algumas dessas pastas serão adicionadas conforme o desenvolvimento do TCC avan�
 Documentos principais:
 
 - [Decisões do projeto](docs/01-visao-geral/decisoes-do-projeto.md);
+- [Visão geral funcional](docs/01-visao-geral/diagrama_visao_geral.pdf);
 - [Escopo e requisitos](docs/02-requisitos/escopo-e-requisitos.md);
 - [Atores, casos de uso e regras de negócio](docs/02-requisitos/atores-casos-de-uso-regras-de-negocio.md);
+- [Diagrama de casos de uso](docs/03-modelagem/casos-de-uso/README.md);
 - [Fluxo macro e pendências de revisão](docs/03-modelagem/fluxo-macro/README.md).
 
 ## Planejamento
@@ -61,6 +63,8 @@ O cronograma do projeto está disponível em:
 [`docs/planejamento/Cronograma_TCC_Gestao_Integrada.xlsx`](docs/planejamento/Cronograma_TCC_Gestao_Integrada.xlsx)
 
 O planejamento revisado inclui validação do macrofluxo e metodologia de validação no TCC1, com apresentação final prevista para **17/11/2026**. A [revisão do planejamento](docs/planejamento/revisao-tcc1-2026-10-13.md) registra atividades, dependências e critérios de conclusão.
+
+A [revisão de consistência de 17/10/2026](docs/planejamento/revisao-de-consistencia-2026-10-17.md) registra o alinhamento entre branches, issues, documentos e planejamento.
 
 ## Etapas do projeto
 
