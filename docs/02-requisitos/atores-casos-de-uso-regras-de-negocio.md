@@ -1,8 +1,8 @@
 # Atores, Casos de Uso e Regras de Negócio
 
-**Versão:** 0.1<br>
-**Revisão:** 13/10/2026<br>
-**Status:** Proposta consolidada para revisão coletiva da Issue #2.
+**Versão:** 0.2<br>
+**Revisão:** 17/10/2026<br>
+**Status:** Base consolidada; revisão do grupo confirmada pelo solicitante. Detalhamentos pendentes não são considerados aprovados.
 
 Este documento detalha responsabilidades e casos de uso a partir do [escopo e requisitos](escopo-e-requisitos.md), das [decisões do projeto](../01-visao-geral/decisoes-do-projeto.md) e do [fluxo macro](../03-modelagem/fluxo-macro/README.md). Os identificadores RF, RN e PD referem-se ao documento de escopo.
 
@@ -49,7 +49,9 @@ A atribuição detalhada de manutenção de produtos, insumos, receitas e acesso
 | CU19 | Registrar/consultar valores básicos das operações | Financeiro | RF23, RF24, RF33; eventos em PD05 |
 | CU20 | Administrar perfis e permissões acumuláveis | Ator administrador a definir em PD06 | RF32 |
 
-O catálogo não define relações UML `include`/`extend`; elas deverão ser avaliadas no diagrama de casos de uso. Consulta de receitas, cálculo de insumos, verificação de disponibilidade e movimentações automáticas integram os fluxos detalhados abaixo.
+O [diagrama de casos de uso](../03-modelagem/casos-de-uso/README.md) representa CU01 a CU20 e suas associações aos papéis de referência. Não são utilizadas relações UML `include`/`extend`: os cálculos, verificações e movimentações automáticas permanecem como passos internos dos fluxos abaixo. A criação da ordem é um caso de uso separado do registro do pedido, com obrigatoriedade expressa por RN10.
+
+Para CU01, CU02 e CU20, o diagrama usa a categoria genérica **Usuário interno autorizado**, sem criar um novo perfil nem atribuir permissões definitivas. A responsabilidade específica depende de PD06.
 
 ## 3. Fluxos principais
 
@@ -99,6 +101,8 @@ O registro deve incluir motivo e situação dos insumos e produtos. Produto acab
 
 ### CU16: expedir pedido
 
+**Pré-condição do caminho principal:** pedido vinculado à ordem de produção concluída e produtos acabados disponíveis para atendimento integral. O vínculo com a ordem, por si só, não substitui as etapas de produção e entrada no estoque representadas no macrofluxo.
+
 1. Expedição seleciona o pedido e os produtos acabados correspondentes no estoque.
 2. Registra destinatário, produtos, quantidades e data para atendimento integral.
 3. O sistema registra a expedição vinculada ao pedido e a saída correspondente do estoque.
@@ -110,6 +114,14 @@ O registro deve incluir motivo e situação dos insumos e produtos. Produto acab
 O custo de insumos de uma receita corresponde à soma das quantidades de cada componente multiplicadas pelo seu último preço de compra conhecido, em unidades compatíveis. O custo por unidade do produto considera o rendimento da receita. Critério temporal do preço, ausência de preço e conversões ainda dependem de PD11.
 
 O preço de venda é cadastrado manualmente. O acompanhamento financeiro registra valores básicos das operações, sem confirmar pagamentos bancários e sem contas a pagar/receber ou contabilidade completa. Eventos, automatização e estornos dependem de PD05.
+
+### Demais interações do catálogo
+
+CU01 a CU04 permitem registrar e consultar os dados dos respectivos cadastros; CU02 inclui composição e rendimento da receita. CU05 consulta saldos e histórico. CU10 apresenta o estado da ordem e as faltas calculadas, permitindo ao PCP acionar Compras sem emissão automática de pedidos a fornecedores.
+
+Em CU17, o usuário seleciona um produto e o sistema consulta a receita e os últimos preços de compra conhecidos para apresentar o custo; entradas sem preço ou unidade compatível não devem produzir custo zero implícito. Em CU18, Comercial informa o preço de venda manualmente. CU19 registra/consulta valores básicos, com eventos e automatização ainda em PD05. CU20 representa a administração de acessos acumuláveis; seu fluxo de concessão e suas autorizações dependem de PD06.
+
+Essas descrições completam a visão funcional sem presumir exclusão de registros, regras de aprovação ou soluções técnicas não definidas.
 
 ## 4. Regras de negócio e rastreabilidade
 
@@ -130,6 +142,15 @@ Gestão de validade, etiquetas, FEFO, produção parcial, expedição parcial e 
 
 ## 5. Revisão coletiva e Issue #2
 
-A Issue #2 somente poderá ser considerada concluída após o grupo revisar atores, casos de uso, regras e pendências, atualizar os documentos e aprovar a contribuição correspondente. A existência deste documento não representa aprovação nem fechamento da issue.
+Em 17/10/2026, o solicitante confirmou que a revisão do grupo sobre a base consolidada no [PR #13](https://github.com/edumoreira7/TCC---Gestao-Integrada/pull/13) já ocorreu. A data da reunião e a lista de participantes não foram informadas; não são presumidas neste registro. O PR #13 foi integrado à `main` em 17/10/2026.
+
+| Critério da Issue #2 | Evidência |
+|---|---|
+| Atores e responsabilidades | Seção 1. |
+| Principais casos de uso | Catálogo CU01 a CU20 e fluxos da seção 3. |
+| Regras de receitas, estoque, compras, produção e expedição | RN01 a RN25 e rastreabilidade da seção 4. |
+| Revisão com o grupo | Confirmação explícita do solicitante em 17/10/2026 sobre a base do PR #13. |
+
+O encerramento da Issue #2 registra a conclusão dessa modelagem funcional. Não representa implementação, encerramento da Issue #3 nem aprovação dos detalhamentos que continuam identificados por PD.
 
 A regra pedido versus estoque acabado foi confirmada nesta revisão: todo pedido deverá gerar uma ordem de produção. Classes e DER devem refletir essa obrigação, além da validação coletiva do fluxo. Permanecem abertas as regras de cancelamento, reserva/concorrência, estados completos, matriz de permissões, eventos financeiros e tratamento dos preços/unidades.

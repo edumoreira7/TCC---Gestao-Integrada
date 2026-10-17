@@ -1,10 +1,10 @@
 # Escopo e Requisitos do Sistema
 
 **Projeto:** Gestão Integrada de Estoque e Produção no Setor Alimentício: uma abordagem baseada em receitas e necessidades de insumo<br>
-**Versão:** 0.2<br>
+**Versão:** 0.3<br>
 **Etapa:** TCC1 — Levantamento de requisitos e análise<br>
-**Status:** Em elaboração; macrofluxo e pendências sujeitos à revisão coletiva<br>
-**Revisão:** 13/10/2026
+**Status:** Base consolidada; revisão coletiva informada pelo solicitante em 17/10/2026; detalhamentos pendentes identificados abaixo<br>
+**Revisão:** 17/10/2026
 
 ---
 
@@ -115,7 +115,7 @@ No cancelamento durante a produção, será obrigatório registrar o motivo e a 
 
 O Comercial deverá registrar pedidos vinculados a clientes cadastrados, contendo um ou mais produtos e suas quantidades. O cliente não possui acesso ao sistema.
 
-Um pedido poderá dar origem a uma ordem de produção.
+Todo pedido deverá gerar uma única ordem de produção antes de seu atendimento, mesmo com estoque acabado suficiente.
 
 ### Decisão confirmada
 
@@ -128,7 +128,6 @@ Ainda deverão ser definidos:
 - Dados obrigatórios de um pedido;
 - Estados possíveis de um pedido;
 - Tratamento detalhado de cancelamentos;
-- Dados e transições restantes do pedido (PD02).
 
 ---
 
@@ -150,7 +149,7 @@ Não estão previstos, na primeira versão:
 - Roteirização;
 - Rastreamento de entregas;
 - Controle de frota;
-- Integração com transportadoras.
+- Integração com transportadoras;
 - Expedição parcial.
 
 ---
@@ -397,3 +396,6 @@ PD09 foi resolvida nesta revisão: todo pedido deverá gerar uma ordem de produ�
 |---|---|
 | 0.1 | Definição inicial do escopo, requisitos, regras de negócio, decisões confirmadas e pontos pendentes. |
 | 0.2 | Revisão em 13/10/2026: responsabilidades e acesso, pedido e ordem com vários produtos, ordem obrigatória para todo pedido (PD09 resolvida), recebimento separado da compra, produção e expedição integrais, custos e financeiro simplificado; demais pendências preservadas para revisão coletiva. |
+| 0.3 | Revisão em 17/10/2026: registro da revisão coletiva informada pelo solicitante, remoção da redação que tornava a ordem opcional e vínculo ao diagrama de casos de uso, sem resolver implicitamente os detalhamentos pendentes. |
+
+O [diagrama de casos de uso](../03-modelagem/casos-de-uso/README.md) utiliza estes identificadores RF/RN e os casos CU01 a CU20 do catálogo de atores e casos de uso.
