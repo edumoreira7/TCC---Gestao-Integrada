@@ -40,7 +40,15 @@ As ordens de produção poderão ter duas origens:
 - Criação manual pelo usuário;
 - Criação a partir de um pedido de cliente.
 
-Um pedido de cliente deverá gerar uma única ordem de produção, mesmo quando possuir vários produtos.
+Cada pedido contém um ou mais produtos e deverá gerar uma única ordem de produção, mesmo quando possuir vários produtos ou já houver produtos acabados suficientes em estoque. O atendimento direto sem ordem de produção não faz parte do fluxo.
+
+Durante o registro, um pedido pode ainda não ter uma ordem criada (Pedido → 0..1 ordem); para seguir ao atendimento, deverá gerar exatamente uma. A cardinalidade não torna a geração opcional.
+
+Uma ordem contém um ou mais produtos e suas quantidades. Cada produto utiliza uma ficha técnica/receita com insumos, quantidades, unidades de medida e quantidade de produto resultante, necessária para dimensionar a produção.
+
+O Comercial registra o pedido e poderá alterá-lo até antes do início da produção. Alterações que afetem uma ordem já criada devem refletir nos seus itens e no cálculo da necessidade de insumos antes do início.
+
+A produção será concluída integralmente; produção parcial não faz parte da primeira versão.
 
 ---
 
@@ -52,7 +60,9 @@ Quando houver insuficiência, a ordem deverá permanecer aguardando reposição 
 
 O sistema deverá identificar os insumos faltantes.
 
-O registro da compra será realizado pelo usuário.
+O PCP identifica a necessidade de reposição e aciona Compras. O registro da compra será realizado pelo usuário autorizado.
+
+O registro da compra, com quantidades e preços dos insumos, não aumenta o estoque. A entrada ocorre somente no recebimento efetivo pelo Estoque. Após o recebimento, a disponibilidade dos insumos da ordem deverá ser reavaliada antes de liberar seu início.
 
 ---
 
@@ -64,16 +74,22 @@ O consumo dos insumos será registrado na conclusão da ordem de produção.
 
 A entrada dos produtos acabados também será registrada na conclusão.
 
+Produtos acabados sempre passam pelo estoque antes da expedição. Ordens manuais abastecem esse estoque e não originam, por si só, uma expedição.
+
+No cancelamento durante a produção, deverão ser registrados o motivo e a situação dos insumos e produtos envolvidos. Produtos acabados aproveitáveis poderão ser incorporados ao estoque. O tratamento das quantidades consumidas, perdas e movimentações dessa exceção ainda deverá ser detalhado.
+
 ---
 
 ## Expedição
 
-A expedição deverá registrar, no mínimo:
+A expedição estará vinculada a um pedido e deverá registrar, no mínimo:
 
 - Destinatário;
 - Produto;
 - Quantidade;
 - Data.
+
+Um pedido com vários produtos terá seus itens e quantidades registrados na expedição. Não haverá expedição parcial inicialmente. O registro da expedição gera a saída correspondente do estoque de produtos acabados.
 
 Não fazem parte do escopo inicial o rastreamento de entregas, roteirização, gestão de frota ou integração com transportadoras.
 
@@ -83,9 +99,21 @@ Não fazem parte do escopo inicial o rastreamento de entregas, roteirização, g
 
 O controle financeiro terá escopo simplificado.
 
-Serão registradas entradas e saídas financeiras básicas.
+Serão registrados valores básicos das operações de compra e venda/expedição. Esses registros não representam confirmação de pagamentos ou recebimentos bancários.
 
-Não está prevista a implementação de um sistema contábil completo.
+As compras registram os preços dos insumos. O custo de um produto será calculado pela receita, utilizando o último preço de compra conhecido de cada insumo, com unidades compatíveis e considerando o rendimento da receita.
+
+O preço de venda será cadastrado manualmente. A sugestão automática de preço com base no custo fica como evolução futura.
+
+Não estão previstos contas a pagar, contas a receber ou um sistema contábil completo. Eventos, campos, automatização e tratamento de estornos dos registros financeiros ainda precisam de detalhamento.
+
+---
+
+## Responsabilidades e acesso
+
+Os perfis funcionais de referência são Comercial, PCP, Compras, Estoque, Produção, Expedição e Financeiro. A matriz detalhada de permissões e a administração dos acessos ainda serão definidas.
+
+Uma mesma pessoa poderá acumular mais de um perfil ou conjunto de permissões. Clientes e fornecedores são entidades cadastradas, não atores com acesso ao sistema.
 
 ---
 
@@ -108,6 +136,9 @@ Não fazem parte do escopo atual:
 - FEFO;
 - Gestão fiscal completa;
 - Contabilidade completa;
+- Contas a pagar e contas a receber;
+- Produção e expedição parciais;
+- Sugestão automática de preço de venda;
 - Rastreamento logístico;
 - Roteirização;
 - Criação automática de pedidos de compra.
@@ -118,14 +149,19 @@ Não fazem parte do escopo atual:
 
 Ainda deverão ser definidos:
 
-- Perfis de usuário;
-- Permissões;
+- Matriz detalhada de permissões e administração dos perfis de referência;
 - Estados completos das ordens de produção;
 - Estados dos pedidos;
-- Regras de cancelamento;
-- Relação detalhada entre pedido e expedição;
+- Movimentações no cancelamento durante a produção, incluindo consumo efetivo, perdas e aproveitamento de produtos;
+- Dados obrigatórios restantes e transições de pedidos e expedições;
+- Reserva de estoque e tratamento de ordens concorrentes, já que a baixa normal ocorre somente na conclusão;
+- Critério temporal do último preço de compra, ausência de preço e conversões entre unidades;
 - Funcionamento detalhado das movimentações financeiras;
 - Metodologia definitiva de avaliação;
 - Requisitos não funcionais mensuráveis.
 
 Esses itens não devem ser considerados definidos até serem discutidos e documentados.
+
+## Registro da revisão
+
+Em 13/10/2026, este documento foi atualizado com o resumo da discussão e a imagem do macrofluxo. Nesta revisão, foi confirmada pelo solicitante a obrigatoriedade de criar uma ordem para todo pedido, inclusive com estoque acabado suficiente. A validação coletiva do fluxo e das demais pendências continua necessária.
