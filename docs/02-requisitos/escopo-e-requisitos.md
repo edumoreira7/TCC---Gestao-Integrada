@@ -1,7 +1,7 @@
 # Escopo e Requisitos do Sistema
 
 **Projeto:** Gestão Integrada de Estoque e Produção no Setor Alimentício: uma abordagem baseada em receitas e necessidades de insumo<br>
-**Versão:** 0.4<br>
+**Versão:** 0.5<br>
 **Etapa:** TCC1 — Levantamento de requisitos e análise<br>
 **Status:** Base consolidada; revisão coletiva informada pelo solicitante em 17/10/2026; detalhamentos pendentes identificados abaixo<br>
 **Revisão:** 20/10/2026
@@ -107,7 +107,7 @@ No mesmo momento, deverá ser registrada a entrada dos produtos acabados corresp
 
 A conclusão será integral, sem produção parcial na primeira versão. Produtos acabados passam sempre pelo estoque antes da expedição.
 
-No cancelamento durante a produção, será obrigatório registrar o motivo e a situação dos produtos e insumos. Produtos acabados aproveitáveis poderão entrar no estoque; as movimentações dessa exceção dependem do detalhamento da regra de cancelamento (PD03).
+No cancelamento durante a produção, será obrigatório registrar o motivo e a situação dos produtos e insumos. Consumo e perdas serão baixados sem duplicidade; o saldo reservado não utilizado será liberado e os produtos aproveitáveis terão entrada no estoque. Autorizações e falhas permanecem em PD03.
 
 ---
 
@@ -249,7 +249,7 @@ Sua inclusão deverá ser avaliada pelo grupo considerando relevância, impacto 
 | RF26 | O sistema deverá permitir ao PCP consultar os insumos faltantes e acionar o processo de reposição junto a Compras. |
 | RF27 | O sistema deverá reavaliar a disponibilidade dos insumos após seu recebimento e verificar sua suficiência antes de iniciar a produção. |
 | RF28 | O sistema deverá concluir integralmente a ordem de produção, sem conclusão parcial na primeira versão. |
-| RF29 | O sistema deverá registrar o motivo do cancelamento durante a produção e a situação dos insumos e produtos, conforme detalhamento pendente em PD03. |
+| RF29 | O sistema deverá registrar motivo, quantidades consumidas, perdidas e aproveitáveis no cancelamento; baixar consumo e perdas sem duplicidade, liberar a reserva não utilizada e dar entrada nos produtos aproveitáveis. |
 | RF30 | O sistema deverá calcular o custo dos produtos pela receita e pelo último preço de compra conhecido de cada insumo. |
 | RF31 | O sistema deverá permitir cadastrar manualmente o preço de venda dos produtos. |
 | RF32 | O sistema deverá controlar o acesso dos usuários internos e permitir acumular perfis ou conjuntos de permissões, conforme matriz ainda a definir. |
@@ -283,7 +283,7 @@ Esta é uma relação inicial de requisitos. Os requisitos serão detalhados e r
 | RN18 | Produtos acabados passam pelo estoque antes da expedição. |
 | RN19 | Toda expedição está vinculada a um pedido e atende seus itens integralmente, sem expedição parcial inicialmente. |
 | RN20 | Pedidos podem ser alterados somente até antes do início da produção; alterações devem refletir na ordem vinculada e no cálculo de insumos. |
-| RN21 | Cancelamento durante a produção exige motivo e situação dos insumos e produtos; o tratamento das movimentações e do produto aproveitável depende de PD03. |
+| RN21 | Cancelamento durante a produção exige motivo e apuração das quantidades consumidas, perdidas e aproveitáveis; baixa consumo e perdas sem duplicidade, libera a reserva não utilizada e recebe os produtos aproveitáveis. |
 | RN22 | O custo do produto utiliza sua receita e o último preço de compra conhecido de cada insumo, com unidades compatíveis e rendimento da receita. |
 | RN23 | O preço de venda é informado manualmente. Sugestão automática de preço não faz parte da primeira versão. |
 | RN24 | Usuários internos podem acumular perfis ou conjuntos de permissões. |
@@ -377,13 +377,13 @@ A metodologia definitiva de avaliação ainda deverá ser discutida com o orient
 |---|---|
 | PD01 | Qual perfil de estabelecimento será utilizado como referência nos cenários de uso e avaliação? |
 | PD02 | Quais serão os estados e os dados obrigatórios dos pedidos de clientes? |
-| PD03 | Como registrar consumo efetivo, perdas e produtos aproveitáveis no cancelamento ou em falhas durante a produção? |
+| PD03 | Regra confirmada para cancelamento: apurar consumo e perdas separadamente, baixar sem duplicidade, liberar reserva não utilizada e receber produtos aproveitáveis. Falhas e autorizações ainda a detalhar. |
 | PD04 | Quais dados obrigatórios restantes e transições serão usados na expedição integral vinculada ao pedido? |
 | PD05 | Quais registros financeiros serão manuais e quais decorrerão automaticamente de outras operações? |
 | PD06 | Qual será a matriz de permissões dos perfis funcionais de referência e como será feita a administração de acesso? |
 | PD07 | Quais critérios mensuráveis serão utilizados na validação e nos requisitos não funcionais? |
 | PD08 | Quais serão todos os estados e transições possíveis de uma ordem de produção? |
-| PD10 | Como tratar reserva de insumos e ordens concorrentes quando a baixa ocorre somente na conclusão? |
+| PD10 | Regra confirmada: reserva ao iniciar a produção, com baixa normal na conclusão. Falta definir o mecanismo de integridade para inícios concorrentes na arquitetura. |
 | PD11 | Como definir o último preço de compra, tratar ausência de preço e converter unidades no cálculo de custo? |
 
 PD09 foi resolvida nesta revisão: todo pedido deverá gerar uma ordem de produção, inclusive com estoque acabado suficiente. O identificador foi mantido neste registro histórico e não será reutilizado como nova pendência.
@@ -399,3 +399,12 @@ PD09 foi resolvida nesta revisão: todo pedido deverá gerar uma ordem de produ�
 | 0.3 | Revisão em 17/10/2026: registro da revisão coletiva informada pelo solicitante, remoção da redação que tornava a ordem opcional e vínculo ao diagrama de casos de uso, sem resolver implicitamente os detalhamentos pendentes. |
 
 O [diagrama de casos de uso](../03-modelagem/casos-de-uso/README.md) utiliza estes identificadores RF/RN e os casos CU01 a CU20 do catálogo de atores e casos de uso.
+
+## Decisões complementares — 20/10/2026
+
+- **RF34 / RN26 — Reserva:** ao iniciar a produção, verificar e reservar conjuntamente todos os insumos necessários. Reserva não é baixa física; o saldo disponível corresponde ao saldo físico menos reservas ativas. Outro início não pode usar o saldo já reservado. Na conclusão, consumir os insumos e encerrar a reserva sem subtrair duas vezes do disponível. O mecanismo técnico será definido na arquitetura (PD10).
+- **RF35 / RN27 — Composição preservada:** cada item da OP guarda a composição, as quantidades, unidades e rendimento da receita usados no dimensionamento. Alterar o cadastro da receita não altera automaticamente ordens existentes. Alterações de itens do pedido antes do início continuam exigindo recálculo; a política de revisão da composição nessa situação precisa ser detalhada.
+- **RF36 / RN28 — Recebimentos parciais:** uma compra admite vários recebimentos. Cada item recebido referencia seu item comprado; a soma recebida não excede a quantidade comprada. Cada recebimento movimenta apenas a quantidade efetiva e reavalia as faltas das ordens.
+- **RN29 — Cancelamento:** consumo e perdas são quantidades separadas, na unidade do insumo, sem sobreposição. Sua soma é baixada uma única vez; o restante da reserva é liberado e os produtos aproveitáveis entram no estoque. Esse encerramento excepcional não permite conclusão parcial normal nem expedição parcial. Autorizações e falhas não decorrentes de cancelamento seguem em PD03.
+
+As regras acima foram confirmadas pelo solicitante nesta conversa. PD03 e PD10 ficam parcialmente resolvidas; seus detalhamentos técnicos e de autorização não são presumidos.

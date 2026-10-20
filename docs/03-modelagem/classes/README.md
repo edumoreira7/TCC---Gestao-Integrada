@@ -4,7 +4,7 @@
 
 Base: RF01–RF33, RN01–RN25 e catálogo de casos de uso na main. Atributos são uma proposta mínima de análise, não um esquema de banco nem lista definitiva de dados obrigatórios. `/` indica informação derivada. Não foram incluídos métodos de infraestrutura, tabelas de junção ou controladores.
 
-[Arquivo editável com as três vistas](classes-dominio.drawio).
+[Arquivo editável com as quatro vistas](classes-dominio.drawio).
 
 ## Pedidos, receitas e produção
 
@@ -30,7 +30,7 @@ Base: RF01–RF33, RN01–RN25 e catálogo de casos de uso na main. Atributos s�
 - Pedido registrado possui exatamente uma OP. OP manual não possui pedido de origem.
 - Necessidade de insumo é informação calculada: 0 itens antes do dimensionamento; persistência não definida.
 - Expedição integral: todos os itens do pedido; exige OP concluída e estoque suficiente. Sem entregas parciais.
-- Receita de referência única; histórico da composição da OP aguarda decisão. Estados completos: PD02/PD08.
+- Receita de referência única; composição original preservada na OP. Estados completos: PD02/PD08.
 
 ## Compras, recebimentos e estoques
 
@@ -41,7 +41,7 @@ Base: RF01–RF33, RN01–RN25 e catálogo de casos de uso na main. Atributos s�
 | Fornecedor | 1 | fornece | 0..* | Compra |
 | Compra | 1 | compõe | 1..* | ItemCompra |
 | ItemCompra | 0..* | adquire | 1 | Insumo |
-| Compra | 1 | recebimentos [proposta] | 0..* | Recebimento |
+| Compra | 1 | recebimentos parciais | 0..* | Recebimento |
 | Recebimento | 1 | compõe | 1..* | ItemRecebimento |
 | ItemRecebimento | 0..* | confere item | 1 | ItemCompra |
 | ItemRecebimento | 0..1 | gera entrada | 1 | MovimentacaoInsumo |
@@ -54,10 +54,10 @@ Base: RF01–RF33, RN01–RN25 e catálogo de casos de uso na main. Atributos s�
 | Expedicao | 0..1 | gera saída | 1..* | MovimentacaoProduto |
 
 - Compra não gera entrada de estoque; o recebimento efetivo gera as movimentações de entrada.
-- Movimentação de insumo tem origem exclusiva: item recebido OU conclusão de OP. Produto: conclusão OU expedição.
+- Origem exclusiva da movimentação: recebimento, conclusão, cancelamento ou expedição, conforme o tipo de estoque.
 - Saldo é uma visão derivada do histórico; não define tabela, serviço ou mecanismo de persistência.
-- Compra → recebimentos 0..* é proposta para revisão: recebimentos parciais não estão aprovados.
-- Reservas/concorrência (PD10) e consumo/perdas no cancelamento (PD03) aguardam decisão; não são modelados como aprovados.
+- Compra admite vários recebimentos. Quantidades acumuladas por item não podem exceder as compradas.
+- Reserva no início; cancelamento baixa consumo/perdas, libera reservas e recebe produtos aproveitáveis.
 
 ## Acessos e valores das operações
 
@@ -78,14 +78,44 @@ Base: RF01–RF33, RN01–RN25 e catálogo de casos de uso na main. Atributos s�
 - Custo e último preço são derivados: receita, quantidades, rendimento e unidades compatíveis; critérios pendentes em PD11.
 - Sem contas a pagar/receber, pagamentos bancários ou contabilidade. Não existe classe Financeiro para representar um setor.
 
-## Decisões aguardando o solicitante
+## Reserva, composição preservada e cancelamento
 
-1. Reserva de insumos: na criação, no início ou decisão posterior (PD10).
-2. Preservar a composição original da receita na OP ou atualizar ordens não iniciadas.
-3. Cancelamento: quantidades consumidas, perdas e produtos aproveitáveis (PD03).
-4. Recebimento integral ou possibilidade de vários recebimentos por compra.
+![Reserva, composição preservada e cancelamento](controle-producao.png)
 
-As propostas identificadas não alteram requisitos aprovados. O modelo deve ser ajustado às respostas antes de ser integrado à main.
+| Classe A | Multiplicidade junto a A | Relação | Multiplicidade junto a B | Classe B |
+|---|---|---|---|---|
+| OrdemProducao | 1 | reserva ao iniciar | 0..* | ReservaInsumo |
+| ReservaInsumo | 0..* | indisponibiliza saldo | 1 | Insumo |
+| OrdemProducao | 1 | compõe | 1..* | ItemOrdem |
+| ItemOrdem | 1 | preserva composição | 1 | ComposicaoOrdem |
+| ComposicaoOrdem | 1 | copia componentes | 1..* | ComponenteOrdem |
+| ComponenteOrdem | 0..* | referencia | 1 | Insumo |
+| OrdemProducao | 1 | pode registrar | 0..1 | CancelamentoProducao |
+| CancelamentoProducao | 1 | apura | 0..* | ApuracaoInsumo |
+| ApuracaoInsumo | 0..* | quantifica | 1 | Insumo |
+| CancelamentoProducao | 1 | apura | 0..* | ProdutoAproveitavel |
+| ProdutoAproveitavel | 0..* | quantifica | 1 | Produto |
+| ApuracaoInsumo | 0..1 | gera baixa se total positivo | 0..1 | MovimentacaoInsumo |
+| ProdutoAproveitavel | 0..1 | gera entrada | 1 | MovimentacaoProduto |
+
+- Confirmado: reservar ao iniciar; baixa normal somente na conclusão. Disponível = físico menos reservas ativas.
+- A OP preserva composição, quantidades, unidades e rendimento usados; alteração posterior da receita não muda essa cópia.
+- Cancelamento registra motivo, consumo, perdas e produtos aproveitáveis. Quantidades zero são permitidas.
+- Cancelamento baixa consumo e perdas sem duplicidade, libera reserva não utilizada e recebe produtos aproveitáveis.
+- O mecanismo para reservar sem concorrência será definido na arquitetura. Não há reserva na criação da OP.
+
+## Decisões confirmadas em 20/10/2026
+
+- Reservar insumos ao iniciar a produção; a baixa normal continua na conclusão.
+- Preservar na OP a composição da receita e as quantidades originais.
+- Registrar consumo, perdas e produtos aproveitáveis ao cancelar produção iniciada.
+
+## Confirmações adicionais
+
+- Compra aceita vários recebimentos parciais, respeitando o total de cada item.
+- Cancelamento baixa consumo e perdas sem duplicidade, libera o restante reservado e recebe aproveitáveis.
+
+Estados completos, permissões, eventos financeiros, preços e unidades continuam com suas pendências. A alteração de itens do pedido antes do início exige recalcular a OP; a política de substituir a composição preservada nessa alteração ainda deve ser detalhada.
 
 ## Rastreabilidade
 

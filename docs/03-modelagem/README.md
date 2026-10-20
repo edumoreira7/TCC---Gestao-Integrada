@@ -7,7 +7,7 @@ Cada guia explica brevemente o que o diagrama representa e por que ele é import
 | Visão geral funcional | [Ler guia](../01-visao-geral/guia-da-visao-geral.md) | PDF disponível na pasta de visão geral. |
 | Fluxo macro | [Ler guia](fluxo-macro/guia-do-diagrama.md) | Imagem, editável e documentação disponíveis. |
 | Casos de uso | [Ler guia](casos-de-uso/guia-do-diagrama.md) | Imagem, editável e catálogo disponíveis. |
-| Classes de domínio | [Ler guia](classes/guia-do-diagrama.md) | [Rascunho com três vistas, imagens e editável](classes/README.md); decisões em revisão. |
+| Classes de domínio | [Ler guia](classes/guia-do-diagrama.md) | [Rascunho com quatro vistas, imagens e editável](classes/README.md); decisões em revisão. |
 | Dados / DER | [Ler guia](dados/guia-do-diagrama.md) | Modelo ainda a elaborar. |
 | Atividades | [Ler guia](atividades/guia-do-diagrama.md) | Modelo ainda a elaborar. |
 | Estados | [Ler guia](estados/guia-do-diagrama.md) | Modelo ainda a elaborar. |

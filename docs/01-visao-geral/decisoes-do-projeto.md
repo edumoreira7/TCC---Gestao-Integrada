@@ -167,3 +167,12 @@ Esses itens não devem ser considerados definidos até serem discutidos e docume
 Em 13/10/2026, este documento foi atualizado com o resumo da discussão e a imagem do macrofluxo. Naquela revisão, foi confirmada pelo solicitante a obrigatoriedade de criar uma ordem para todo pedido, inclusive com estoque acabado suficiente. A validação coletiva do fluxo ainda estava pendente àquela data.
 
 Em 17/10/2026, o solicitante confirmou que a revisão do grupo sobre a base consolidada no PR #13 já ocorreu. Essa confirmação atualiza o status da base e do macrofluxo; as decisões listadas como pendentes continuam abertas. O PDF de visão geral foi alinhado ao acesso exclusivamente interno e ao financeiro simplificado.
+
+## Confirmações do modelo de domínio — 20/10/2026
+
+1. Reservar insumos no início da produção; baixa física normal na conclusão, com encerramento da reserva.
+2. Preservar na OP a composição e as quantidades originais da receita, incluindo unidades e rendimento.
+3. No cancelamento, apurar consumo e perdas sem sobreposição, baixar uma única vez, liberar o restante reservado e receber produtos aproveitáveis.
+4. Permitir vários recebimentos por compra, com controle do saldo pendente de cada item.
+
+Essas decisões complementam RF34–RF36 e RN26–RN29 no escopo. Detalhes de autorização, concorrência técnica e revisão da composição após alteração de pedido permanecem explícitos.
