@@ -9,3 +9,8 @@
 - Pendências de cancelamento, reserva/concorrência, estados, permissões, eventos financeiros e preços/unidades continuam abertas.
 
 A revisão de 17/10 permanece como registro histórico. Esta atualização não altera o estado de issues ou PRs no GitHub.
+
+## Progresso conforme entregas na main
+
+Por orientação do solicitante, as entregas presentes na main foram consideradas concluídas: fluxo macro; escopo, requisitos e regras; atores e casos de uso; diagrama de casos de uso. As quatro atividades correspondentes receberam status Concluído e 100% no cronograma. Guias sem o respectivo diagrama não foram contados como entrega. As demais atividades e o TCC2 permaneceram inalterados.
+
