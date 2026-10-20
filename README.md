@@ -18,7 +18,7 @@ Entre as funcionalidades previstas estão:
 - Registro de compras com preços dos insumos e entrada no estoque somente após o recebimento;
 - Cálculo das necessidades de insumos a partir das receitas e identificação de faltas pelo PCP;
 - Registro de pedidos com um ou mais produtos pelo Comercial;
-- Ordens de produção com vários produtos, criadas manualmente ou vinculadas a um pedido;
+- Ordens de produção com vários produtos, criadas manualmente ou geradas automaticamente no registro de um pedido;
 - Conclusão integral da produção, com baixa de insumos e entrada de produtos acabados no estoque;
 - Expedição integral vinculada ao pedido, com saída dos produtos acabados do estoque;
 - Custo dos produtos calculado pela receita e pelo último preço de compra conhecido de cada insumo;
@@ -100,3 +100,5 @@ A [revisão de consistência de 17/10/2026](docs/planejamento/revisao-de-consist
 ## Situação do projeto
 
 **TCC1 — levantamento de requisitos, modelagem e definição da arquitetura.**
+
+A [revisão de 20/10/2026](docs/planejamento/revisao-de-consistencia-2026-10-20.md) registra a OP automática, a revisão dos casos de uso e o replanejamento do TCC1.

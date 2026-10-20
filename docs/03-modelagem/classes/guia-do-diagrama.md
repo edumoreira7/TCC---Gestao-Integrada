@@ -10,7 +10,7 @@ Estabelece um vocabulário comum para requisitos, dados e implementação. Ajuda
 
 ## Exemplo no nosso sistema
 
-Deve representar pedidos e ordens com seus itens e as receitas com composição e rendimento. Todo pedido deverá ter uma única ordem, mas pode aguardar sua criação; uma ordem manual não possui pedido de origem. Esses vínculos precisam expressar tanto a regra quanto o momento do processo.
+Deve representar pedidos e ordens com seus itens e as receitas com composição e rendimento. Todo pedido deverá ter uma única ordem, gerada automaticamente no registro; uma ordem manual não possui pedido de origem. Esses vínculos precisam expressar tanto a regra quanto o momento do processo.
 
 ## Base para elaboração
 

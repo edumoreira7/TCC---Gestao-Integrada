@@ -1,7 +1,7 @@
 # Atores, Casos de Uso e Regras de Negócio
 
-**Versão:** 0.2<br>
-**Revisão:** 17/10/2026<br>
+**Versão:** 0.3<br>
+**Revisão:** 20/10/2026<br>
 **Status:** Base consolidada; revisão do grupo confirmada pelo solicitante. Detalhamentos pendentes não são considerados aprovados.
 
 Este documento detalha responsabilidades e casos de uso a partir do [escopo e requisitos](escopo-e-requisitos.md), das [decisões do projeto](../01-visao-geral/decisoes-do-projeto.md) e do [fluxo macro](../03-modelagem/fluxo-macro/README.md). Os identificadores RF, RN e PD referem-se ao documento de escopo.
@@ -13,7 +13,7 @@ Os atores representam papéis funcionais internos, não pessoas distintas. Um us
 | Ator de referência | Responsabilidades |
 |---|---|
 | Comercial | Cadastrar e consultar clientes; registrar pedidos com vários produtos e quantidades; informar preços de venda e alterar pedidos antes do início da produção. |
-| PCP (Planejamento e Controle da Produção) | Criar ordens a partir de pedidos ou manualmente; consultar receitas e necessidades de insumos; identificar faltas e acionar Compras; acompanhar ordens. |
+| PCP (Planejamento e Controle da Produção) | Criar ordens manualmente e acompanhar as geradas automaticamente pelos pedidos; consultar receitas e necessidades de insumos; identificar faltas e acionar Compras; acompanhar ordens. |
 | Compras | Cadastrar e consultar fornecedores; registrar aquisições de insumos, quantidades e preços. |
 | Estoque | Consultar saldos e histórico; registrar recebimento de insumos; acompanhar as movimentações da conclusão da produção e da expedição. |
 | Produção | Iniciar, executar e concluir integralmente a produção; registrar informações de cancelamento, conforme regra ainda a detalhar. |
@@ -28,14 +28,13 @@ A atribuição detalhada de manutenção de produtos, insumos, receitas e acesso
 
 | ID | Caso de uso | Ator de referência | Requisitos relacionados |
 |---|---|---|---|
-| CU01 | Manter insumos | A definir em PD06 | RF01 |
-| CU02 | Manter produtos e fichas técnicas/receitas | A definir em PD06 | RF02, RF03 |
-| CU03 | Manter fornecedores | Compras | RF04 |
-| CU04 | Manter clientes | Comercial | RF05 |
+| CU01 | Gerenciar insumos | A definir em PD06 | RF01 |
+| CU02 | Gerenciar produtos e fichas técnicas/receitas | A definir em PD06 | RF02, RF03 |
+| CU03 | Gerenciar fornecedores | Compras | RF04 |
+| CU04 | Gerenciar clientes | Comercial | RF05 |
 | CU05 | Consultar saldos e histórico de estoque | Estoque, PCP | RF06, RF07, RF08 |
-| CU06 | Registrar pedido | Comercial | RF12 |
+| CU06 | Registrar pedido | Comercial | RF12, RF13, RF14, RF15, RF16 |
 | CU07 | Alterar pedido antes da produção | Comercial | RF25 |
-| CU08 | Criar ordem a partir de pedido | PCP | RF13, RF14, RF15, RF16 |
 | CU09 | Criar ordem manual | PCP | RF11, RF14, RF15, RF16 |
 | CU10 | Acompanhar ordem e necessidade de reposição | PCP | RF15, RF17, RF18, RF26 |
 | CU11 | Registrar compra de insumos | Compras | RF09, RF24 |
@@ -44,12 +43,12 @@ A atribuição detalhada de manutenção de produtos, insumos, receitas e acesso
 | CU14 | Concluir produção integral | Produção | RF19, RF20, RF28 |
 | CU15 | Registrar cancelamento durante a produção | Produção; autorização a definir | RF29; detalhamento em PD03 |
 | CU16 | Registrar expedição integral do pedido | Expedição | RF21, RF22 |
-| CU17 | Calcular/consultar custo do produto | PCP; demais acessos a definir | RF30 |
-| CU18 | Cadastrar preço de venda | Comercial | RF31 |
+| CU17 | Consultar custo do produto | Financeiro; demais acessos a definir | RF30 |
+| CU18 | Gerenciar preço de venda | Comercial | RF31 |
 | CU19 | Registrar/consultar valores básicos das operações | Financeiro | RF23, RF24, RF33; eventos em PD05 |
-| CU20 | Administrar perfis e permissões acumuláveis | Ator administrador a definir em PD06 | RF32 |
+| CU20 | Gerenciar perfis e permissões acumuláveis | Ator administrador a definir em PD06 | RF32 |
 
-O [diagrama de casos de uso](../03-modelagem/casos-de-uso/README.md) representa CU01 a CU20 e suas associações aos papéis de referência. Não são utilizadas relações UML `include`/`extend`: os cálculos, verificações e movimentações automáticas permanecem como passos internos dos fluxos abaixo. A criação da ordem é um caso de uso separado do registro do pedido, com obrigatoriedade expressa por RN10.
+O [diagrama de casos de uso](../03-modelagem/casos-de-uso/README.md) representa CU01 a CU20, exceto CU08, e suas associações aos papéis de referência. Não são utilizadas relações UML `include`/`extend`: os cálculos, verificações e movimentações automáticas permanecem como passos internos dos fluxos abaixo. CU08 foi incorporado ao fluxo de CU06: a geração da ordem é automática no registro do pedido (RF13/RN10). O identificador foi descontinuado e não será reutilizado; os demais IDs foram preservados.
 
 Para CU01, CU02 e CU20, o diagrama usa a categoria genérica **Usuário interno autorizado**, sem criar um novo perfil nem atribuir permissões definitivas. A responsabilidade específica depende de PD06.
 
@@ -59,21 +58,21 @@ Para CU01, CU02 e CU20, o diagrama usa a categoria genérica **Usuário interno 
 
 1. Comercial associa um cliente cadastrado ao pedido.
 2. Informa um ou mais produtos e suas quantidades.
-3. O sistema registra o pedido.
-4. Antes do início da produção, Comercial pode alterar o pedido. Se já houver ordem vinculada, os itens e o cálculo de insumos devem refletir a alteração antes de iniciar.
+3. O sistema registra o pedido e gera automaticamente uma única ordem com todos os seus produtos e quantidades, consultando receitas, somando necessidades e verificando a disponibilidade de insumos. Havendo faltas, a ordem aguarda reposição.
+4. Antes do início da produção, Comercial pode alterar o pedido. Os itens e o cálculo de insumos devem refletir a alteração antes de iniciar.
 
 **Limites:** alteração após o início da produção não é permitida. Dados obrigatórios restantes e estados do pedido dependem de PD02. Todo pedido deverá gerar uma ordem de produção, mesmo com estoque acabado suficiente; atendimento direto sem ordem não faz parte do fluxo.
 
-### CU08 e CU09: criar ordem de produção
+### CU09: criar ordem de produção manual
 
-1. PCP seleciona um pedido ou cria uma ordem manual.
-2. A ordem recebe um ou mais produtos e suas quantidades; na origem por pedido, corresponde aos itens desse pedido.
+1. PCP solicita uma ordem manual, sem pedido de origem.
+2. A ordem recebe um ou mais produtos e suas quantidades.
 3. O sistema consulta as fichas técnicas e dimensiona os insumos pelo rendimento de cada receita.
 4. O sistema soma a necessidade de cada insumo, inclusive quando utilizado em vários produtos.
 5. O sistema compara a necessidade total com a disponibilidade no estoque.
 6. Com faltas, a ordem aguarda reposição; PCP identifica os itens e aciona Compras. Com todos os insumos disponíveis, a ordem pode seguir para início da produção.
 
-**Resultado:** uma única ordem deverá ser criada para todo pedido, inclusive com estoque acabado suficiente. O pedido pode ainda não ter vínculo enquanto aguarda sua criação. Criar a ordem não consome insumos. Reserva de estoque e concorrência entre ordens dependem de PD10.
+**Resultado:** a ordem manual é independente de pedido. Em CU06, uma única ordem é gerada automaticamente para todo pedido, inclusive com estoque acabado suficiente. Criar a ordem não consome insumos. Reserva de estoque e concorrência entre ordens dependem de PD10.
 
 ### CU11 e CU12: comprar e receber insumos
 
@@ -117,11 +116,11 @@ O preço de venda é cadastrado manualmente. O acompanhamento financeiro registr
 
 ### Demais interações do catálogo
 
-CU01 a CU04 permitem registrar e consultar os dados dos respectivos cadastros; CU02 inclui composição e rendimento da receita. CU05 consulta saldos e histórico. CU10 apresenta o estado da ordem e as faltas calculadas, permitindo ao PCP acionar Compras sem emissão automática de pedidos a fornecedores.
+Gerenciar engloba cadastrar, consultar, editar e inativar quando aplicável, preservando o histórico e os vínculos. CU01 a CU04 gerenciam os respectivos cadastros; CU02 inclui composição e rendimento da receita. CU05 consulta saldos e histórico. CU10 apresenta o estado da ordem e as faltas calculadas, permitindo ao PCP acionar Compras sem emissão automática de pedidos a fornecedores.
 
 Em CU17, o usuário seleciona um produto e o sistema consulta a receita e os últimos preços de compra conhecidos para apresentar o custo; entradas sem preço ou unidade compatível não devem produzir custo zero implícito. Em CU18, Comercial informa o preço de venda manualmente. CU19 registra/consulta valores básicos, com eventos e automatização ainda em PD05. CU20 representa a administração de acessos acumuláveis; seu fluxo de concessão e suas autorizações dependem de PD06.
 
-Essas descrições completam a visão funcional sem presumir exclusão de registros, regras de aprovação ou soluções técnicas não definidas.
+Essas descrições completam a visão funcional sem presumir exclusão física de registros, regras de aprovação ou soluções técnicas não definidas.
 
 ## 4. Regras de negócio e rastreabilidade
 
@@ -129,8 +128,8 @@ O [catálogo RN01 a RN25](escopo-e-requisitos.md#7-regras-de-negócio-iniciais) 
 
 | Tema | Regras | Casos de uso |
 |---|---|---|
-| Receitas, rendimento e necessidade total | RN01, RN02, RN03 | CU02, CU08, CU09, CU17 |
-| Origem e itens da ordem | RN09, RN10, RN13 | CU06, CU08, CU09 |
+| Receitas, rendimento e necessidade total | RN01, RN02, RN03 | CU02, CU06, CU09, CU17 |
+| Origem e itens da ordem | RN09, RN10, RN13 | CU06, CU09 |
 | Falta de insumos, compra e recebimento | RN04, RN05, RN06, RN14, RN15, RN16 | CU10, CU11, CU12, CU13 |
 | Conclusão e movimentações de produção | RN07, RN08, RN17, RN18 | CU14 |
 | Expedição vinculada e integral | RN11, RN18, RN19 | CU16 |

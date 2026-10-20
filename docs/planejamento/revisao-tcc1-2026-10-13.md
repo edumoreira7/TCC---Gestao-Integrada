@@ -1,6 +1,6 @@
 # Revisão do Planejamento do TCC1
 
-**Data da revisão:** 13/10/2026<br>
+**Data da revisão:** 20/10/2026<br>
 **Apresentação final do TCC1:** 17/11/2026<br>
 **Status:** Planejamento de referência, sujeito à validação do grupo.
 
@@ -8,22 +8,24 @@
 
 Esta revisão incorpora o resumo da discussão e o macrofluxo fornecidos pelo grupo. As datas estão refletidas no [cronograma e Gantt semanal](Cronograma_TCC_Gestao_Integrada.xlsx). O planejamento do TCC2 permanece conforme a versão anterior.
 
+**Atualização de 20/10/2026:** datas restantes replanejadas; OP automática incorporada ao registro de pedido e nomenclatura dos casos de uso revisada. Percentuais e responsáveis não foram presumidos. Consolidação da documentação: 11/11 a 15/11; slides e ensaio: 13/11 a 16/11, dentro da preparação geral.
+
 ## Atividades do TCC1
 
 | Período de 2026 | Atividade |
 |---|---|
-| 13/10 a 16/10 | Finalizar e validar o fluxograma macro com o grupo. |
-| 13/10 a 18/10 | Atualizar escopo, requisitos e regras de negócio. |
-| 19/10 a 23/10 | Finalizar atores, casos de uso e responsabilidades. |
-| 19/10 a 25/10 | Elaborar diagrama de casos de uso e descrições principais. |
-| 22/10 a 28/10 | Elaborar diagrama de classes de domínio. |
-| 26/10 a 31/10 | Elaborar DER e modelagem do banco. |
-| 29/10 a 04/11 | Elaborar diagramas de atividades e estados. |
-| 02/11 a 07/11 | Elaborar diagramas de sequência. |
+| 20/10 a 22/10 | Finalizar e validar o fluxograma macro com o grupo. |
+| 20/10 a 24/10 | Atualizar escopo, requisitos e regras de negócio. |
+| 21/10 a 25/10 | Finalizar atores, casos de uso e responsabilidades. |
+| 23/10 a 27/10 | Elaborar diagrama de casos de uso e descrições principais. |
+| 25/10 a 30/10 | Elaborar diagrama de classes de domínio. |
+| 28/10 a 02/11 | Elaborar DER e modelagem do banco. |
+| 31/10 a 05/11 | Elaborar diagramas de atividades e estados. |
+| 03/11 a 08/11 | Elaborar diagramas de sequência. |
 | 02/11 a 08/11 | Definir arquitetura e diagrama de componentes. |
-| 03/11 a 10/11 | Desenvolver/refinar protótipo das telas principais. |
+| 04/11 a 10/11 | Desenvolver/refinar protótipo das telas principais. |
 | 04/11 a 10/11 | Definir metodologia e cenários de validação. |
-| 09/11 a 13/11 | Revisar documentação e consistência entre diagramas. |
+| 09/11 a 12/11 | Revisar documentação e consistência entre diagramas. |
 | 11/11 a 16/11 | Preparar apresentação, metodologia e pré-banca. |
 | 17/11 | Apresentação final do TCC1. |
 

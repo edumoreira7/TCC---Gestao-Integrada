@@ -38,11 +38,11 @@ O objetivo não é desenvolver um ERP de abrangência geral.
 As ordens de produção poderão ter duas origens:
 
 - Criação manual pelo usuário;
-- Criação a partir de um pedido de cliente.
+- Criação automática no registro de um pedido de cliente.
 
 Cada pedido contém um ou mais produtos e deverá gerar uma única ordem de produção, mesmo quando possuir vários produtos ou já houver produtos acabados suficientes em estoque. O atendimento direto sem ordem de produção não faz parte do fluxo.
 
-Durante o registro, um pedido pode ainda não ter uma ordem criada (Pedido → 0..1 ordem); para seguir ao atendimento, deverá gerar exatamente uma. A cardinalidade não torna a geração opcional.
+O registro do pedido gera automaticamente sua única ordem de produção, sem ação adicional do PCP. A geração integra o fluxo de registrar pedido e não constitui caso de uso separado.
 
 Uma ordem contém um ou mais produtos e suas quantidades. Cada produto utiliza uma ficha técnica/receita com insumos, quantidades, unidades de medida e quantidade de produto resultante, necessária para dimensionar a produção.
 

@@ -1,10 +1,10 @@
 # Escopo e Requisitos do Sistema
 
 **Projeto:** Gestão Integrada de Estoque e Produção no Setor Alimentício: uma abordagem baseada em receitas e necessidades de insumo<br>
-**Versão:** 0.3<br>
+**Versão:** 0.4<br>
 **Etapa:** TCC1 — Levantamento de requisitos e análise<br>
 **Status:** Base consolidada; revisão coletiva informada pelo solicitante em 17/10/2026; detalhamentos pendentes identificados abaixo<br>
-**Revisão:** 17/10/2026
+**Revisão:** 20/10/2026
 
 ---
 
@@ -95,7 +95,7 @@ Quando a ordem for criada manualmente, o usuário deverá informar os produtos e
 
 Uma ordem contém um ou mais produtos. Quando tiver origem em um pedido, estará vinculada somente a esse pedido. Cada pedido poderá estar associado a no máximo uma ordem de produção, mesmo quando possuir mais de um produto.
 
-Todo pedido deverá gerar uma ordem de produção, inclusive quando houver produtos acabados suficientes em estoque. Não haverá atendimento direto sem ordem. O vínculo pode estar ausente apenas enquanto o pedido aguarda a criação de sua ordem.
+Todo pedido deverá gerar uma ordem de produção, inclusive quando houver produtos acabados suficientes em estoque. Não haverá atendimento direto sem ordem. A ordem é gerada automaticamente no registro do pedido.
 
 A ordem de produção poderá ser criada mesmo quando não houver quantidade suficiente de todos os insumos necessários.
 
@@ -177,7 +177,7 @@ Os perfis funcionais de referência são Comercial, PCP, Compras, Estoque, Produ
 | Relação | Definição |
 |---|---|
 | Pedido → produtos | 1..N itens com produtos e quantidades. |
-| Pedido → ordem de produção | 0..1 durante o registro; exatamente uma ordem deverá ser criada para atender todo pedido, inclusive com estoque acabado suficiente. |
+| Pedido → ordem de produção | Uma ordem gerada automaticamente no registro de todo pedido, inclusive com estoque acabado suficiente. |
 | Ordem de produção → pedido | 0..1 pedido de origem; ordens manuais não exigem pedido. |
 | Ordem de produção → produtos | 1..N itens com produtos e quantidades. |
 | Produto → receita | Uma ficha técnica/receita de referência para produção e custo; versionamento não definido. |
@@ -233,7 +233,7 @@ Sua inclusão deverá ser avaliada pelo grupo considerando relevância, impacto 
 | RF10 | O sistema deverá registrar a entrada dos insumos no estoque após o recebimento de uma compra. |
 | RF11 | O sistema deverá permitir ao PCP criar manualmente ordens de produção com um ou mais produtos e suas quantidades, sem exigir pedido de origem. |
 | RF12 | O sistema deverá permitir ao Comercial registrar pedidos vinculados a clientes cadastrados, com um ou mais produtos e suas quantidades. |
-| RF13 | O sistema deverá permitir ao PCP criar uma única ordem de produção vinculada a cada pedido, com seus produtos e quantidades, exigindo sua criação mesmo com estoque acabado suficiente. |
+| RF13 | O sistema deverá gerar automaticamente, no registro de cada pedido, uma única ordem de produção vinculada a ele, com todos os seus produtos e quantidades, mesmo com estoque acabado suficiente. |
 | RF14 | O sistema deverá calcular os insumos necessários para uma ordem de produção a partir das receitas dos produtos e das quantidades solicitadas. |
 | RF15 | O sistema deverá identificar e informar os insumos cuja quantidade disponível seja insuficiente para uma ordem de produção. |
 | RF16 | O sistema deverá permitir que uma ordem de produção seja criada mesmo quando houver insuficiência de insumos. |
@@ -272,7 +272,7 @@ Esta é uma relação inicial de requisitos. Os requisitos serão detalhados e r
 | RN07 | O consumo dos insumos deve ser registrado somente na conclusão da ordem de produção. |
 | RN08 | A entrada dos produtos acabados no estoque deve ser registrada na conclusão da ordem de produção. |
 | RN09 | Uma ordem de produção poderá ter origem manual ou estar vinculada a um pedido de cliente. |
-| RN10 | Todo pedido contém um ou mais produtos e deverá gerar uma única ordem de produção, mesmo com estoque acabado suficiente; não há atendimento direto sem ordem. |
+| RN10 | Todo pedido contém um ou mais produtos e gera automaticamente uma única ordem de produção no registro, mesmo com estoque acabado suficiente; não há atendimento direto sem ordem. |
 | RN11 | A expedição deve gerar a saída da quantidade correspondente do estoque de produtos acabados. |
 | RN12 | Comercial registra pedidos. Clientes e fornecedores são cadastros, sem acesso ao sistema. |
 | RN13 | Uma ordem contém um ou mais produtos e quantidades; uma ordem manual não exige pedido de origem. |
