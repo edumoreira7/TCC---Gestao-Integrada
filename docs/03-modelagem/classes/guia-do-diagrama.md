@@ -14,4 +14,4 @@ Deve representar pedidos e ordens com seus itens e as receitas com composição 
 
 ## Base para elaboração
 
-O modelo ainda será elaborado conforme o [catálogo funcional](../../02-requisitos/atores-casos-de-uso-regras-de-negocio.md) e o [escopo](../../02-requisitos/escopo-e-requisitos.md). Relacionamentos afetados por decisões pendentes devem ser identificados como tal.
+O [rascunho do modelo](README.md) está disponível em três vistas e arquivo editável, elaborado conforme o [catálogo funcional](../../02-requisitos/atores-casos-de-uso-regras-de-negocio.md) e o [escopo](../../02-requisitos/escopo-e-requisitos.md). Relacionamentos afetados por decisões pendentes devem ser identificados como tal.
