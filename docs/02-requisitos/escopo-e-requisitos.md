@@ -385,6 +385,7 @@ A metodologia definitiva de avaliação ainda deverá ser discutida com o orient
 | PD08 | Quais serão todos os estados e transições possíveis de uma ordem de produção? |
 | PD10 | Regra confirmada: reserva ao iniciar a produção, com baixa normal na conclusão. Falta definir o mecanismo de integridade para inícios concorrentes na arquitetura. |
 | PD11 | Como definir o último preço de compra, tratar ausência de preço e converter unidades no cálculo de custo? |
+| PD12 | Consultar o estoque de produtos acabados antes de dimensionar a necessidade de produção? Como essa consulta afetará as quantidades, preservando a geração automática de uma única OP por pedido? |
 
 PD09 foi resolvida nesta revisão: todo pedido deverá gerar uma ordem de produção, inclusive com estoque acabado suficiente. O identificador foi mantido neste registro histórico e não será reutilizado como nova pendência.
 

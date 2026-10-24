@@ -14,4 +14,4 @@ Deve representar pedidos e ordens com seus itens e as receitas com composição 
 
 ## Base para elaboração
 
-O [rascunho do modelo](README.md) está disponível em quatro vistas e arquivo editável, elaborado conforme o [catálogo funcional](../../02-requisitos/atores-casos-de-uso-regras-de-negocio.md) e o [escopo](../../02-requisitos/escopo-e-requisitos.md). Relacionamentos afetados por decisões pendentes devem ser identificados como tal.
+O [modelo baseado na imagem oficial](README.md) está disponível em três vistas complementares e uma fonte editável, alinhado ao [catálogo funcional](../../02-requisitos/atores-casos-de-uso-regras-de-negocio.md) e ao [escopo](../../02-requisitos/escopo-e-requisitos.md). A consulta ao estoque acabado antes do dimensionamento permanece pendente (PD12); a OP única por pedido continua obrigatória. Relacionamentos afetados por decisões pendentes estão identificados nas notas.

@@ -157,6 +157,7 @@ Ainda deverão ser definidos:
 - Reserva de estoque e tratamento de ordens concorrentes, já que a baixa normal ocorre somente na conclusão;
 - Critério temporal do último preço de compra, ausência de preço e conversões entre unidades;
 - Funcionamento detalhado das movimentações financeiras;
+- Consulta ao estoque de produtos acabados antes de dimensionar a necessidade de produção e seu efeito nas quantidades (PD12), preservando uma única OP automática por pedido;
 - Metodologia definitiva de avaliação;
 - Requisitos não funcionais mensuráveis.
 
