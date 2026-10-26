@@ -72,7 +72,7 @@ Para CU01, CU02 e CU20, o diagrama usa a categoria genérica **Usuário interno 
 5. O sistema compara a necessidade total com a disponibilidade no estoque.
 6. Com faltas, a ordem aguarda reposição; PCP identifica os itens e aciona Compras. Com todos os insumos disponíveis, a ordem pode seguir para início da produção.
 
-**Resultado:** a ordem manual é independente de pedido. Em CU06, uma única ordem é gerada automaticamente para todo pedido, inclusive com estoque acabado suficiente. Criar a ordem não consome insumos. Reserva de estoque e concorrência entre ordens dependem de PD10.
+**Resultado:** a ordem manual é independente de pedido. Em CU06, uma única ordem é gerada automaticamente para todo pedido, inclusive com estoque acabado suficiente. Criar a ordem não consome insumos. A reserva ocorre no início da produção; o mecanismo técnico de concorrência permanece em PD10. A composição usada fica preservada na OP.
 
 ### CU11 e CU12: comprar e receber insumos
 
@@ -82,21 +82,25 @@ Para CU01, CU02 e CU20, o diagrama usa a categoria genérica **Usuário interno 
 4. A disponibilidade para as ordens aguardando reposição é reavaliada.
 5. Somente com todos os insumos necessários disponíveis a produção poderá iniciar.
 
-**Limites:** sem criação/envio automático de pedidos de compra. Recebimentos parciais e sua rastreabilidade não foram definidos pelo grupo e não são presumidos como aprovados neste fluxo.
+**Limites:** sem criação/envio automático de pedidos de compra. Recebimentos parciais são permitidos: cada recebimento referencia os itens da compra, respeita o saldo pendente e movimenta somente o efetivamente recebido.
 
 ### CU13 e CU14: iniciar e concluir produção
 
 1. Produção solicita o início da ordem.
-2. O sistema verifica a disponibilidade dos insumos e bloqueia o início se houver faltas.
+2. O sistema verifica e reserva os insumos ao iniciar, considerando reservas ativas de outras ordens; bloqueia o início se houver faltas.
 3. Produção executa a ordem.
 4. Produção registra sua conclusão integral.
-5. Na conclusão, o sistema registra a baixa dos insumos e a entrada de todos os produtos acabados correspondentes.
+5. Na conclusão, o sistema registra a baixa dos insumos, encerra a reserva e dá entrada em todos os produtos acabados correspondentes.
 
 **Limites:** sem conclusão parcial. A baixa normal ocorre somente na conclusão, nunca na criação ou no início. O mecanismo de integridade das movimentações será definido na arquitetura; as duas movimentações representam a mesma conclusão.
 
 ### CU15: cancelamento durante a produção
 
-O registro deve incluir motivo e situação dos insumos e produtos. Produto acabado aproveitável poderá ser incorporado ao estoque. Consumo efetivo, perdas, quantidades aproveitadas, autorizações e movimentações dependem de PD03; este caso de uso ainda não possui fluxo completo aprovado.
+1. Produção informa o motivo e apura, por insumo, consumo e perdas em quantidades separadas, sem sobreposição.
+2. Informa os produtos e quantidades aproveitáveis.
+3. O sistema baixa uma única vez o consumo e as perdas, libera a reserva não utilizada e dá entrada nos produtos aproveitáveis.
+
+Autorizações e tratamento de outras falhas seguem em PD03. O cancelamento é um encerramento excepcional; a conclusão normal continua integral. Ver RF29, RF34–RF36 e RN26–RN29.
 
 ### CU16: expedir pedido
 

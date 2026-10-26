@@ -1,0 +1,423 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17">
+  <diagram id="pedidos-receitas-producao" name="Pedidos, receitas, produção e expedição">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="1760">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Pedidos, receitas, produção e expedição" style="text;align=left;fontSize=32;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="20" width="1950" height="50" />
+        </mxCell>
+        <mxCell id="subtitle" value="Gestão Integrada | Classes de domínio | Referência oficial de 20/10/2026 | Vista 1/3" style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="75" width="1950" height="40" />
+        </mxCell>
+        <mxCell id="relation0" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="Cliente" target="Pedido" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation0-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="390" y="275.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation0-target" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="431" y="275.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation0-label" value="realiza" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="409.5" y="235.0" width="69.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="Pedido" target="OrdemProducao" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation1-source" value="0..1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="830" y="275.0" width="46.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="981" y="275.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1-label" value="gera no registro" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="868.0" y="235.0" width="142.0" height="28" />
+        </mxCell>
+        <mxCell id="relation2" style="endArrow=none;startArrow=diamond;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="OrdemProducao" target="ItemOrdemProducao" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation2-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1396" y="275.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation2-target" value="1..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1531" y="275.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation2-label" value="contém" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1451.5" y="235.0" width="75.0" height="28" />
+        </mxCell>
+        <mxCell id="relation3" style="endArrow=none;startArrow=diamond;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" source="Pedido" target="ItemPedido" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation3-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="664.0" y="417" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation3-target" value="1..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="664.0" y="455" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation3-label" value="contém" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="668.0" y="422.0" width="75.0" height="28" />
+        </mxCell>
+        <mxCell id="relation4" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="ItemPedido" target="Produto" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation4-source" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="830" y="615.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation4-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="981" y="615.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation4-label" value="referencia" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="891.0" y="575.0" width="96.0" height="28" />
+        </mxCell>
+        <mxCell id="relation5" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" source="ItemOrdemProducao" target="Produto" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="1760" y="610" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="relation5-source" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1764.0" y="401" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation5-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1380" y="615.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation5-label" value="produz" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1533.5" y="575.0" width="71.0" height="28" />
+        </mxCell>
+        <mxCell id="relation6" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" source="Produto" target="Receita" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation6-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1214.0" y="741" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation6-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1214.0" y="795" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation6-label" value="receita de referência" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1218.0" y="762.0" width="180.0" height="28" />
+        </mxCell>
+        <mxCell id="relation7" style="endArrow=none;startArrow=diamond;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="Receita" target="ItemReceita" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation7-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1396" y="955.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation7-target" value="1..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1531" y="955.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation7-label" value="composta por" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1426.5" y="915.0" width="125.0" height="28" />
+        </mxCell>
+        <mxCell id="relation8" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" source="ItemReceita" target="Insumo" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation8-source" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1764.0" y="1081" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation8-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1764.0" y="1135" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation8-label" value="utiliza" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1768.0" y="1102.0" width="62.0" height="28" />
+        </mxCell>
+        <mxCell id="relation9" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=0;exitY=0.85;entryX=0.5;entryY=0;" source="Pedido" target="Expedicao" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="420" y="354" />
+              <mxPoint x="420" y="760" />
+              <mxPoint x="220" y="760" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="relation9-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="431" y="359.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation9-target" value="0..1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="224.0" y="795" width="46.0" height="28" />
+        </mxCell>
+        <mxCell id="relation9-label" value="atendimento integral" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="66" y="722" width="179.0" height="28" />
+        </mxCell>
+        <mxCell id="relation10" style="endArrow=none;startArrow=diamond;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="Expedicao" target="ItemExpedicao" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation10-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="406" y="955.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation10-target" value="1..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="431" y="955.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation10-label" value="contém" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="406.5" y="915.0" width="75.0" height="28" />
+        </mxCell>
+        <mxCell id="relation11" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.85;" source="ItemExpedicao" target="Produto" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1">
+            <Array as="points">
+              <mxPoint x="940" y="950" />
+              <mxPoint x="940" y="694" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="relation11-source" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="830" y="955.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation11-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="981" y="699.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation11-label" value="expede" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="948.0" y="804.0" width="75.0" height="28" />
+        </mxCell>
+        <mxCell id="Cliente" value="&lt;b&gt;Cliente&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;nome&lt;br&gt;documento&lt;br&gt;contato" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Pedido" value="&lt;b&gt;Pedido&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;dataRegistro&lt;br&gt;status" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="500" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="OrdemProducao" value="&lt;b&gt;OrdemProducao&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;dataCriacao&lt;br&gt;tipo&lt;br&gt;status&lt;br&gt;dataInicio&lt;br&gt;dataConclusao" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1050" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="ItemOrdemProducao" value="&lt;b&gt;ItemOrdemProducao&lt;/b&gt;&lt;hr&gt;quantidadePlanejada&lt;br&gt;unidadeMedida" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1600" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="ItemPedido" value="&lt;b&gt;ItemPedido&lt;/b&gt;&lt;hr&gt;quantidade&lt;br&gt;precoUnitarioVenda" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="500" y="490" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Produto" value="&lt;b&gt;Produto&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;nome&lt;br&gt;unidadeMedida&lt;br&gt;/estoqueAtual&lt;br&gt;precoVenda" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1050" y="490" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Expedicao" value="&lt;b&gt;Expedicao&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;dataExpedicao&lt;br&gt;destinatario&lt;br&gt;status" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="830" width="320" height="240" />
+        </mxCell>
+        <mxCell id="ItemExpedicao" value="&lt;b&gt;ItemExpedicao&lt;/b&gt;&lt;hr&gt;quantidade&lt;br&gt;unidadeMedida" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="500" y="830" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Receita" value="&lt;b&gt;Receita&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;rendimento&lt;br&gt;unidadeRendimento&lt;br&gt;instrucoes" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1050" y="830" width="320" height="240" />
+        </mxCell>
+        <mxCell id="ItemReceita" value="&lt;b&gt;ItemReceita&lt;/b&gt;&lt;hr&gt;quantidadeInsumo&lt;br&gt;unidadeMedida" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1600" y="830" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Insumo" value="&lt;b&gt;Insumo&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;nome&lt;br&gt;unidadeMedida&lt;br&gt;/estoqueAtual" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1600" y="1170" width="320" height="240" />
+        </mxCell>
+        <mxCell id="note0" value="1. Cada pedido gera exatamente uma OP; uma OP manual não possui pedido de origem (0..1 junto a Pedido)." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1471" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note1" value="2. Produção e expedição integrais. A expedição pertence a um pedido e registra todos os seus itens." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1505" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note2" value="3. ItemOrdemProducao preserva a composição, quantidades, unidades e rendimento usados (RF35/RN27)." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1539" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note3" value="4. Pendente: consultar estoque de produtos acabados antes de dimensionar a necessidade de produção (PD12)." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1573" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note4" value="5. A consulta pendente não dispensa a OP obrigatória. Alteração do pedido antes do início exige recálculo." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1607" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="legend" value="Legenda: linha = associação | losango preenchido = composição | 0..1 / 1 / 0..* / 1..* = multiplicidades | / = derivado" style="text;align=left;fontSize=19;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1694" width="1990" height="40" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="compras-recebimentos" name="Compras e recebimentos de insumos">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="1170">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Compras e recebimentos de insumos" style="text;align=left;fontSize=32;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="20" width="1950" height="50" />
+        </mxCell>
+        <mxCell id="subtitle" value="Gestão Integrada | Classes de domínio | Referência oficial de 20/10/2026 | Vista 2/3" style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="75" width="1950" height="40" />
+        </mxCell>
+        <mxCell id="relation0" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="Fornecedor" target="Compra" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation0-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="390" y="275.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation0-target" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="531" y="275.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation0-label" value="fornece" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="456.0" y="235.0" width="76.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1" style="endArrow=none;startArrow=diamond;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="Compra" target="ItemCompra" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation1-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="946" y="275.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1-target" value="1..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1131" y="275.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1-label" value="contém" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1026.5" y="235.0" width="75.0" height="28" />
+        </mxCell>
+        <mxCell id="relation2" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="ItemCompra" target="Insumo" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation2-source" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1530" y="275.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation2-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1671" y="275.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation2-label" value="adquire" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1596.0" y="235.0" width="76.0" height="28" />
+        </mxCell>
+        <mxCell id="relation3" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" source="Compra" target="RecebimentoInsumo" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation3-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="764.0" y="401" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation3-target" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="764.0" y="565" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation3-label" value="recebimentos" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="768.0" y="477.0" width="124.0" height="28" />
+        </mxCell>
+        <mxCell id="relation4" style="endArrow=none;startArrow=diamond;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="RecebimentoInsumo" target="ItemRecebimento" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation4-source" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="946" y="725.0" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation4-target" value="1..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1131" y="725.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation4-label" value="detalha" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1026.5" y="685.0" width="75.0" height="28" />
+        </mxCell>
+        <mxCell id="relation5" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" source="ItemRecebimento" target="ItemCompra" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation5-source" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1364.0" y="565" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation5-target" value="1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1364.0" y="401" width="26.0" height="28" />
+        </mxCell>
+        <mxCell id="relation5-label" value="confere item comprado" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1368.0" y="477.0" width="200.0" height="28" />
+        </mxCell>
+        <mxCell id="Fornecedor" value="&lt;b&gt;Fornecedor&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;nome&lt;br&gt;documento&lt;br&gt;contato" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Compra" value="&lt;b&gt;Compra&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;dataRegistro&lt;br&gt;status" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="600" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="ItemCompra" value="&lt;b&gt;ItemCompra&lt;/b&gt;&lt;hr&gt;quantidade&lt;br&gt;unidadeMedida&lt;br&gt;precoUnitario" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1200" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="RecebimentoInsumo" value="&lt;b&gt;RecebimentoInsumo&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;dataRecebimento" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="600" y="600" width="320" height="240" />
+        </mxCell>
+        <mxCell id="ItemRecebimento" value="&lt;b&gt;ItemRecebimento&lt;/b&gt;&lt;hr&gt;quantidadeRecebida&lt;br&gt;unidadeMedida" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1200" y="600" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Insumo" value="&lt;b&gt;Insumo&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;nome&lt;br&gt;unidadeMedida&lt;br&gt;/estoqueAtual" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1740" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="note0" value="1. Registrar compra não aumenta estoque. A entrada ocorre somente no recebimento efetivo." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="901" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note1" value="2. Uma compra admite vários recebimentos; cada recebimento pertence a uma única compra (RF36/RN28)." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="935" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note2" value="3. Cada ItemRecebimento referencia um ItemCompra da mesma compra do recebimento." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="969" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note3" value="4. A soma recebida por item não excede a quantidade comprada; somente o efetivamente recebido gera entrada." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1003" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note4" value="5. O insumo recebido é identificado pelo ItemCompra; não é necessário duplicar essa associação." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1037" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="legend" value="Legenda: linha = associação | losango preenchido = composição | 0..1 / 1 / 0..* / 1..* = multiplicidades | / = derivado" style="text;align=left;fontSize=19;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1104" width="1990" height="40" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="estoques-financeiro" name="Estoques, movimentações e financeiro provisório">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="2120" pageHeight="1290">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Estoques, movimentações e financeiro provisório" style="text;align=left;fontSize=32;fontStyle=1;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="20" width="1950" height="50" />
+        </mxCell>
+        <mxCell id="subtitle" value="Gestão Integrada | Classes de domínio | Referência oficial de 20/10/2026 | Vista 3/3" style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="75" width="1950" height="40" />
+        </mxCell>
+        <mxCell id="relation0" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="Produto" target="MovimentacaoEstoque" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation0-source" value="0..1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="390" y="275.0" width="46.0" height="28" />
+        </mxCell>
+        <mxCell id="relation0-target" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="631" y="275.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation0-label" value="histórico de produtos" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="452.5" y="235.0" width="183.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1" style="endArrow=none;startArrow=none;startFill=1;rounded=0;html=0;strokeColor=#475569;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" source="MovimentacaoEstoque" target="Insumo" edge="1" parent="1">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="relation1-source" value="0..*" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1030" y="275.0" width="43.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1-target" value="0..1" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1271" y="275.0" width="46.0" height="28" />
+        </mxCell>
+        <mxCell id="relation1-label" value="histórico de insumos" style="text;html=0;align=left;verticalAlign=middle;spacing=4;fontFamily=Arial;fontSize=18;fontStyle=0;fillColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1094.0" y="235.0" width="180.0" height="28" />
+        </mxCell>
+        <mxCell id="Produto" value="&lt;b&gt;Produto&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;nome&lt;br&gt;unidadeMedida&lt;br&gt;/estoqueAtual&lt;br&gt;precoVenda" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="MovimentacaoEstoque" value="&lt;b&gt;MovimentacaoEstoque&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;dataHora&lt;br&gt;tipo&lt;br&gt;quantidade&lt;br&gt;unidadeMedida&lt;br&gt;origem" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="700" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="Insumo" value="&lt;b&gt;Insumo&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;nome&lt;br&gt;unidadeMedida&lt;br&gt;/estoqueAtual" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1340" y="150" width="320" height="240" />
+        </mxCell>
+        <mxCell id="RegistroFinanceiro" value="&lt;b&gt;RegistroFinanceiro&lt;/b&gt;&lt;hr&gt;id&lt;br&gt;dataRegistro&lt;br&gt;tipo&lt;br&gt;valor&lt;br&gt;descricao" style="rounded=0;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacing=12;fontFamily=Arial;fontSize=21;fillColor=#F8FAFC;strokeColor=#475569;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="1340" y="650" width="320" height="240" />
+        </mxCell>
+        <mxCell id="note0" value="1. {xor} Cada movimentação refere-se a exatamente um Produto OU um Insumo, nunca ambos ou nenhum." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="951" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note1" value="2. /estoqueAtual é saldo derivado do histórico, em unidade compatível; não representa outro item de estoque." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="985" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note2" value="3. Origem: recebimento efetivo, conclusão, cancelamento ou expedição, conforme o tipo de estoque." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1019" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note3" value="4. Início reserva insumos; conclusão baixa insumos, encerra reservas e recebe produtos acabados (RF34/RN26)." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1053" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note4" value="5. Cancelamento apura consumo/perdas sem duplicidade, libera reservas e recebe aproveitáveis (RN29)." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1087" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note5" value="6. RegistroFinanceiro mantém somente valores básicos; vínculos e eventos automáticos aguardam PD05." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1121" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="note6" value="7. Custo: receita × último preço de compra, considerando rendimento e unidades. Preço de venda manual." style="text;align=left;fontSize=20;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1155" width="1990" height="34" />
+        </mxCell>
+        <mxCell id="legend" value="Legenda: linha = associação | losango preenchido = composição | 0..1 / 1 / 0..* / 1..* = multiplicidades | / = derivado" style="text;align=left;fontSize=19;fontFamily=Arial;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="60" y="1224" width="1990" height="40" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
