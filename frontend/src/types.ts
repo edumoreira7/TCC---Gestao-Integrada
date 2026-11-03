@@ -1,0 +1,15 @@
+export type Profile = 'Comercial' | 'PCP' | 'Compras' | 'Estoque' | 'Produção' | 'Expedição' | 'Financeiro' | 'Administrador';
+export type Partner = { id: string; name: string; document: string; email: string; phone: string; active: boolean };
+export type Material = { id: string; name: string; unit: string; stock: number; minimum: number; lastPrice: number | null };
+export type Product = { id: string; name: string; category: string; unit: string; stock: number; price: number };
+export type Item = { productId: string; quantity: number; price: number };
+export type Recipe = { productId: string; yield: number; ingredients: { materialId: string; quantity: number }[] };
+export type Order = { id: string; customerId: string; date: string; delivery: string; items: Item[]; shipped: boolean };
+export type TaskStatus = 'todo' | 'doing' | 'done';
+export type ProductionTask = { id: string; productId: string; title: string; status: TaskStatus };
+export type Production = { id: string; orderId?: string; date: string; items: Item[]; status: 'planned' | 'running' | 'completed' | 'cancelled'; startedAt?: string; completedAt?: string; cancellation?: { reason: string; materials: string; products: string }; notes: string; tasks?: ProductionTask[] };
+export type Purchase = { id: string; supplierId: string; date: string; items: { materialId: string; quantity: number; price: number }[]; received: boolean };
+export type Movement = { id: string; date: string; reference: string; entityId: string; kind: 'insumo' | 'produto'; quantity: number; description: string };
+export type Shipment = { id: string; orderId: string; recipient: string; date: string; items: Item[] };
+export type User = { id: string; name: string; email: string; profiles: Profile[]; active: boolean };
+export type Database = { version: number; customers: Partner[]; suppliers: Partner[]; materials: Material[]; products: Product[]; recipes: Recipe[]; orders: Order[]; productions: Production[]; purchases: Purchase[]; movements: Movement[]; shipments: Shipment[]; users: User[] };
