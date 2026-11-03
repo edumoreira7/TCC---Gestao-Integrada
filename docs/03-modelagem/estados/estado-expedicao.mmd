@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> NaoRegistrada
+    NaoRegistrada --> Registrada: usuário registra expedição
+    Registrada --> [*]
+    note right of Registrada
+      O registro gera saída correspondente
+      do estoque de produtos acabados (RN11).
+      Outros estados, cancelamento, devolução
+      e confirmação de entrega não definidos.
+    end note

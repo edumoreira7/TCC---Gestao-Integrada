@@ -1,17 +1,17 @@
-# Diagramas de Atividades
+# Guia dos Diagramas de Atividades
 
-## O que representam
+## 1. O que representa
 
-Detalham as ações e decisões de um processo, incluindo caminhos alternativos e responsabilidades. Diferentemente do fluxo macro, permitem examinar uma operação específica com suas condições. Paralelismo só deve aparecer quando fizer parte do comportamento definido.
+Representa o fluxo de execução de um processo, mostrando ações, decisões, alternativas, responsabilidades e a sequência das atividades.
 
-## Por que são importantes no projeto
+## 2. Por que é importante no projeto
 
-Ajudam a verificar se os caminhos operacionais estão completos e se os bloqueios respeitam as regras de negócio. Servem de referência para implementar e validar processos que envolvem mais de uma área.
+Permite visualizar como Comercial, PCP, Compras, Estoque, Produção e Expedição se relacionam nos processos da Gestão Integrada, além de evidenciar em que momentos ocorrem reservas e movimentações de estoque.
 
-## Exemplo no nosso sistema
+## 3. Exemplo no nosso sistema
 
-Na verificação de uma ordem, o sistema calcula a necessidade total de insumos. Com faltas, a ordem aguarda reposição; após o recebimento, a disponibilidade é reavaliada. O início da produção permanece bloqueado enquanto faltar algum insumo necessário.
+Ao registrar um pedido, o sistema gera uma única OP, consulta o estoque disponível de produtos acabados considerando reservas ativas, reserva a quantidade disponível e calcula a parcela que ainda precisa ser produzida. Antes do início da produção, os insumos necessários são reservados conjuntamente; o consumo físico é registrado na conclusão.
 
-## Base para elaboração
+## 4. Base para elaboração
 
-Os diagramas ainda serão elaborados a partir do [fluxo macro](../fluxo-macro/README.md) e dos [fluxos dos casos de uso](../../02-requisitos/atores-casos-de-uso-regras-de-negocio.md). Não devem introduzir produção ou expedição parciais, excluídas do escopo inicial.
+Escopo e requisitos, catálogo de casos de uso, regras de negócio RN01–RN29, decisões complementares registradas em 20/10/2026 e PD12 confirmada em 02/11/2026. Situações ainda não definidas são identificadas como pendências, sem serem tratadas como requisitos aprovados.

@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Registrado
+    Registrado --> OPGerada: geração da única OP vinculada
+    OPGerada --> AtendidoPorExpedicao: expedição registrada
+    AtendidoPorExpedicao --> [*]
+    note right of Registrado
+      Estado ilustrativo para representar
+      o registro do pedido (RF12).
+    end note
+    note right of OPGerada
+      Relação com RN10: um pedido gera
+      uma única Ordem de Produção.
+    end note
+    note right of AtendidoPorExpedicao
+      Proposta para revisão. Estados oficiais,
+      atendimento parcial e cancelamento
+      ainda não foram definidos.
+    end note

@@ -1,0 +1,157 @@
+%% DER lógico — Gestão Integrada de Estoque e Produção no Setor Alimentício
+%% Documentação-base para revisão do grupo — 02/11/2026
+%% ReservaProdutoAcabado é proposta vinculada à PD12, não classe aprovada.
+erDiagram
+    CLIENTE ||--o{ PEDIDO : realiza
+    PEDIDO ||--|{ ITEM_PEDIDO : contem
+    PRODUTO ||--o{ ITEM_PEDIDO : referencia
+    PEDIDO ||--o| ORDEM_PRODUCAO : gera
+    ORDEM_PRODUCAO ||--|{ ITEM_ORDEM_PRODUCAO : contem
+    PRODUTO ||--o{ ITEM_ORDEM_PRODUCAO : produzido
+    PRODUTO ||--|| RECEITA : possui
+    RECEITA ||--|{ ITEM_RECEITA : composta_por
+    INSUMO ||--o{ ITEM_RECEITA : utilizado
+    FORNECEDOR ||--o{ COMPRA : fornece
+    COMPRA ||--|{ ITEM_COMPRA : contem
+    INSUMO ||--o{ ITEM_COMPRA : adquirido
+    COMPRA ||--o{ RECEBIMENTO_INSUMO : recebe
+    RECEBIMENTO_INSUMO ||--|{ ITEM_RECEBIMENTO : detalha
+    ITEM_COMPRA ||--o{ ITEM_RECEBIMENTO : recebido
+    PRODUTO o|--o{ MOVIMENTACAO_ESTOQUE : movimenta
+    INSUMO o|--o{ MOVIMENTACAO_ESTOQUE : movimenta
+    PEDIDO ||--o| EXPEDICAO : atendido_por
+    EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
+    PRODUTO ||--o{ ITEM_EXPEDICAO : expedido
+    ITEM_PEDIDO ||--o| RESERVA_PRODUTO_ACABADO : reserva_proposta
+
+    CLIENTE {
+        int id_cliente PK
+        string nome
+        string documento
+        string contato
+    }
+    PEDIDO {
+        int id_pedido PK
+        int id_cliente FK
+        datetime data_registro
+        string status
+    }
+    ITEM_PEDIDO {
+        int id_item_pedido PK
+        int id_pedido FK
+        int id_produto FK
+        decimal quantidade
+        decimal preco_unitario_venda
+    }
+    PRODUTO {
+        int id_produto PK
+        string nome
+        string unidade_medida
+        decimal preco_venda
+    }
+    RECEITA {
+        int id_receita PK
+        int id_produto FK, UK
+        decimal rendimento
+        string unidade_rendimento
+        string instrucoes
+    }
+    ITEM_RECEITA {
+        int id_item_receita PK
+        int id_receita FK
+        int id_insumo FK
+        decimal quantidade_insumo
+        string unidade_medida
+    }
+    INSUMO {
+        int id_insumo PK
+        string nome
+        string unidade_medida
+    }
+    ORDEM_PRODUCAO {
+        int id_ordem_producao PK
+        int id_pedido FK
+        datetime data_criacao
+        string tipo
+        string status
+        datetime data_inicio
+        datetime data_conclusao
+    }
+    ITEM_ORDEM_PRODUCAO {
+        int id_item_ordem PK
+        int id_ordem_producao FK
+        int id_produto FK
+        decimal quantidade_planejada
+        string unidade_medida
+    }
+    FORNECEDOR {
+        int id_fornecedor PK
+        string nome
+        string documento
+        string contato
+    }
+    COMPRA {
+        int id_compra PK
+        int id_fornecedor FK
+        datetime data_registro
+        string status
+    }
+    ITEM_COMPRA {
+        int id_item_compra PK
+        int id_compra FK
+        int id_insumo FK
+        decimal quantidade
+        string unidade_medida
+        decimal preco_unitario
+    }
+    RECEBIMENTO_INSUMO {
+        int id_recebimento PK
+        int id_compra FK
+        datetime data_recebimento
+    }
+    ITEM_RECEBIMENTO {
+        int id_item_recebimento PK
+        int id_recebimento FK
+        int id_item_compra FK
+        decimal quantidade_recebida
+        string unidade_medida
+    }
+    MOVIMENTACAO_ESTOQUE {
+        int id_movimentacao PK
+        int id_produto FK
+        int id_insumo FK
+        datetime data_hora
+        string tipo
+        decimal quantidade
+        string unidade_medida
+        string origem
+    }
+    EXPEDICAO {
+        int id_expedicao PK
+        int id_pedido FK
+        datetime data_expedicao
+        string destinatario
+        string status
+    }
+    ITEM_EXPEDICAO {
+        int id_item_expedicao PK
+        int id_expedicao FK
+        int id_produto FK
+        decimal quantidade
+        string unidade_medida
+    }
+    REGISTRO_FINANCEIRO {
+        int id_registro_financeiro PK
+        datetime data_registro
+        string tipo
+        decimal valor
+        string descricao
+    }
+    RESERVA_PRODUTO_ACABADO {
+        int id_reserva PK
+        int id_item_pedido FK
+        decimal quantidade_reservada
+        string situacao
+        datetime data_criacao
+        datetime data_liberacao_consumo
+    }

@@ -1,0 +1,9 @@
+flowchart TD
+    A([Início]) --> B[Usuário identifica destinatário]
+    B --> C[Informa produtos, quantidades e data da saída]
+    C --> D[Sistema verifica os dados informados]
+    D --> E[Usuário registra a expedição]
+    E --> F[Sistema registra saída correspondente no estoque de produtos acabados]
+    F --> G[Expedição e movimentação ficam registradas]
+    G --> H([Fim])
+    E -.-> N[Destinatário não acessa o sistema; não há transporte ou confirmação de entrega]

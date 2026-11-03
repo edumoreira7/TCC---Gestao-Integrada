@@ -1,0 +1,25 @@
+flowchart TD
+    A([Início]) --> B[Usuário consulta a OP]
+    B --> C[Sistema verifica disponibilidade dos insumos]
+    C --> D{Todos os insumos necessários disponíveis?}
+
+    D -- Não --> E[OP permanece aguardando reposição]
+    E --> F[Registrar recebimento dos insumos]
+    F --> C
+
+    D -- Sim --> G[Sistema reserva conjuntamente todos os insumos necessários]
+    G --> H[Usuário registra início da produção]
+    H --> I[Produção é executada]
+    I --> J[Usuário registra conclusão da OP]
+    J --> K[Sistema registra o consumo dos insumos]
+    K --> L[Sistema encerra a reserva sem descontar os insumos novamente]
+    L --> M[Sistema registra entrada dos produtos acabados]
+    M --> N[OP fica concluída]
+    N --> O([Fim])
+
+    H -.-> P[O início da produção não realiza baixa física dos insumos]
+    G -.-> Q[A reserva reduz o saldo disponível, mas não altera o saldo físico]
+    K -.-> R[Na conclusão, o consumo é baixado uma única vez]
+
+    S[Integridade para inícios concorrentes: mecanismo técnico pendente de definição na PD10]
+    G -.-> S

@@ -1,0 +1,52 @@
+stateDiagram-v2
+    [*] --> Criada
+
+    Criada --> AguardandoReposicao: existem insumos insuficientes
+    Criada --> AptaParaInicio: insumos suficientes
+
+    AguardandoReposicao --> AptaParaInicio: reposição recebida e disponibilidade confirmada
+
+    AptaParaInicio --> EmProducao: usuário inicia / sistema reserva conjuntamente os insumos
+
+    EmProducao --> Concluida: usuário registra conclusão / consumo e entrada no estoque
+    EmProducao --> Cancelada: usuário registra cancelamento durante a produção
+
+    Concluida --> [*]
+    Cancelada --> [*]
+
+    note right of Criada
+      Origem: pedido ou criação manual.
+      Todo pedido gera uma única OP,
+      mesmo quando a quantidade planejada
+      para produção é zero.
+    end note
+
+    note right of AguardandoReposicao
+      Comportamento previsto em RN04 e RN05.
+    end note
+
+    note right of EmProducao
+      No início, os insumos necessários são
+      reservados conjuntamente (RN26).
+      A reserva reduz o saldo disponível,
+      mas não realiza baixa física.
+    end note
+
+    note right of Concluida
+      Na conclusão, o consumo dos insumos
+      é baixado uma única vez e os produtos
+      acabados entram no estoque (RN07/RN08).
+      A reserva é encerrada sem nova baixa.
+    end note
+
+    note right of Cancelada
+      Cancelamento durante a produção:
+      registrar motivo e apurar consumo,
+      perdas e produtos aproveitáveis.
+      Baixar consumo e perdas sem duplicidade,
+      liberar a reserva não utilizada e dar
+      entrada nos produtos aproveitáveis
+      (RN21/RN29).
+      Autorizações e falhas permanecem
+      pendentes em PD03.
+    end note

@@ -1,0 +1,22 @@
+
+flowchart TD
+    A([Início]) --> B[Usuário identifica necessidade de compra]
+    B --> C[Consulta informações de estoque e necessidades]
+    C --> D[Informa fornecedor e itens da compra]
+    D --> E[Registra compra]
+    E --> F[Compra fica registrada aguardando recebimentos]
+    F --> G[Insumos são recebidos fisicamente]
+    G --> H[Usuário localiza a compra]
+    H --> I[Informa as quantidades efetivamente recebidas]
+    I --> J{Soma recebida ultrapassa<br/>a quantidade comprada?}
+    J -- Sim --> K[Corrige as quantidades informadas]
+    K --> I
+    J -- Não --> L[Registra o recebimento]
+    L --> M[Sistema registra entrada somente<br/>das quantidades efetivamente recebidas]
+    M --> N[Atualiza o saldo de insumos]
+    N --> O[Reavalia a disponibilidade<br/>dos insumos necessários às OPs]
+    O --> P{Há outro recebimento<br/>a realizar?}
+    P -- Sim --> G
+    P -- Não --> Q([Fim])
+
+    E -.-> R[Registrar a compra não aumenta<br/>o estoque por si só]

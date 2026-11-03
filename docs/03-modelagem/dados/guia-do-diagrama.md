@@ -2,16 +2,16 @@
 
 ## O que representa
 
-Descreve os dados que precisam ser armazenados e os relacionamentos entre eles. Conforme o nível de detalhamento, identifica entidades, atributos, cardinalidades e chaves. Complementa as classes de domínio com uma visão voltada à persistência.
+Representa a estrutura dos dados que precisam ser armazenados pelo sistema e os relacionamentos entre eles. Identifica entidades, atributos, chaves primárias, chaves estrangeiras, cardinalidades e restrições de integridade. Complementa o Diagrama de Classes de Domínio com uma visão voltada à persistência dos dados.
 
 ## Por que é importante no projeto
 
-Ajuda a definir um banco consistente e a manter a rastreabilidade das operações. Evita registrar produtos, quantidades e vínculos de maneira que permita duplicações ou perda de histórico.
+Ajuda a definir uma estrutura de banco de dados consistente e a manter a rastreabilidade das operações. Evita duplicidade de informações, vínculos inválidos e perda do histórico de compras, recebimentos, pedidos, produção, estoque e expedição.
 
 ## Exemplo no nosso sistema
 
-Deve distinguir o registro da compra do recebimento que gera entrada no estoque. Também precisa sustentar os itens de pedidos, ordens e receitas e as movimentações decorrentes da conclusão da produção e da expedição. Uma compra registrada, por si só, não representa insumo disponível.
+O DER deve distinguir o registro de uma compra do recebimento que efetivamente gera entrada no estoque. Também deve representar os itens de pedidos e ordens de produção, as receitas utilizadas e as movimentações de produtos acabados e insumos. Todo pedido gera uma única ordem de produção, mas a quantidade planejada deve considerar os produtos acabados reservados para atender aquele pedido.
 
 ## Base para elaboração
 
-O DER ainda será elaborado a partir das classes e do [escopo](../../02-requisitos/escopo-e-requisitos.md). Recebimentos parciais, reservas e concorrência não devem ganhar regras definitivas antes da resolução das pendências correspondentes.
+O DER será elaborado a partir do [Diagrama de Classes de Domínio](../classes/README.md), do [escopo e requisitos](../../02-requisitos/escopo-e-requisitos.md), do [catálogo funcional](../../02-requisitos/atores-casos-de-uso-regras-de-negocio.md) e das [decisões do projeto](../../01-visao-geral/decisoes-do-projeto.md). A decisão PD12 foi confirmada em 02/11/2026: consultar e reservar produtos acabados disponíveis antes de dimensionar a produção, mantendo a geração obrigatória de uma única OP por pedido. Os detalhes técnicos de concorrência e de persistência das reservas deverão permanecer alinhados à arquitetura.
