@@ -1,8 +1,8 @@
 # Diagrama Entidade-Relacionamento (DER)
 
-**Projeto:** Gestão Integrada de Estoque e Produção no Setor Alimentício  
-**Revisão:** 02/11/2026  
-**Status:** documentação-base para revisão do grupo  
+**Projeto:** Gestão Integrada de Estoque e Produção no Setor Alimentício<br>
+**Revisão:** 10/11/2026<br>
+**Status:** documentação-base com decisões pendentes identificadas<br>
 **Referências:** Diagrama de Classes de Domínio (revisão 24/10/2026), escopo e requisitos, catálogo funcional e decisões confirmadas até 02/11/2026.
 
 > Este documento descreve a proposta lógica de persistência derivada do modelo de domínio. Não define ainda o SGBD, os tipos físicos finais, a estratégia de concorrência ou a implementação. As estruturas adicionais propostas para suportar regras específicas estão identificadas como propostas e devem ser validadas pelo grupo antes de serem consideradas definitivas.

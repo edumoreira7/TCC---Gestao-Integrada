@@ -1,6 +1,6 @@
 # Diagramas de Atividades — Gestão Integrada
 
-**Revisão:** 03/11/2026  
+**Revisão:** 10/11/2026
 **Status:** documentação-base para revisão do grupo.
 
 ## 1. Objetivo
