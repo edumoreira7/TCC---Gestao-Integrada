@@ -14,4 +14,4 @@ Registrar a compra deve preservar o saldo do estoque. Outro cenário deve mostra
 
 ## Base para elaboração
 
-Os diagramas ainda serão elaborados para os [fluxos principais](../../02-requisitos/atores-casos-de-uso-regras-de-negocio.md), conforme a [issue #7](https://github.com/edumoreira7/TCC---Gestao-Integrada/issues/7). Os participantes técnicos e o mecanismo de integridade devem acompanhar a arquitetura, ainda a definir.
+Os [diagramas dos fluxos principais](README.md) representam compra, recebimento, criação de OP, início/conclusão e expedição, conforme a issue #7. Os participantes são responsabilidades lógicas; tecnologias e mecanismo de concorrência permanecem sujeitos à proposta de arquitetura.

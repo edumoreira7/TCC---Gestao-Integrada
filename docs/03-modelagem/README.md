@@ -11,7 +11,7 @@ Cada guia explica brevemente o que o diagrama representa e por que ele é import
 | Dados / DER | [Ler guia](dados/guia-do-diagrama.md) | [Documentação-base, diagrama Mermaid e fonte editável](dados/README.md), em revisão pelo grupo. |
 | Atividades | [Ler guia](atividades/guia-do-diagrama.md) | Quatro fluxos principais em Mermaid e documentação técnica, em revisão. |
 | Estados | [Ler guia](estados/guia-do-diagrama.md) | Quatro diagramas Mermaid e documentação técnica, com propostas pendentes de validação. |
-| Sequência | [Ler guia](sequencia/guia-do-diagrama.md) | Modelos ainda a elaborar. |
-| Componentes | [Ler guia](../04-arquitetura/guia-do-diagrama.md) | Modelo ainda a elaborar, junto à arquitetura. |
+| Sequência | [Ler guia](sequencia/guia-do-diagrama.md) | [Cinco sequências de análise e OP manual](sequencia/README.md). |
+| Componentes | [Ler guia](../04-arquitetura/guia-do-diagrama.md) | [Proposta de arquitetura, componentes e integridade](../04-arquitetura/README.md). |
 
 Os guias são explicativos: não substituem os diagramas, não concluem as issues de modelagem e não aprovam decisões pendentes. Os modelos devem seguir o [escopo e requisitos](../02-requisitos/escopo-e-requisitos.md), o [catálogo funcional](../02-requisitos/atores-casos-de-uso-regras-de-negocio.md) e o [planejamento](../planejamento/revisao-tcc1-2026-10-13.md).

@@ -55,6 +55,10 @@ Documentos principais:
 - [Atores, casos de uso e regras de negócio](docs/02-requisitos/atores-casos-de-uso-regras-de-negocio.md);
 - [Diagrama de casos de uso](docs/03-modelagem/casos-de-uso/README.md);
 - [Fluxo macro e pendências de revisão](docs/03-modelagem/fluxo-macro/README.md).
+- [Sequências dos fluxos principais](docs/03-modelagem/sequencia/README.md);
+- [Arquitetura e componentes](docs/04-arquitetura/README.md);
+- [Protótipo inicial](docs/05-prototipos/README.md);
+- [Metodologia e cenários de validação](docs/06-testes/metodologia-de-validacao.md).
 
 ## Planejamento
 

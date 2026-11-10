@@ -14,4 +14,4 @@ A arquitetura deve esclarecer como pedidos e planejamento se integram a receitas
 
 ## Base para elaboração
 
-O diagrama e a arquitetura ainda serão definidos conforme o [planejamento](../planejamento/revisao-tcc1-2026-10-13.md) e o [escopo](../02-requisitos/escopo-e-requisitos.md). Módulos de negócio não implicam serviços separados; tecnologias, divisão dos componentes e mecanismos técnicos não estão aprovados por este guia.
+O [diagrama e a proposta de arquitetura](README.md) detalham responsabilidades e integridade conforme o planejamento e o escopo. Módulos de negócio não implicam serviços separados; tecnologias definitivas de backend e banco e mecanismos concorrentes exigem validação do grupo.
