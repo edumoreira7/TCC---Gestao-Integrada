@@ -10,17 +10,16 @@
 
 ## 0. Diagrama lógico (versão para revisão)
 
-O código-fonte editável em Mermaid está em [`der-gestao-integrada.mmd`](der-gestao-integrada.mmd). O diagrama abaixo é renderizado diretamente pelo GitHub. A entidade `RESERVA_PRODUTO_ACABADO` está marcada como proposta da PD12 e depende de validação do grupo.
+O código-fonte editável em Mermaid está em [`der-gestao-integrada.mmd`](der-gestao-integrada.mmd). O diagrama abaixo é renderizado diretamente pelo GitHub. PD12 permanece pendente; reservas de produtos acabados não integram este modelo.
 
 ```mermaid
 %% DER lógico — Gestão Integrada de Estoque e Produção no Setor Alimentício
 %% Documentação-base para revisão do grupo — 02/11/2026
-%% ReservaProdutoAcabado é proposta vinculada à PD12, não classe aprovada.
 erDiagram
     CLIENTE ||--o{ PEDIDO : realiza
     PEDIDO ||--|{ ITEM_PEDIDO : contem
     PRODUTO ||--o{ ITEM_PEDIDO : referencia
-    PEDIDO ||--o| ORDEM_PRODUCAO : gera
+    PEDIDO o|--|| ORDEM_PRODUCAO : gera
     ORDEM_PRODUCAO ||--|{ ITEM_ORDEM_PRODUCAO : contem
     PRODUTO ||--o{ ITEM_ORDEM_PRODUCAO : produzido
     PRODUTO ||--|| RECEITA : possui
@@ -37,7 +36,6 @@ erDiagram
     PEDIDO ||--o| EXPEDICAO : atendido_por
     EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
     PRODUTO ||--o{ ITEM_EXPEDICAO : expedido
-    ITEM_PEDIDO ||--o| RESERVA_PRODUTO_ACABADO : reserva_proposta
 
     CLIENTE {
         int id_cliente PK
@@ -85,7 +83,7 @@ erDiagram
     }
     ORDEM_PRODUCAO {
         int id_ordem_producao PK
-        int id_pedido FK
+        int id_pedido FK, UK "opcional para OP manual"
         datetime data_criacao
         string tipo
         string status
@@ -133,8 +131,8 @@ erDiagram
     }
     MOVIMENTACAO_ESTOQUE {
         int id_movimentacao PK
-        int id_produto FK, nullable
-        int id_insumo FK, nullable
+        int id_produto FK
+        int id_insumo FK
         datetime data_hora
         string tipo
         decimal quantidade
@@ -143,7 +141,7 @@ erDiagram
     }
     EXPEDICAO {
         int id_expedicao PK
-        int id_pedido FK
+        int id_pedido FK, UK
         datetime data_expedicao
         string destinatario
         string status
@@ -162,17 +160,9 @@ erDiagram
         decimal valor
         string descricao
     }
-    RESERVA_PRODUTO_ACABADO {
-        int id_reserva PK
-        int id_item_pedido FK
-        decimal quantidade_reservada
-        string situacao
-        datetime data_criacao
-        datetime data_liberacao_consumo
-    }
 ```
 
-> **Atenção:** esta é uma documentação-base para revisão, não uma aprovação final do modelo. A estrutura de reserva e a forma de persistir o snapshot da receita precisam ser validadas. O Diagrama de Classes atual ainda contém a anotação anterior de PD12 como pendente; atualizar esse documento após alinhamento do grupo.
+> **Atenção:** modelo para revisão. PD12, representação física da composição preservada da receita, usuários/perfis e concorrência continuam pendentes de detalhamento.
 
 ## 1. Objetivo e escopo
 
@@ -188,40 +178,11 @@ O DER traduz os conceitos do domínio para uma estrutura relacional capaz de arm
 
 A modelagem preserva as regras já consolidadas no projeto. Não inclui funcionalidades fora do escopo, como validade/FEFO, contas a pagar e a receber, contabilidade completa, produção parcial, expedição parcial, roteirização ou gestão de frota.
 
-## 2. Decisão PD12 — consulta e reserva de produtos acabados
+## 2. PD12 — decisão pendente
 
-Em 02/11/2026, foi confirmada a seguinte regra funcional:
+A consulta ao estoque de produtos acabados antes do dimensionamento e seu efeito nas quantidades permanecem pendentes. A afirmação de aprovação em 02/11/2026 foi retirada por não corresponder à base consolidada e ao contexto fornecido pelo solicitante. Não se presume reserva de acabados, fórmula de abatimento ou OP com quantidade zero.
 
-> Ao registrar um pedido, o sistema consulta o estoque disponível de produtos acabados, considera as reservas ativas de outros pedidos e reserva a quantidade disponível para atender cada item. A ordem de produção continua sendo gerada automaticamente e de forma obrigatória, mas sua quantidade planejada corresponde somente à parcela ainda não coberta pelo estoque reservado.
-
-Para cada item do pedido:
-
-`quantidade a produzir = quantidade solicitada − quantidade reservada de produto acabado`
-
-Exemplo: para um pedido de 100 unidades, havendo 35 unidades disponíveis para reserva, serão reservadas 35 unidades e a OP será dimensionada para produzir 65 unidades.
-
-Se todo o item puder ser atendido pelo estoque, a OP continua existindo. O item correspondente da OP permanece registrado com quantidade planejada igual a zero, para manter a rastreabilidade entre pedido e ordem.
-
-### 2.1 Estoque físico e estoque disponível
-
-A reserva não representa saída física de estoque. Portanto:
-
-`saldo disponível = saldo físico − reservas ativas`
-
-A saída física ocorre no fluxo de expedição. Em caso de cancelamento, a reserva deve ser liberada conforme as regras de cancelamento do pedido.
-
-### 2.2 Estrutura de persistência proposta
-
-Recomenda-se uma estrutura relacional `ReservaProdutoAcabado`, vinculada a `ItemPedido`, contendo ao menos:
-
-- identificador da reserva;
-- item do pedido ao qual a reserva pertence;
-- quantidade reservada;
-- situação da reserva;
-- data de criação;
-- data de liberação/consumo, quando aplicável.
-
-Essa estrutura é uma proposta de persistência para materializar a decisão PD12; ela ainda precisa ser incorporada e validada no Diagrama de Classes ou registrada como estrutura técnica complementar. A prevenção de reservas concorrentes deverá ser definida na arquitetura.
+Todo pedido continua gerando automaticamente uma única OP; a decisão futura deve preservar essa regra.
 
 ## 3. Entidades do domínio e atributos
 
@@ -278,7 +239,6 @@ As cardinalidades abaixo seguem as multiplicidades documentadas no Diagrama de C
 | Pedido — Expedicao | Pedido 1 : Expedição 0..1 | `Expedicao.id_pedido` FK única |
 | Expedicao — ItemExpedicao | Expedição 1 : itens 1..N | `ItemExpedicao.id_expedicao` |
 | Produto — ItemExpedicao | Produto 1 : itens expedidos 0..N | `ItemExpedicao.id_produto` |
-| ItemPedido — ReservaProdutoAcabado (proposta PD12) | Item do pedido 1 : reserva 0..1 | FK única `ReservaProdutoAcabado.id_item_pedido` |
 
 ## 5. Regras de integridade e negócio refletidas no DER
 
@@ -286,7 +246,7 @@ As cardinalidades abaixo seguem as multiplicidades documentadas no Diagrama de C
 
 - Todo pedido gera automaticamente uma única OP no registro (RF13/RN10).
 - A OP pode ser manual e, nesse caso, não possui pedido de origem (RF11/RN09).
-- A OP do pedido contém todos os produtos solicitados; a quantidade planejada considera a reserva de produtos acabados confirmada na PD12.
+- A OP do pedido contém todos os produtos solicitados; o efeito do saldo de produtos acabados no dimensionamento permanece em PD12.
 - A quantidade original solicitada permanece em `ItemPedido`; a quantidade planejada para fabricar é registrada em `ItemOrdemProducao`.
 - O pedido pode ser alterado antes do início da produção; a OP e as necessidades devem ser recalculadas conforme as regras vigentes.
 - Produção parcial não faz parte da primeira versão.
@@ -339,7 +299,7 @@ As seguintes regras deverão ser garantidas por constraints, transações, valid
 3. `OrdemProducao.id_pedido`: unicidade e nulabilidade para permitir OP manual e impedir duas OPs vinculadas ao mesmo pedido.
 4. `Expedicao.id_pedido`: unicidade para impedir mais de uma expedição por pedido na primeira versão.
 5. `ItemRecebimento`: garantir que o item comprado pertença à mesma compra referenciada pelo recebimento e que o total recebido não exceda o comprado.
-6. `ReservaProdutoAcabado`: impedir que a soma das reservas ativas ultrapasse o saldo físico disponível; a solução para concorrência será definida na arquitetura.
+6. Na conclusão integral, confirmar conjuntamente a baixa dos insumos, o encerramento das reservas e a entrada de acabados; nenhuma parte deve persistir isoladamente.
 7. Quantidades, rendimentos e valores monetários devem respeitar domínios e precisões adequadas; não devem aceitar valores negativos.
 8. A obrigatoriedade de toda OP de pedido e a presença de ao menos um item em pedidos, ordens, receitas, compras, recebimentos e expedições devem ser garantidas no fluxo transacional e/ou por mecanismos do SGBD.
 
@@ -354,9 +314,9 @@ As seguintes regras deverão ser garantidas por constraints, transações, valid
 
 ## 8. Pontos que precisam ser alinhados antes da aprovação
 
-1. **PD12 e Diagrama de Classes:** a regra de consultar e reservar produtos acabados foi confirmada em 02/11/2026. O Diagrama de Classes ainda contém a anotação antiga de PD12 como pendente e deve ser atualizado. O grupo deve decidir se `ReservaProdutoAcabado` será representada como classe de domínio ou como estrutura técnica de persistência.
+1. **PD12:** decidir o efeito do estoque acabado no dimensionamento; classes e DER mantêm a mesma pendência.
 2. **Snapshot da receita (RF35/RN27):** validar como a composição, quantidades, unidades e rendimento utilizados serão persistidos por item da OP, sem transformar automaticamente isso em versionamento do cadastro da receita.
-3. **Concorrência:** definir na arquitetura como impedir duas reservas simultâneas do mesmo saldo de produto acabado e de insumos (PD10).
+3. **Concorrência:** definir o mecanismo das reservas de insumos e da conclusão atômica (PD10).
 4. **Recebimentos parciais:** validar a integridade entre recebimento, item recebido e item comprado, inclusive o limite acumulado da quantidade recebida.
 5. **Financeiro e permissões:** manter o modelo limitado às decisões existentes até que PD05 e PD06 sejam resolvidas.
 
@@ -373,4 +333,11 @@ As seguintes regras deverão ser garantidas por constraints, transações, valid
 
 ## 10. Histórico da revisão
 
-- **02/11/2026:** documentação-base do DER preparada a partir do Diagrama de Classes de Domínio (revisão 24/10/2026), requisitos e regras de negócio existentes. Incorporada a decisão PD12 confirmada pelo grupo nesta data: consultar e reservar produtos acabados disponíveis antes de dimensionar a quantidade a produzir, mantendo a geração obrigatória de uma única OP por pedido. A estrutura de persistência da reserva e a representação física do snapshot da receita permanecem propostas para validação.
+- **02/11/2026:** documentação-base recebida para revisão.
+- **10/11/2026:** corrigidas cardinalidades Pedido–OP, sincronizadas as duas fontes Mermaid e restabelecida PD12 como pendente; conclusão deve confirmar baixa e entrada conjuntamente.
+
+### Limites de acesso e cancelamento
+
+Clientes e fornecedores são cadastros sem acesso. Usuários internos podem acumular Administrador, Comercial, PCP, Compras, Estoque, Produção, Expedição e Financeiro. A matriz de permissões e as tabelas de acesso não são definidas por este DER.
+
+O detalhamento de cancelamento, WIP, perdas e insumos já usados depende do grupo. RN29 na base registra diretrizes anteriores, mas não constitui autorização para completar as transições ou o tratamento operacional nesta revisão. Ausência de último preço de compra permanece pendente em PD11.

@@ -1,11 +1,10 @@
 %% DER lógico — Gestão Integrada de Estoque e Produção no Setor Alimentício
 %% Documentação-base para revisão do grupo — 02/11/2026
-%% ReservaProdutoAcabado é proposta vinculada à PD12, não classe aprovada.
 erDiagram
     CLIENTE ||--o{ PEDIDO : realiza
     PEDIDO ||--|{ ITEM_PEDIDO : contem
     PRODUTO ||--o{ ITEM_PEDIDO : referencia
-    PEDIDO ||--o| ORDEM_PRODUCAO : gera
+    PEDIDO o|--|| ORDEM_PRODUCAO : gera
     ORDEM_PRODUCAO ||--|{ ITEM_ORDEM_PRODUCAO : contem
     PRODUTO ||--o{ ITEM_ORDEM_PRODUCAO : produzido
     PRODUTO ||--|| RECEITA : possui
@@ -22,7 +21,6 @@ erDiagram
     PEDIDO ||--o| EXPEDICAO : atendido_por
     EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
     PRODUTO ||--o{ ITEM_EXPEDICAO : expedido
-    ITEM_PEDIDO ||--o| RESERVA_PRODUTO_ACABADO : reserva_proposta
 
     CLIENTE {
         int id_cliente PK
@@ -70,7 +68,7 @@ erDiagram
     }
     ORDEM_PRODUCAO {
         int id_ordem_producao PK
-        int id_pedido FK
+        int id_pedido FK, UK "opcional para OP manual"
         datetime data_criacao
         string tipo
         string status
@@ -128,7 +126,7 @@ erDiagram
     }
     EXPEDICAO {
         int id_expedicao PK
-        int id_pedido FK
+        int id_pedido FK, UK
         datetime data_expedicao
         string destinatario
         string status
@@ -146,12 +144,4 @@ erDiagram
         string tipo
         decimal valor
         string descricao
-    }
-    RESERVA_PRODUTO_ACABADO {
-        int id_reserva PK
-        int id_item_pedido FK
-        decimal quantidade_reservada
-        string situacao
-        datetime data_criacao
-        datetime data_liberacao_consumo
     }

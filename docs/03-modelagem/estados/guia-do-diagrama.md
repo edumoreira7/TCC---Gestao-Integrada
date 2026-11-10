@@ -10,7 +10,7 @@ Ajuda a definir o comportamento de pedidos, ordens de produção, compras/recebi
 
 ## 3. Exemplo no nosso sistema
 
-Uma OP com insuficiência de insumos aguarda reposição. Quando todos os insumos necessários estão disponíveis, eles são reservados conjuntamente no início da produção. Após o registro da conclusão, o consumo é baixado uma única vez e a OP passa ao estado concluído. O cancelamento durante a produção possui tratamento específico para consumo, perdas, reserva não utilizada e produtos aproveitáveis.
+Uma OP com faltas aguarda reposição. No início, os insumos são reservados sem baixa física. Na conclusão integral, o sistema baixa insumos e recebe acabados em uma única operação. Cancelamento e WIP continuam sujeitos a detalhamento.
 
 ## 4. Base para elaboração
 

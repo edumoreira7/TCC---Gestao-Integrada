@@ -1,18 +1,16 @@
 stateDiagram-v2
-    [*] --> Registrado
-    Registrado --> OPGerada: geração da única OP vinculada
-    OPGerada --> AtendidoPorExpedicao: expedição registrada
+    [*] --> RegistradoComOP: registra pedido e gera automaticamente a única OP
+    RegistradoComOP --> RegistradoComOP: altera antes do início / atualiza mesma OP e necessidades
+    RegistradoComOP --> ProducaoIniciada: inicia produção da OP
+    ProducaoIniciada --> ProducaoConcluida: conclusão integral e entrada no estoque
+    ProducaoConcluida --> AtendidoPorExpedicao: expedição integral vinculada ao pedido
     AtendidoPorExpedicao --> [*]
-    note right of Registrado
-      Estado ilustrativo para representar
-      o registro do pedido (RF12).
+    note right of RegistradoComOP
+      Estados ilustrativos sujeitos à PD02.
+      PD12 continua pendente: efeito do estoque
+      acabado no dimensionamento da produção.
     end note
-    note right of OPGerada
-      Relação com RN10: um pedido gera
-      uma única Ordem de Produção.
-    end note
-    note right of AtendidoPorExpedicao
-      Proposta para revisão. Estados oficiais,
-      atendimento parcial e cancelamento
-      ainda não foram definidos.
+    note right of ProducaoIniciada
+      Alteração do pedido bloqueada.
+      Cancelamento e WIP não detalhados aqui.
     end note

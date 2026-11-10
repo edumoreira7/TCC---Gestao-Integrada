@@ -23,11 +23,11 @@ Os arquivos usam `stateDiagram-v2` do Mermaid. `[*]` representa estado inicial/f
 ## 4. Comportamentos documentados para a OP
 
 - Pode ter origem em pedido ou ser criada manualmente (RN09).
-- Todo pedido gera uma única OP, mesmo quando a quantidade planejada para produção é zero (RN10).
+- Todo pedido gera uma única OP automaticamente no registro (RN10).
 - Pode ser criada mesmo com insuficiência de insumos, mas aguarda reposição e não pode iniciar antes da disponibilidade necessária (RN04–RN05).
 - No início da produção, os insumos necessários são reservados conjuntamente; a reserva não representa baixa física (RN26).
-- Na conclusão, o consumo é registrado uma única vez, a reserva é encerrada sem dupla baixa e os produtos acabados entram no estoque (RN07–RN08 e RN26).
-- O cancelamento durante a produção exige apuração de consumo, perdas e produtos aproveitáveis, liberação da reserva não utilizada e registro das movimentações correspondentes (RN21 e RN29).
+- Na conclusão integral e atômica, o consumo é registrado uma única vez, a reserva é encerrada sem dupla baixa e os produtos acabados entram no estoque (RN07–RN08 e RN26).
+- Cancelamento, WIP, perdas e insumos usados dependem de detalhamento do grupo; os diagramas não completam essas regras.
 
 ## 5. Comportamentos documentados para compra e recebimento
 

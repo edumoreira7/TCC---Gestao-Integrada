@@ -1,25 +1,17 @@
 flowchart TD
-    A([Início]) --> B[Usuário consulta a OP]
-    B --> C[Sistema verifica disponibilidade dos insumos]
-    C --> D{Todos os insumos necessários disponíveis?}
-
-    D -- Não --> E[OP permanece aguardando reposição]
-    E --> F[Registrar recebimento dos insumos]
+    A([Início]) --> B[Produção consulta OP]
+    B --> C[Solicita início e sistema verifica disponibilidade atual]
+    C --> D{Todos os insumos disponíveis?}
+    D -- Não --> E[OP aguarda reposição]
+    E --> F[Estoque registra recebimento efetivo]
     F --> C
-
-    D -- Sim --> G[Sistema reserva conjuntamente todos os insumos necessários]
-    G --> H[Usuário registra início da produção]
-    H --> I[Produção é executada]
-    I --> J[Usuário registra conclusão da OP]
-    J --> K[Sistema registra o consumo dos insumos]
-    K --> L[Sistema encerra a reserva sem descontar os insumos novamente]
-    L --> M[Sistema registra entrada dos produtos acabados]
-    M --> N[OP fica concluída]
-    N --> O([Fim])
-
-    H -.-> P[O início da produção não realiza baixa física dos insumos]
-    G -.-> Q[A reserva reduz o saldo disponível, mas não altera o saldo físico]
-    K -.-> R[Na conclusão, o consumo é baixado uma única vez]
-
-    S[Integridade para inícios concorrentes: mecanismo técnico pendente de definição na PD10]
-    G -.-> S
+    D -- Sim --> G[Sistema reserva conjuntamente os insumos e registra início]
+    G --> H[Produção executa todos os itens da OP]
+    H --> I[Usuário solicita conclusão integral]
+    I --> J[Em uma única operação: baixar insumos uma vez, encerrar reservas e dar entrada dos acabados]
+    J --> K[OP concluída somente com todas as movimentações confirmadas]
+    K --> L([Fim])
+    G -.-> M[Reserva reduz disponibilidade sem baixa física no início]
+    J -.-> N[Se a operação falhar, não confirmar conclusão nem movimentações parciais]
+    G -.-> O[PD10: mecanismo técnico de concorrência pendente]
+    H -.-> P[Cancelamento e WIP: detalhamento pendente; não representam conclusão parcial]
