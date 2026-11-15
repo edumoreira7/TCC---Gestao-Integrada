@@ -60,7 +60,15 @@ No cancelamento, consumo + perdas até reservado e aproveitamento até planejado
 - Fontes Mermaid renderizadas pelo CLI oficial em SVG; 21 fontes, incluindo DER completo e quatro vistas, sete sequências, quatro atividades, quatro estados e componentes. Doze blocos nos READMEs conferidos contra as fontes separadas.
 - Fontes draw.io de classes/macrofluxo e respectivas imagens reaproveitadas e inspecionadas. Referências e IDs XML verificados.
 - Links locais, rastreabilidade documental e diferenças da branch conferidos. Nenhum arquivo de frontend ou planilha de cronograma alterado nesta branch.
-- Issues encerradas relidas com evidências; milestones e quadro reconciliados sem declarar trabalho futuro como entregue.
+- Issues encerradas relidas com evidências; vínculos com milestones e estados do quadro conferidos sem declarar trabalho futuro como entregue. A divergência do contador agregado está registrada abaixo.
 - O conector GitHub permitiu leitura, mas recusou gravações (403 da integração). As atualizações autorizadas usaram as credenciais Git existentes. O token não possuía acesso à API de Projects; o quadro foi consultado e organizado pelo navegador já autenticado, sem ampliar permissões.
 
 Testes locais do protótipo não comprovam concorrência, segurança, autenticação, recuperação ou transações multiusuário. A metodologia de avaliação definitiva permanece para execução no TCC II. Elaborar um documento ou integrar um PR não aprova automaticamente todas as suas propostas.
+
+## Registros aplicados e conferência final
+
+A revisão está publicada no [PR #21](https://github.com/edumoreira7/TCC---Gestao-Integrada/pull/21), aberto e sem integração automática. As issues #5, #6, #7, #8 e #10 foram encerradas com evidências; #1 e #4 tiveram seus registros históricos corrigidos. O título e a descrição do PR #16 foram atualizados conforme o conteúdo efetivamente integrado. A main permaneceu em `ea67b80` na conferência final.
+
+No quadro, foram confirmados nove itens em Concluído, a #17 aberta em Em Andamento, o PR #21 aberto em Em Revisão e #18/#19/#20 abertas no Backlog. A revisão do orientador foi dispensada como critério da #10 por decisão do solicitante; ela não foi realizada nem registrada como aprovação.
+
+**Limitação observada no GitHub:** o contador agregado do milestone TCC1 ainda informa sete itens abertos e quatro fechados. A consulta dos registros vinculados ao mesmo milestone retorna dois abertos (#17 e PR #21) e nove fechados (#1–#8 e #10), com estados individuais confirmados. A causa da divergência não foi determinada; não se alteraram vínculos ou estados apenas para forçar esse contador. Portanto, o percentual agregado exibido pelo GitHub não deve ser usado como medida de conclusão nesta conferência.
