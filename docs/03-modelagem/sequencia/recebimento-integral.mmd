@@ -1,0 +1,20 @@
+sequenceDiagram
+    actor Estoquista
+    participant Compras
+    participant Estoque
+    participant Dados
+    participant PCP
+    Estoquista->>Compras: Conferir todos os itens e confirmar recebimento integral
+    Compras->>Dados: Consultar compra e existência de recebimento
+    Dados-->>Compras: Itens e situação
+    alt Já recebida ou conferência não integral
+        Compras-->>Estoquista: Rejeitar sem movimentar estoque ou referência de preço
+    else Primeiro recebimento integral
+        Compras->>Estoque: Preparar todas as entradas e recebimento com ID e data-hora
+        Estoque->>Dados: Confirmar recebimento único, congelar compra e gravar entradas juntos
+        Dados-->>Estoque: Confirmação ou falha sem efeitos parciais
+        Estoque->>Estoque: Referência pelo recebimento mais recente de cada insumo
+        Estoque-->>PCP: Reavaliar disponibilidade após confirmação
+        PCP-->>Estoquista: Faltas atualizadas
+    end
+    Note over Compras,Dados: Proposta de desempate por maior ID, sem recebimento usa inicial, sem preço custo indisponível

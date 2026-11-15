@@ -1,11 +1,12 @@
 flowchart TD
-    A([Início]) --> B[Expedição seleciona pedido e destinatário cadastrado]
-    B --> C[Sistema carrega todos os produtos e quantidades do pedido]
-    C --> D[Usuário informa data da expedição]
-    D --> E{Pedido ainda não expedido e saldo acabado suficiente para todos os itens?}
-    E -- Não --> F[Bloqueia registro até regularização]
-    F --> B
-    E -- Sim --> G[Registra expedição integral vinculada ao pedido e saída correspondente]
+    A([Início]) --> B[Expedição seleciona pedido e destinatário]
+    B --> C[Carregar todos os itens e quantidades solicitadas do pedido]
+    C --> D{OP concluída, pedido não expedido e saldo suficiente para todos os itens?}
+    D -- Não --> E[Rejeitar sem saída ou expedição parcial]
+    E --> B
+    D -- Sim --> F[Confirmar expedição integral e todas as saídas conjuntamente]
+    F --> G[Preservar excedente produzido no estoque]
     G --> H([Fim])
-    G -.-> I[Produtos acabados já devem estar no estoque; sem expedição parcial]
-    B -.-> J[Cliente não acessa o sistema; transporte e confirmação de entrega fora do escopo]
+    C -.-> I[Expedida é a quantidade do pedido; planejada da OP pode ser maior]
+    F -.-> J[Exemplo: entra 20; expede 15; sobra 5]
+    B -.-> K[OP manual não gera expedição própria; clientes não acessam]

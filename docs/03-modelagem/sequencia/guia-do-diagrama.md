@@ -15,3 +15,5 @@ Registrar a compra deve preservar o saldo do estoque. Outro cenário deve mostra
 ## Base para elaboração
 
 Os [diagramas dos fluxos principais](README.md) representam compra, recebimento, criação de OP, início/conclusão e expedição, conforme a issue #7. Os participantes são responsabilidades lógicas; tecnologias e mecanismo de concorrência permanecem sujeitos à proposta de arquitetura.
+
+Fontes editáveis e visualizações SVG estão no [inventário da pasta](README.md). Elaboração concluída; nomes/estados completos e propostas marcadas no DER não ganham aprovação definitiva pelo desenho.

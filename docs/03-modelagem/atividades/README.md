@@ -1,45 +1,40 @@
-# Diagramas de Atividades — Gestão Integrada
+# Diagramas de atividades — Gestão Integrada
 
-**Revisão:** 10/11/2026
-**Status:** documentação-base para revisão do grupo.
+Revisão: **15/11/2026**. Elaboração e alinhamento documental concluídos conforme as decisões confirmadas. Visualizações SVG exportadas e fontes Mermaid editáveis abaixo. Isso não significa aprovação externa, catálogo completo de estados ou backend implementado.
 
-## 1. Objetivo
+Quatro fluxos cobrem pedido e OP manual, faltas e reposição, recebimento único integral, reserva, conclusão, cancelamento quantitativo e expedição integral.
 
-Documentar os fluxos operacionais principais, destacando sequência de atividades, decisões, responsabilidades e movimentações de estoque.
+## Pedido producao
 
-## 2. Arquivos
+[Editar Mermaid](atividade-pedido-producao.mmd) · [Abrir SVG](atividade-pedido-producao.svg)
 
-| Arquivo | Processo | Referências principais |
-|---|---|---|
-| `atividade-pedido-producao.mmd` | Pedido, geração automática da OP e cálculo de insumos | RF12–RF20; RN02–RN05, RN09–RN10; PD12 |
-| `atividade-compras-recebimento.mmd` | Registro de compra e recebimentos de insumos, inclusive parciais | RF09–RF10, RF27; RN06, RN14–RN16, RN28 |
-| `atividade-conclusao-producao.mmd` | Verificação de insumos, reserva, início e conclusão da produção | RF17–RF20, RF27–RF29; RN04–RN08, RN16, RN21, RN26, RN29; PD10 |
-| `atividade-expedicao.mmd` | Registro da expedição integral e saída de produtos acabados | RF21–RF22; RN11, RN18–RN19 |
+![atividade-pedido-producao](atividade-pedido-producao.svg)
 
-## 3. Convenções
+## Compras recebimento
 
-Os arquivos usam `flowchart` do Mermaid para representar atividades, decisões e caminhos alternativos. As responsabilidades são simplificadas e não definem, por si só, a matriz de permissões dos perfis.
+[Editar Mermaid](atividade-compras-recebimento.mmd) · [Abrir SVG](atividade-compras-recebimento.svg)
 
-## 4. Regras refletidas
+![atividade-compras-recebimento](atividade-compras-recebimento.svg)
 
-- Todo pedido gera exatamente uma OP, independentemente da existência de saldo acabado.
-- A OP originada de pedido reúne seus produtos; não é criada uma OP por item.
-- PD12 permanece pendente: consulta ao estoque acabado e efeito no dimensionamento.
-- Registrar uma compra não gera entrada no estoque; cada recebimento efetivo gera entrada apenas da quantidade recebida.
-- Uma compra pode admitir vários recebimentos. A soma recebida não pode ultrapassar a quantidade comprada (RN28).
-- Após cada recebimento, a disponibilidade dos insumos necessários às OPs é reavaliada (RN16 e RN28).
-- Insuficiência de insumos não impede criar a OP, mas impede iniciar a produção.
-- No início da produção, os insumos necessários são reservados conjuntamente. A reserva reduz o saldo disponível, mas não realiza baixa física (RN26).
-- O consumo dos insumos é baixado na conclusão da OP, encerrando a reserva sem dupla baixa; os produtos acabados entram no estoque (RN07, RN08 e RN26).
-- Cancelamento, WIP, perdas e insumos usados dependem de detalhamento do grupo; os diagramas não completam essas regras.
-- A expedição é integral, vinculada a um pedido e gera saída correspondente do estoque de produtos acabados.
+## Conclusao producao
 
-## 5. Pendências e limites
+[Editar Mermaid](atividade-conclusao-producao.mmd) · [Abrir SVG](atividade-conclusao-producao.svg)
 
-- A integridade técnica para inícios concorrentes e o mecanismo de reserva dependem da definição arquitetural (PD10).
-- Autorizações e tratamento de falhas no cancelamento permanecem em PD03.
-- PD12 não autoriza reserva de acabados ou quantidade planejada zero nesta versão.
-- As raias e responsabilidades devem ser validadas com o grupo.
-- Os diagramas de atividades simplificam o fluxo e não definem todos os estados internos ou exceções.
+![atividade-conclusao-producao](atividade-conclusao-producao.svg)
 
-Os diagramas não acrescentam aprovação automática de compras, envio de pedidos a fornecedores, transporte, rastreamento ou confirmação de entrega.
+## Expedicao
+
+[Editar Mermaid](atividade-expedicao.mmd) · [Abrir SVG](atividade-expedicao.svg)
+
+![atividade-expedicao](atividade-expedicao.svg)
+
+## Regras e limites
+
+- Lotes = teto(solicitada / rendimento); planejada = lotes × rendimento, também na OP manual. Insumos por lotes inteiros; expedição atende só o pedido e mantém excedentes.
+- Uma OP automática por pedido; PD12 permanece aberta. Não se presume abatimento do estoque acabado.
+- Recebimento único integral: registrar compra não altera estoque nem preço. Confirmação gera todas as entradas e referência pela data/hora do recebimento; sem recebimento usa inicial opcional; sem preço, custo indisponível. Desempate por maior ID é provisório.
+- Receita publicada imutável; alterar cria versão nova, no máximo uma ativa por produto. OP não iniciada recalcula; iniciada conserva versão e necessidades.
+- Cancelamento exige motivo, apuração de cada insumo reservado e aproveitamento da mesma OP; baixa consumo e perdas separados uma única vez, libera reserva restante e recebe aproveitáveis. Limites provisórios do DER: soma até reservado e aproveitamento até planejado; rejeitar divergências sem truncar. Não é conclusão parcial normal ou expedição parcial.
+- Segurança, concorrência e transações dependem da implementação futura. Frontend é protótipo acadêmico local. Não se introduzem WIP formal, devoluções ou estornos.
+
+Rastreabilidade: RF09–RF29, RF34–RF36; RN02–RN21, RN26–RN29. Ver [requisitos](../../02-requisitos/escopo-e-requisitos.md), [DER](../dados/README.md) e [auditoria](../../planejamento/auditoria-github-2026-11-15.md).

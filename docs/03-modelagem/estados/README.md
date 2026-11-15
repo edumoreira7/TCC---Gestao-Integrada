@@ -1,47 +1,40 @@
-# Diagramas de Estados — Gestão Integrada
+# Diagramas de estados — Gestão Integrada
 
-**Revisão:** 10/11/2026
-**Status:** documentação-base para revisão do grupo.
+Revisão: **15/11/2026**. Elaboração e alinhamento documental concluídos conforme as decisões confirmadas. Visualizações SVG exportadas e fontes Mermaid editáveis abaixo. Isso não significa aprovação externa, catálogo completo de estados ou backend implementado.
 
-## 1. Objetivo
+Quatro ciclos operacionais. Os nomes dos estados e transições adicionais permanecem propostas; PD02/PD04/PD08 não são aprovadas pelo desenho.
 
-Representar ciclos de vida dos objetos operacionais e distinguir comportamentos documentados de propostas de estados e transições que ainda dependem de validação do grupo.
+## Compra recebimento
 
-## 2. Arquivos
+[Editar Mermaid](estado-compra-recebimento.mmd) · [Abrir SVG](estado-compra-recebimento.svg)
 
-| Arquivo | Objeto | Situação |
-|---|---|---|
-| `estado-ordem-producao.mmd` | Ordem de Produção | Proposta baseada nas regras de criação, reposição, reserva, produção, conclusão e cancelamento; catálogo completo ainda precisa de validação (PD08). |
-| `estado-pedido.mmd` | Pedido | Proposta; catálogo de estados, alterações e cancelamentos ainda depende de validação (PD02). |
-| `estado-compra-recebimento.mmd` | Compra e recebimento | Proposta que representa recebimentos parciais conforme RN28; nomenclatura e transições detalhadas devem ser validadas. |
-| `estado-expedicao.mmd` | Expedição | Proposta; estados, dados obrigatórios e transições adicionais ainda dependem de validação (PD04). |
+![estado-compra-recebimento](estado-compra-recebimento.svg)
 
-## 3. Convenções
+## Ordem producao
 
-Os arquivos usam `stateDiagram-v2` do Mermaid. `[*]` representa estado inicial/final; setas representam transições e seus rótulos indicam eventos ou condições. Estados e transições propostos não devem ser tratados como decisões aprovadas apenas por aparecerem no desenho.
+[Editar Mermaid](estado-ordem-producao.mmd) · [Abrir SVG](estado-ordem-producao.svg)
 
-## 4. Comportamentos documentados para a OP
+![estado-ordem-producao](estado-ordem-producao.svg)
 
-- Pode ter origem em pedido ou ser criada manualmente (RN09).
-- Todo pedido gera uma única OP automaticamente no registro (RN10).
-- Pode ser criada mesmo com insuficiência de insumos, mas aguarda reposição e não pode iniciar antes da disponibilidade necessária (RN04–RN05).
-- No início da produção, os insumos necessários são reservados conjuntamente; a reserva não representa baixa física (RN26).
-- Na conclusão integral e atômica, o consumo é registrado uma única vez, a reserva é encerrada sem dupla baixa e os produtos acabados entram no estoque (RN07–RN08 e RN26).
-- Cancelamento, WIP, perdas e insumos usados dependem de detalhamento do grupo; os diagramas não completam essas regras.
+## Pedido
 
-## 5. Comportamentos documentados para compra e recebimento
+[Editar Mermaid](estado-pedido.mmd) · [Abrir SVG](estado-pedido.svg)
 
-- Registrar uma compra não altera o estoque; a entrada ocorre no recebimento efetivo (RN06 e RN15).
-- Uma compra pode admitir vários recebimentos; cada recebimento movimenta apenas a quantidade efetivamente recebida e a soma recebida não pode exceder a quantidade comprada (RN28).
-- Após o recebimento, a disponibilidade dos insumos necessários às OPs é reavaliada (RN16 e RN28).
-- Os estados `RecebimentoParcial` e `RecebimentoConcluido` são uma proposta de representação da RN28, sujeita à validação do grupo.
+![estado-pedido](estado-pedido.svg)
 
-## 6. Pendências
+## Expedicao
 
-- Catálogo completo de estados e transições da OP (PD08).
-- Estados, alterações e cancelamentos de pedidos (PD02).
-- Dados obrigatórios e transições adicionais da expedição (PD04).
-- Autorizações e tratamento de falhas no cancelamento (PD03).
-- Integridade técnica das reservas em inícios concorrentes (PD10).
+[Editar Mermaid](estado-expedicao.mmd) · [Abrir SVG](estado-expedicao.svg)
 
-Os diagramas de estados são propostas de modelagem e não criam requisitos adicionais de aprovação, entrega, devolução ou movimentação não documentados.
+![estado-expedicao](estado-expedicao.svg)
+
+## Regras e limites
+
+- Lotes = teto(solicitada / rendimento); planejada = lotes × rendimento, também na OP manual. Insumos por lotes inteiros; expedição atende só o pedido e mantém excedentes.
+- Uma OP automática por pedido; PD12 permanece aberta. Não se presume abatimento do estoque acabado.
+- Recebimento único integral: registrar compra não altera estoque nem preço. Confirmação gera todas as entradas e referência pela data/hora do recebimento; sem recebimento usa inicial opcional; sem preço, custo indisponível. Desempate por maior ID é provisório.
+- Receita publicada imutável; alterar cria versão nova, no máximo uma ativa por produto. OP não iniciada recalcula; iniciada conserva versão e necessidades.
+- Cancelamento exige motivo, apuração de cada insumo reservado e aproveitamento da mesma OP; baixa consumo e perdas separados uma única vez, libera reserva restante e recebe aproveitáveis. Limites provisórios do DER: soma até reservado e aproveitamento até planejado; rejeitar divergências sem truncar. Não é conclusão parcial normal ou expedição parcial.
+- Segurança, concorrência e transações dependem da implementação futura. Frontend é protótipo acadêmico local. Não se introduzem WIP formal, devoluções ou estornos.
+
+Rastreabilidade: RF09–RF29, RF34–RF36; RN02–RN21, RN26–RN29. Ver [requisitos](../../02-requisitos/escopo-e-requisitos.md), [DER](../dados/README.md) e [auditoria](../../planejamento/auditoria-github-2026-11-15.md).

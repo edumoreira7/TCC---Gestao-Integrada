@@ -1,0 +1,634 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DER — Gestão Integrada</title><style>body{font:16px/1.5 system-ui,sans-serif;background:#f1f5f9;color:#172033;margin:0}main{max-width:1500px;margin:auto;padding:28px}header,section{background:#fff;border:1px solid #cbd5e1;border-radius:12px;margin:0 0 22px;padding:20px}h1,h2{line-height:1.2;margin:0 0 12px}header{border-top:5px solid #4338ca}p{margin:0 0 12px}nav{display:flex;flex-wrap:wrap;gap:12px}a{color:#3730a3}.diagram{overflow:auto}svg{display:block;width:100%;min-width:740px;height:auto}small{color:#475569}@media print{main{padding:0}section{break-before:page;border:0;padding:0}svg{min-width:0}}</style><main><header><small>TCC · MODELO LÓGICO · 15/11/2026</small><h1>Gestão Integrada de Estoque e Produção</h1><p>DER para revisão com o orientador · PostgreSQL futuro</p><p>Decisões confirmadas: recebimento único integral, lotes inteiros, versões de receitas e preço por recebimento. O frontend demonstra essas regras e cancelamento quantitativo localmente; segurança, transações e concorrência dependem do futuro backend. Desempate por ID e limites de cancelamento continuam provisórios. PD12 permanece aberta.</p><p>PK: chave primária · FK: chave estrangeira · UK: unicidade · Cardinalidades: 1, 0..1, 1..N, 0..N</p><nav><a href="#vista-1">1. Pedidos, produção e expedição</a><a href="#vista-2">2. Receitas, compras e recebimento</a><a href="#vista-3">3. Reservas, cancelamento e movimentações</a><a href="#vista-4">4. Acesso e acompanhamento</a><a href="README.md">Regras e pontos a validar</a></nav></header><section id="vista-1"><h2>1. Pedidos, produção e expedição</h2><p>Pedido e OP são registrados juntos. Lotes inteiros geram excedente em estoque. Expedição atende integralmente o pedido, após conclusão e conferência de saldo.</p><div class="diagram"><svg width="970pt" height="729pt"
+ viewBox="0.00 0.00 970.00 729.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="view0-graph0" class="graph" transform="scale(1 1) rotate(0) translate(15.84 713.04)">
+<polygon fill="white" stroke="none" points="-15.84,15.84 -15.84,-713.04 953.94,-713.04 953.94,15.84 -15.84,15.84"/>
+<!-- CLIENTE -->
+<g id="view0-node1" class="node">
+<title>CLIENTE</title>
+<polygon fill="#1e3a8a" stroke="none" points="1,-473.4 1,-498.6 78.44,-498.6 78.44,-473.4 1,-473.4"/>
+<text xml:space="preserve" text-anchor="start" x="16.19" y="-483.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">CLIENTE</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-456.4" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-431.2" font-family="Arial" font-size="11.00">text nome</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-406" font-family="Arial" font-size="11.00">boolean ativo</text>
+<polygon fill="none" stroke="#cbd5e1" points="0,-396.8 0,-499.6 79.44,-499.6 79.44,-396.8 0,-396.8"/>
+</g>
+<!-- PEDIDO -->
+<g id="view0-node2" class="node">
+<title>PEDIDO</title>
+<polygon fill="#1e3a8a" stroke="none" points="154.44,-498.6 154.44,-523.8 299.1,-523.8 299.1,-498.6 154.44,-498.6"/>
+<text xml:space="preserve" text-anchor="start" x="205.68" y="-508.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">PEDIDO</text>
+<text xml:space="preserve" text-anchor="start" x="160.44" y="-481.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="160.44" y="-456.4" font-family="Arial" font-size="11.00">bigint cliente_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="160.44" y="-431.2" font-family="Arial" font-size="11.00">timestamptz registrado_em</text>
+<text xml:space="preserve" text-anchor="start" x="160.44" y="-406" font-family="Arial" font-size="11.00">date entrega_prevista</text>
+<text xml:space="preserve" text-anchor="start" x="160.44" y="-380.8" font-family="Arial" font-size="11.00">text status</text>
+<polygon fill="none" stroke="#cbd5e1" points="153.44,-371.6 153.44,-524.8 300.1,-524.8 300.1,-371.6 153.44,-371.6"/>
+</g>
+<!-- CLIENTE&#45;&gt;PEDIDO -->
+<g id="view0-edge1" class="edge">
+<title>CLIENTE&#45;&gt;PEDIDO</title>
+<path fill="none" stroke="#64748b" d="M79.06,-448.2C100.55,-448.2 128.07,-448.2 153.45,-448.2"/>
+<text xml:space="preserve" text-anchor="middle" x="139.85" y="-451.54" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="92.66" y="-438.86" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_PEDIDO -->
+<g id="view0-node4" class="node">
+<title>ITEM_PEDIDO</title>
+<polygon fill="#1e3a8a" stroke="none" points="427.93,-300.6 427.93,-325.8 551.82,-325.8 551.82,-300.6 427.93,-300.6"/>
+<text xml:space="preserve" text-anchor="start" x="452.59" y="-310.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_PEDIDO</text>
+<text xml:space="preserve" text-anchor="start" x="433.93" y="-283.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="433.93" y="-258.4" font-family="Arial" font-size="11.00">bigint pedido_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="433.93" y="-233.2" font-family="Arial" font-size="11.00">bigint produto_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="433.93" y="-208" font-family="Arial" font-size="11.00">integer quantidade</text>
+<text xml:space="preserve" text-anchor="start" x="433.93" y="-182.8" font-family="Arial" font-size="11.00">numeric preco_unitario</text>
+<polygon fill="none" stroke="#cbd5e1" points="426.93,-173.6 426.93,-326.8 552.82,-326.8 552.82,-173.6 426.93,-173.6"/>
+</g>
+<!-- PEDIDO&#45;&gt;ITEM_PEDIDO -->
+<g id="view0-edge2" class="edge">
+<title>PEDIDO&#45;&gt;ITEM_PEDIDO</title>
+<path fill="none" stroke="#64748b" d="M299.81,-393.57C339.81,-363.24 389.05,-325.89 427.26,-296.93"/>
+<text xml:space="preserve" text-anchor="middle" x="420.25" y="-307.19" font-family="Arial" font-size="10.00">1..N</text>
+<text xml:space="preserve" text-anchor="middle" x="306.81" y="-377.3" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ORDEM_PRODUCAO -->
+<g id="view0-node5" class="node">
+<title>ORDEM_PRODUCAO</title>
+<polygon fill="#1e3a8a" stroke="none" points="375.1,-511.2 375.1,-536.4 604.65,-536.4 604.65,-511.2 375.1,-511.2"/>
+<text xml:space="preserve" text-anchor="start" x="434.26" y="-521.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ORDEM_PRODUCAO</text>
+<text xml:space="preserve" text-anchor="start" x="381.1" y="-494.2" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="381.1" y="-469" font-family="Arial" font-size="11.00">bigint pedido_id FK,UK &quot;nulo na OP manual&quot;</text>
+<text xml:space="preserve" text-anchor="start" x="381.1" y="-443.8" font-family="Arial" font-size="11.00">text status</text>
+<text xml:space="preserve" text-anchor="start" x="381.1" y="-418.6" font-family="Arial" font-size="11.00">timestamptz criada_em</text>
+<text xml:space="preserve" text-anchor="start" x="381.1" y="-393.4" font-family="Arial" font-size="11.00">timestamptz iniciada_em</text>
+<text xml:space="preserve" text-anchor="start" x="381.1" y="-368.2" font-family="Arial" font-size="11.00">timestamptz finalizada_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="374.1,-359 374.1,-537.4 605.65,-537.4 605.65,-359 374.1,-359"/>
+</g>
+<!-- PEDIDO&#45;&gt;ORDEM_PRODUCAO -->
+<g id="view0-edge4" class="edge">
+<title>PEDIDO&#45;&gt;ORDEM_PRODUCAO</title>
+<path fill="none" stroke="#64748b" d="M299.81,-448.2C322.91,-448.2 349.08,-448.2 374.43,-448.2"/>
+<text xml:space="preserve" text-anchor="middle" x="360.84" y="-451.54" font-family="Arial" font-size="10.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="313.41" y="-438.86" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+<!-- EXPEDICAO -->
+<g id="view0-node8" class="node">
+<title>EXPEDICAO</title>
+<polygon fill="#1e3a8a" stroke="none" points="419.68,-671 419.68,-696.2 560.08,-696.2 560.08,-671 419.68,-671"/>
+<text xml:space="preserve" text-anchor="start" x="457.48" y="-681.3" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">EXPEDICAO</text>
+<text xml:space="preserve" text-anchor="start" x="425.68" y="-654" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="425.68" y="-628.8" font-family="Arial" font-size="11.00">bigint pedido_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="425.68" y="-603.6" font-family="Arial" font-size="11.00">text destinatario</text>
+<text xml:space="preserve" text-anchor="start" x="425.68" y="-578.4" font-family="Arial" font-size="11.00">timestamptz expedida_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="418.68,-569.2 418.68,-697.2 561.08,-697.2 561.08,-569.2 418.68,-569.2"/>
+</g>
+<!-- PEDIDO&#45;&gt;EXPEDICAO -->
+<g id="view0-edge9" class="edge">
+<title>PEDIDO&#45;&gt;EXPEDICAO</title>
+<path fill="none" stroke="#64748b" d="M299.83,-500.2C323.45,-517.16 349.85,-536.05 374.1,-553.2 388.58,-563.44 404.13,-574.34 418.97,-584.7"/>
+<text xml:space="preserve" text-anchor="middle" x="404.2" y="-579.11" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="314.57" y="-499.98" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- PRODUTO -->
+<g id="view0-node3" class="node">
+<title>PRODUTO</title>
+<polygon fill="#1e3a8a" stroke="none" points="167.88,-158 167.88,-183.2 285.66,-183.2 285.66,-158 167.88,-158"/>
+<text xml:space="preserve" text-anchor="start" x="199.27" y="-168.3" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">PRODUTO</text>
+<text xml:space="preserve" text-anchor="start" x="173.88" y="-141" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="173.88" y="-115.8" font-family="Arial" font-size="11.00">text nome</text>
+<text xml:space="preserve" text-anchor="start" x="173.88" y="-90.6" font-family="Arial" font-size="11.00">numeric preco_venda</text>
+<text xml:space="preserve" text-anchor="start" x="173.88" y="-65.4" font-family="Arial" font-size="11.00">boolean ativo</text>
+<polygon fill="none" stroke="#cbd5e1" points="166.88,-56.2 166.88,-184.2 286.66,-184.2 286.66,-56.2 166.88,-56.2"/>
+</g>
+<!-- PRODUTO&#45;&gt;ITEM_PEDIDO -->
+<g id="view0-edge3" class="edge">
+<title>PRODUTO&#45;&gt;ITEM_PEDIDO</title>
+<path fill="none" stroke="#64748b" d="M286.37,-149.37C328.32,-170.26 384.68,-198.32 427.29,-219.54"/>
+<text xml:space="preserve" text-anchor="middle" x="412.3" y="-216.15" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="301.36" y="-146.76" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_OP -->
+<g id="view0-node6" class="node">
+<title>ITEM_OP</title>
+<polygon fill="#1e3a8a" stroke="none" points="680.65,-245.8 680.65,-271 937.1,-271 937.1,-245.8 680.65,-245.8"/>
+<text xml:space="preserve" text-anchor="start" x="784.73" y="-256.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_OP</text>
+<text xml:space="preserve" text-anchor="start" x="686.65" y="-228.8" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="686.65" y="-203.6" font-family="Arial" font-size="11.00">bigint op_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="686.65" y="-178.4" font-family="Arial" font-size="11.00">bigint produto_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="686.65" y="-153.2" font-family="Arial" font-size="11.00">bigint item_pedido_id FK,UK &quot;nulo na OP manual&quot;</text>
+<text xml:space="preserve" text-anchor="start" x="686.65" y="-128" font-family="Arial" font-size="11.00">bigint receita_versao_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="686.65" y="-102.8" font-family="Arial" font-size="11.00">integer quantidade_solicitada</text>
+<text xml:space="preserve" text-anchor="start" x="686.65" y="-77.6" font-family="Arial" font-size="11.00">integer lotes_planejados</text>
+<polygon fill="none" stroke="#cbd5e1" points="679.65,-68.4 679.65,-272 938.1,-272 938.1,-68.4 679.65,-68.4"/>
+</g>
+<!-- PRODUTO&#45;&gt;ITEM_OP -->
+<g id="view0-edge6" class="edge">
+<title>PRODUTO&#45;&gt;ITEM_OP</title>
+<path fill="none" stroke="#64748b" d="M286.34,-69.95C311.62,-51.44 342.58,-32.7 374.1,-23.2 472.64,6.5 507.78,8.62 605.65,-23.2 636.51,-33.23 666.59,-49.93 693.71,-68.56"/>
+<text xml:space="preserve" text-anchor="middle" x="678.89" y="-63.24" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="293.7" y="-53.88" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_PEDIDO&#45;&gt;ITEM_OP -->
+<g id="view0-edge8" class="edge">
+<title>ITEM_PEDIDO&#45;&gt;ITEM_OP</title>
+<path fill="none" stroke="#64748b" d="M552.75,-234.58C588.97,-225.44 636.07,-213.56 679.92,-202.49"/>
+<text xml:space="preserve" text-anchor="middle" x="668.29" y="-208.96" font-family="Arial" font-size="10.00">1</text>
+<text xml:space="preserve" text-anchor="middle" x="564.38" y="-222.11" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+<!-- ITEM_EXPEDICAO -->
+<g id="view0-node9" class="node">
+<title>ITEM_EXPEDICAO</title>
+<polygon fill="#1e3a8a" stroke="none" points="733.17,-538 733.17,-563.2 884.58,-563.2 884.58,-538 733.17,-538"/>
+<text xml:space="preserve" text-anchor="start" x="760.29" y="-548.3" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_EXPEDICAO</text>
+<text xml:space="preserve" text-anchor="start" x="739.17" y="-521" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="739.17" y="-495.8" font-family="Arial" font-size="11.00">bigint expedicao_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="739.17" y="-470.6" font-family="Arial" font-size="11.00">bigint item_pedido_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="739.17" y="-445.4" font-family="Arial" font-size="11.00">integer quantidade</text>
+<polygon fill="none" stroke="#cbd5e1" points="732.17,-436.2 732.17,-564.2 885.58,-564.2 885.58,-436.2 732.17,-436.2"/>
+</g>
+<!-- ITEM_PEDIDO&#45;&gt;ITEM_EXPEDICAO -->
+<g id="view0-edge11" class="edge">
+<title>ITEM_PEDIDO&#45;&gt;ITEM_EXPEDICAO</title>
+<path fill="none" stroke="#64748b" d="M552.75,-298.99C604.1,-339.49 677.34,-397.25 732.18,-440.5"/>
+<text xml:space="preserve" text-anchor="middle" x="717.58" y="-434.06" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="567.35" y="-299.43" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ORDEM_PRODUCAO&#45;&gt;ITEM_OP -->
+<g id="view0-edge5" class="edge">
+<title>ORDEM_PRODUCAO&#45;&gt;ITEM_OP</title>
+<path fill="none" stroke="#64748b" d="M592.49,-359.09C624.18,-331.3 659.37,-300.44 691.96,-271.85"/>
+<text xml:space="preserve" text-anchor="middle" x="685.92" y="-282.58" font-family="Arial" font-size="10.00">1..N</text>
+<text xml:space="preserve" text-anchor="middle" x="598.53" y="-342.36" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- RECEITA_VERSAO -->
+<g id="view0-node7" class="node">
+<title>RECEITA_VERSAO</title>
+<polygon fill="#1e3a8a" stroke="none" points="433.45,-115.4 433.45,-140.6 546.3,-140.6 546.3,-115.4 433.45,-115.4"/>
+<text xml:space="preserve" text-anchor="start" x="439.45" y="-125.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">RECEITA_VERSAO</text>
+<text xml:space="preserve" text-anchor="start" x="439.45" y="-98.4" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="439.45" y="-73.2" font-family="Arial" font-size="11.00">bigint produto_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="439.45" y="-48" font-family="Arial" font-size="11.00">integer rendimento</text>
+<polygon fill="none" stroke="#cbd5e1" points="432.45,-38.8 432.45,-141.6 547.3,-141.6 547.3,-38.8 432.45,-38.8"/>
+</g>
+<!-- RECEITA_VERSAO&#45;&gt;ITEM_OP -->
+<g id="view0-edge7" class="edge">
+<title>RECEITA_VERSAO&#45;&gt;ITEM_OP</title>
+<path fill="none" stroke="#64748b" d="M547.19,-104.41C584.01,-113.7 633.67,-126.23 679.77,-137.87"/>
+<text xml:space="preserve" text-anchor="middle" x="665.04" y="-137.69" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="561.92" y="-98.59" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- EXPEDICAO&#45;&gt;ITEM_EXPEDICAO -->
+<g id="view0-edge10" class="edge">
+<title>EXPEDICAO&#45;&gt;ITEM_EXPEDICAO</title>
+<path fill="none" stroke="#64748b" d="M560.84,-603.85C611.62,-582.54 680.25,-553.75 732.28,-531.91"/>
+<text xml:space="preserve" text-anchor="middle" x="722.2" y="-540.02" font-family="Arial" font-size="10.00">1..N</text>
+<text xml:space="preserve" text-anchor="middle" x="570.92" y="-589.74" font-family="Arial" font-size="10.00">1</text>
+</g>
+</g>
+</svg>
+</div></section><section id="vista-2"><h2>2. Receitas, compras e recebimento</h2><p>Um recebimento integral por compra. Uma receita ativa por produto; a OP iniciada preserva a versão. Custo usa o último preço recebido.</p><div class="diagram"><svg width="607pt" height="505pt"
+ viewBox="0.00 0.00 607.00 505.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="view1-graph0" class="graph" transform="scale(1 1) rotate(0) translate(15.84 488.84)">
+<polygon fill="white" stroke="none" points="-15.84,15.84 -15.84,-488.84 591.49,-488.84 591.49,15.84 -15.84,15.84"/>
+<!-- PRODUTO -->
+<g id="view1-node1" class="node">
+<title>PRODUTO</title>
+<polygon fill="#0f766e" stroke="none" points="12.29,-409 12.29,-434.2 79.93,-434.2 79.93,-409 12.29,-409"/>
+<text xml:space="preserve" text-anchor="start" x="18.61" y="-419.3" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">PRODUTO</text>
+<text xml:space="preserve" text-anchor="start" x="18.29" y="-392" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="18.29" y="-366.8" font-family="Arial" font-size="11.00">text nome</text>
+<polygon fill="none" stroke="#cbd5e1" points="11.29,-357.6 11.29,-435.2 80.93,-435.2 80.93,-357.6 11.29,-357.6"/>
+</g>
+<!-- RECEITA_VERSAO -->
+<g id="view1-node2" class="node">
+<title>RECEITA_VERSAO</title>
+<polygon fill="#0f766e" stroke="none" points="194.38,-446.8 194.38,-472 307.23,-472 307.23,-446.8 194.38,-446.8"/>
+<text xml:space="preserve" text-anchor="start" x="200.38" y="-457.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">RECEITA_VERSAO</text>
+<text xml:space="preserve" text-anchor="start" x="200.38" y="-429.8" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="200.38" y="-404.6" font-family="Arial" font-size="11.00">bigint produto_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="200.38" y="-379.4" font-family="Arial" font-size="11.00">integer versao</text>
+<text xml:space="preserve" text-anchor="start" x="200.38" y="-354.2" font-family="Arial" font-size="11.00">integer rendimento</text>
+<text xml:space="preserve" text-anchor="start" x="200.38" y="-329" font-family="Arial" font-size="11.00">boolean ativa</text>
+<polygon fill="none" stroke="#cbd5e1" points="193.38,-319.8 193.38,-473 308.23,-473 308.23,-319.8 193.38,-319.8"/>
+</g>
+<!-- PRODUTO&#45;&gt;RECEITA_VERSAO -->
+<g id="view1-edge1" class="edge">
+<title>PRODUTO&#45;&gt;RECEITA_VERSAO</title>
+<path fill="none" stroke="#64748b" d="M80.58,-396.4C111.28,-396.4 157.35,-396.4 193.68,-396.4"/>
+<text xml:space="preserve" text-anchor="middle" x="180.08" y="-399.74" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="94.18" y="-387.06" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_RECEITA -->
+<g id="view1-node3" class="node">
+<title>ITEM_RECEITA</title>
+<polygon fill="#0f766e" stroke="none" points="411.01,-408.6 411.01,-433.8 574.03,-433.8 574.03,-408.6 411.01,-408.6"/>
+<text xml:space="preserve" text-anchor="start" x="452.18" y="-418.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_RECEITA</text>
+<text xml:space="preserve" text-anchor="start" x="417.01" y="-391.6" font-family="Arial" font-size="11.00">bigint receita_versao_id PK,FK</text>
+<text xml:space="preserve" text-anchor="start" x="417.01" y="-366.4" font-family="Arial" font-size="11.00">bigint insumo_id PK,FK</text>
+<text xml:space="preserve" text-anchor="start" x="417.01" y="-341.2" font-family="Arial" font-size="11.00">numeric quantidade_padrao</text>
+<polygon fill="none" stroke="#cbd5e1" points="410.01,-332 410.01,-434.8 575.03,-434.8 575.03,-332 410.01,-332"/>
+</g>
+<!-- RECEITA_VERSAO&#45;&gt;ITEM_RECEITA -->
+<g id="view1-edge2" class="edge">
+<title>RECEITA_VERSAO&#45;&gt;ITEM_RECEITA</title>
+<path fill="none" stroke="#64748b" d="M308.01,-393.35C338.45,-391.7 376.62,-389.63 410.24,-387.81"/>
+<text xml:space="preserve" text-anchor="middle" x="397.01" y="-391.87" font-family="Arial" font-size="10.00">1..N</text>
+<text xml:space="preserve" text-anchor="middle" x="321.24" y="-383.29" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- INSUMO -->
+<g id="view1-node4" class="node">
+<title>INSUMO</title>
+<polygon fill="#0f766e" stroke="none" points="167.22,-261.8 167.22,-287 334.39,-287 334.39,-261.8 167.22,-261.8"/>
+<text xml:space="preserve" text-anchor="start" x="228.81" y="-272.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">INSUMO</text>
+<text xml:space="preserve" text-anchor="start" x="173.22" y="-244.8" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="173.22" y="-219.6" font-family="Arial" font-size="11.00">text nome</text>
+<text xml:space="preserve" text-anchor="start" x="173.22" y="-194.4" font-family="Arial" font-size="11.00">text unidade_padrao</text>
+<text xml:space="preserve" text-anchor="start" x="173.22" y="-169.2" font-family="Arial" font-size="11.00">numeric preco_inicial &quot;opcional&quot;</text>
+<text xml:space="preserve" text-anchor="start" x="173.22" y="-144" font-family="Arial" font-size="11.00">boolean ativo</text>
+<polygon fill="none" stroke="#cbd5e1" points="166.22,-134.8 166.22,-288 335.39,-288 335.39,-134.8 166.22,-134.8"/>
+</g>
+<!-- INSUMO&#45;&gt;ITEM_RECEITA -->
+<g id="view1-edge3" class="edge">
+<title>INSUMO&#45;&gt;ITEM_RECEITA</title>
+<path fill="none" stroke="#64748b" d="M335.31,-271.32C363.01,-291.19 393.57,-313.12 420.26,-332.27"/>
+<text xml:space="preserve" text-anchor="middle" x="405.52" y="-326.49" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="350.05" y="-271.09" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_COMPRA -->
+<g id="view1-node7" class="node">
+<title>ITEM_COMPRA</title>
+<polygon fill="#0f766e" stroke="none" points="410.39,-261.8 410.39,-287 574.65,-287 574.65,-261.8 410.39,-261.8"/>
+<text xml:space="preserve" text-anchor="start" x="451.88" y="-272.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_COMPRA</text>
+<text xml:space="preserve" text-anchor="start" x="416.39" y="-244.8" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="416.39" y="-219.6" font-family="Arial" font-size="11.00">bigint compra_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="416.39" y="-194.4" font-family="Arial" font-size="11.00">bigint insumo_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="416.39" y="-169.2" font-family="Arial" font-size="11.00">numeric quantidade_padrao</text>
+<text xml:space="preserve" text-anchor="start" x="416.39" y="-144" font-family="Arial" font-size="11.00">numeric preco_unitario_padrao</text>
+<polygon fill="none" stroke="#cbd5e1" points="409.39,-134.8 409.39,-288 575.65,-288 575.65,-134.8 409.39,-134.8"/>
+</g>
+<!-- INSUMO&#45;&gt;ITEM_COMPRA -->
+<g id="view1-edge6" class="edge">
+<title>INSUMO&#45;&gt;ITEM_COMPRA</title>
+<path fill="none" stroke="#64748b" d="M335.31,-211.4C359.36,-211.4 385.57,-211.4 409.53,-211.4"/>
+<text xml:space="preserve" text-anchor="middle" x="395.93" y="-214.74" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="348.91" y="-202.06" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- FORNECEDOR -->
+<g id="view1-node5" class="node">
+<title>FORNECEDOR</title>
+<polygon fill="#0f766e" stroke="none" points="1,-76.6 1,-101.8 91.22,-101.8 91.22,-76.6 1,-76.6"/>
+<text xml:space="preserve" text-anchor="start" x="7" y="-86.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">FORNECEDOR</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-59.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-34.4" font-family="Arial" font-size="11.00">text nome</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-9.2" font-family="Arial" font-size="11.00">boolean ativo</text>
+<polygon fill="none" stroke="#cbd5e1" points="0,0 0,-102.8 92.22,-102.8 92.22,0 0,0"/>
+</g>
+<!-- COMPRA -->
+<g id="view1-node6" class="node">
+<title>COMPRA</title>
+<polygon fill="#0f766e" stroke="none" points="178.48,-76.6 178.48,-101.8 323.14,-101.8 323.14,-76.6 178.48,-76.6"/>
+<text xml:space="preserve" text-anchor="start" x="226.36" y="-86.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">COMPRA</text>
+<text xml:space="preserve" text-anchor="start" x="184.48" y="-59.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="184.48" y="-34.4" font-family="Arial" font-size="11.00">bigint fornecedor_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="184.48" y="-9.2" font-family="Arial" font-size="11.00">timestamptz registrada_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="177.48,0 177.48,-102.8 324.14,-102.8 324.14,0 177.48,0"/>
+</g>
+<!-- FORNECEDOR&#45;&gt;COMPRA -->
+<g id="view1-edge4" class="edge">
+<title>FORNECEDOR&#45;&gt;COMPRA</title>
+<path fill="none" stroke="#64748b" d="M92.1,-51.4C117.17,-51.4 149,-51.4 177.48,-51.4"/>
+<text xml:space="preserve" text-anchor="middle" x="163.89" y="-54.74" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="105.69" y="-42.06" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- COMPRA&#45;&gt;ITEM_COMPRA -->
+<g id="view1-edge5" class="edge">
+<title>COMPRA&#45;&gt;ITEM_COMPRA</title>
+<path fill="none" stroke="#64748b" d="M324.05,-99.62C351.07,-117.66 381.95,-138.26 409.77,-156.83"/>
+<text xml:space="preserve" text-anchor="middle" x="394.94" y="-151.56" font-family="Arial" font-size="10.00">1..N</text>
+<text xml:space="preserve" text-anchor="middle" x="338.88" y="-98.9" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- RECEBIMENTO -->
+<g id="view1-node8" class="node">
+<title>RECEBIMENTO</title>
+<polygon fill="#0f766e" stroke="none" points="423.55,-76.6 423.55,-101.8 561.49,-101.8 561.49,-76.6 423.55,-76.6"/>
+<text xml:space="preserve" text-anchor="start" x="451.88" y="-86.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">RECEBIMENTO</text>
+<text xml:space="preserve" text-anchor="start" x="429.55" y="-59.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="429.55" y="-34.4" font-family="Arial" font-size="11.00">bigint compra_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="429.55" y="-9.2" font-family="Arial" font-size="11.00">timestamptz recebido_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="422.55,0 422.55,-102.8 562.49,-102.8 562.49,0 422.55,0"/>
+</g>
+<!-- COMPRA&#45;&gt;RECEBIMENTO -->
+<g id="view1-edge7" class="edge">
+<title>COMPRA&#45;&gt;RECEBIMENTO</title>
+<path fill="none" stroke="#64748b" d="M324.05,-51.4C355.35,-51.4 391.81,-51.4 422.71,-51.4"/>
+<text xml:space="preserve" text-anchor="middle" x="409.11" y="-54.74" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="337.65" y="-42.06" font-family="Arial" font-size="10.00">1</text>
+</g>
+</g>
+</svg>
+</div></section><section id="vista-3"><h2>3. Reservas, cancelamento e movimentações</h2><p>Reserva no início não é baixa física. Conclusão e cancelamento geram movimentos rastreáveis; saídas de expedição são integrais.</p><div class="diagram"><svg width="894pt" height="699pt"
+ viewBox="0.00 0.00 894.00 699.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="view2-graph0" class="graph" transform="scale(1 1) rotate(0) translate(15.84 683.64)">
+<polygon fill="white" stroke="none" points="-15.84,15.84 -15.84,-683.64 878.26,-683.64 878.26,15.84 -15.84,15.84"/>
+<!-- RESERVA_INSUMO -->
+<g id="view2-node1" class="node">
+<title>RESERVA_INSUMO</title>
+<polygon fill="#854d0e" stroke="none" points="200.23,-607.4 200.23,-632.6 363.88,-632.6 363.88,-607.4 200.23,-607.4"/>
+<text xml:space="preserve" text-anchor="start" x="230.41" y="-617.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">RESERVA_INSUMO</text>
+<text xml:space="preserve" text-anchor="start" x="206.23" y="-590.4" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="206.23" y="-565.2" font-family="Arial" font-size="11.00">bigint op_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="206.23" y="-540" font-family="Arial" font-size="11.00">bigint insumo_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="206.23" y="-514.8" font-family="Arial" font-size="11.00">numeric quantidade_reservada</text>
+<text xml:space="preserve" text-anchor="start" x="206.23" y="-489.6" font-family="Arial" font-size="11.00">timestamptz reservada_em</text>
+<text xml:space="preserve" text-anchor="start" x="206.23" y="-464.4" font-family="Arial" font-size="11.00">timestamptz encerrada_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="199.23,-455.2 199.23,-633.6 364.88,-633.6 364.88,-455.2 199.23,-455.2"/>
+</g>
+<!-- APURACAO_INSUMO -->
+<g id="view2-node3" class="node">
+<title>APURACAO_INSUMO</title>
+<polygon fill="#854d0e" stroke="none" points="457.57,-540.8 457.57,-566 599.2,-566 599.2,-540.8 457.57,-540.8"/>
+<text xml:space="preserve" text-anchor="start" x="471.55" y="-551.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">APURACAO_INSUMO</text>
+<text xml:space="preserve" text-anchor="start" x="463.57" y="-523.8" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="463.57" y="-498.6" font-family="Arial" font-size="11.00">bigint cancelamento_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="463.57" y="-473.4" font-family="Arial" font-size="11.00">bigint reserva_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="463.57" y="-448.2" font-family="Arial" font-size="11.00">numeric consumido</text>
+<text xml:space="preserve" text-anchor="start" x="463.57" y="-423" font-family="Arial" font-size="11.00">numeric perdido</text>
+<polygon fill="none" stroke="#cbd5e1" points="456.57,-413.8 456.57,-567 600.2,-567 600.2,-413.8 456.57,-413.8"/>
+</g>
+<!-- RESERVA_INSUMO&#45;&gt;APURACAO_INSUMO -->
+<g id="view2-edge5" class="edge">
+<title>RESERVA_INSUMO&#45;&gt;APURACAO_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M364.76,-526.34C394.58,-519.75 428.04,-512.36 456.81,-506"/>
+<text xml:space="preserve" text-anchor="middle" x="444.91" y="-512.12" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="376.66" y="-514.22" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- MOV_INSUMO -->
+<g id="view2-node5" class="node">
+<title>MOV_INSUMO</title>
+<polygon fill="#854d0e" stroke="none" points="699.63,-641.6 699.63,-666.8 854.69,-666.8 854.69,-641.6 699.63,-641.6"/>
+<text xml:space="preserve" text-anchor="start" x="739.57" y="-651.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">MOV_INSUMO</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-624.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-599.4" font-family="Arial" font-size="11.00">bigint insumo_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-574.2" font-family="Arial" font-size="11.00">bigint item_compra_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-549" font-family="Arial" font-size="11.00">bigint reserva_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-523.8" font-family="Arial" font-size="11.00">bigint apuracao_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-498.6" font-family="Arial" font-size="11.00">text tipo</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-473.4" font-family="Arial" font-size="11.00">numeric quantidade</text>
+<text xml:space="preserve" text-anchor="start" x="705.63" y="-448.2" font-family="Arial" font-size="11.00">timestamptz ocorrida_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="698.63,-439 698.63,-667.8 855.69,-667.8 855.69,-439 698.63,-439"/>
+</g>
+<!-- RESERVA_INSUMO&#45;&gt;MOV_INSUMO -->
+<g id="view2-edge10" class="edge">
+<title>RESERVA_INSUMO&#45;&gt;MOV_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M364.83,-568.86C388.5,-574.85 414.53,-580.4 438.88,-583.4 517.85,-593.13 538.68,-590.84 617.89,-583.4 644.48,-580.9 673.26,-576.09 698.89,-571.04"/>
+<text xml:space="preserve" text-anchor="middle" x="686.75" y="-576.85" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="379.56" y="-562.99" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+<!-- CANCELAMENTO_OP -->
+<g id="view2-node2" class="node">
+<title>CANCELAMENTO_OP</title>
+<polygon fill="#854d0e" stroke="none" points="209.11,-397.2 209.11,-422.4 355,-422.4 355,-397.2 209.11,-397.2"/>
+<text xml:space="preserve" text-anchor="start" x="224.3" y="-407.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">CANCELAMENTO_OP</text>
+<text xml:space="preserve" text-anchor="start" x="215.11" y="-380.2" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="215.11" y="-355" font-family="Arial" font-size="11.00">bigint op_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="215.11" y="-329.8" font-family="Arial" font-size="11.00">text motivo</text>
+<text xml:space="preserve" text-anchor="start" x="215.11" y="-304.6" font-family="Arial" font-size="11.00">timestamptz cancelada_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="208.11,-295.4 208.11,-423.4 356,-423.4 356,-295.4 208.11,-295.4"/>
+</g>
+<!-- CANCELAMENTO_OP&#45;&gt;APURACAO_INSUMO -->
+<g id="view2-edge4" class="edge">
+<title>CANCELAMENTO_OP&#45;&gt;APURACAO_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M355.7,-398.35C387.63,-415.47 425,-435.5 456.7,-452.5"/>
+<text xml:space="preserve" text-anchor="middle" x="441.73" y="-448.66" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="370.68" y="-396.19" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- APROVEITAMENTO_PRODUTO -->
+<g id="view2-node4" class="node">
+<title>APROVEITAMENTO_PRODUTO</title>
+<polygon fill="#854d0e" stroke="none" points="439.88,-296.2 439.88,-321.4 616.89,-321.4 616.89,-296.2 439.88,-296.2"/>
+<text xml:space="preserve" text-anchor="start" x="445.88" y="-306.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">APROVEITAMENTO_PRODUTO</text>
+<text xml:space="preserve" text-anchor="start" x="445.88" y="-279.2" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="445.88" y="-254" font-family="Arial" font-size="11.00">bigint cancelamento_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="445.88" y="-228.8" font-family="Arial" font-size="11.00">bigint item_op_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="445.88" y="-203.6" font-family="Arial" font-size="11.00">integer aproveitado</text>
+<polygon fill="none" stroke="#cbd5e1" points="438.88,-194.4 438.88,-322.4 617.89,-322.4 617.89,-194.4 438.88,-194.4"/>
+</g>
+<!-- CANCELAMENTO_OP&#45;&gt;APROVEITAMENTO_PRODUTO -->
+<g id="view2-edge6" class="edge">
+<title>CANCELAMENTO_OP&#45;&gt;APROVEITAMENTO_PRODUTO</title>
+<path fill="none" stroke="#64748b" d="M355.7,-329.37C381.87,-318.55 411.68,-306.23 439.04,-294.92"/>
+<text xml:space="preserve" text-anchor="middle" x="428.89" y="-302.97" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="365.84" y="-315.32" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- APURACAO_INSUMO&#45;&gt;MOV_INSUMO -->
+<g id="view2-edge11" class="edge">
+<title>APURACAO_INSUMO&#45;&gt;MOV_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M600.1,-508.45C631.01,-516.34 667.34,-525.62 698.95,-533.69"/>
+<text xml:space="preserve" text-anchor="middle" x="684.21" y="-533.47" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="614.84" y="-502.67" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+<!-- MOV_PRODUTO -->
+<g id="view2-node6" class="node">
+<title>MOV_PRODUTO</title>
+<polygon fill="#854d0e" stroke="none" points="692.89,-202.6 692.89,-227.8 861.42,-227.8 861.42,-202.6 692.89,-202.6"/>
+<text xml:space="preserve" text-anchor="start" x="734.07" y="-212.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">MOV_PRODUTO</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-185.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-160.4" font-family="Arial" font-size="11.00">bigint produto_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-135.2" font-family="Arial" font-size="11.00">bigint item_op_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-110" font-family="Arial" font-size="11.00">bigint aproveitamento_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-84.8" font-family="Arial" font-size="11.00">bigint item_expedicao_id FK,UK</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-59.6" font-family="Arial" font-size="11.00">text tipo</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-34.4" font-family="Arial" font-size="11.00">integer quantidade</text>
+<text xml:space="preserve" text-anchor="start" x="698.89" y="-9.2" font-family="Arial" font-size="11.00">timestamptz ocorrida_em</text>
+<polygon fill="none" stroke="#cbd5e1" points="691.89,0 691.89,-228.8 862.42,-228.8 862.42,0 691.89,0"/>
+</g>
+<!-- APROVEITAMENTO_PRODUTO&#45;&gt;MOV_PRODUTO -->
+<g id="view2-edge14" class="edge">
+<title>APROVEITAMENTO_PRODUTO&#45;&gt;MOV_PRODUTO</title>
+<path fill="none" stroke="#64748b" d="M617.78,-206.82C641.98,-192.7 668.14,-177.43 692.1,-163.45"/>
+<text xml:space="preserve" text-anchor="middle" x="683.55" y="-172.78" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="626.33" y="-191.49" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+<!-- ORDEM_PRODUCAO -->
+<g id="view2-node7" class="node">
+<title>ORDEM_PRODUCAO</title>
+<polygon fill="#854d0e" stroke="none" points="1,-470.8 1,-496 124.23,-496 124.23,-470.8 1,-470.8"/>
+<text xml:space="preserve" text-anchor="start" x="7" y="-481.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ORDEM_PRODUCAO</text>
+<polygon fill="none" stroke="#cbd5e1" points="0,-469.8 0,-497 125.23,-497 125.23,-469.8 0,-469.8"/>
+</g>
+<!-- ORDEM_PRODUCAO&#45;&gt;RESERVA_INSUMO -->
+<g id="view2-edge1" class="edge">
+<title>ORDEM_PRODUCAO&#45;&gt;RESERVA_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M111.87,-496.94C137.65,-504.17 170.07,-513.26 199.62,-521.55"/>
+<text xml:space="preserve" text-anchor="middle" x="184.81" y="-520.98" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="126.67" y="-491.51" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ORDEM_PRODUCAO&#45;&gt;CANCELAMENTO_OP -->
+<g id="view2-edge3" class="edge">
+<title>ORDEM_PRODUCAO&#45;&gt;CANCELAMENTO_OP</title>
+<path fill="none" stroke="#64748b" d="M87.3,-469.89C116.14,-453.45 166.2,-424.9 208.21,-400.94"/>
+<text xml:space="preserve" text-anchor="middle" x="199.54" y="-410.18" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="95.97" y="-454.65" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- INSUMO -->
+<g id="view2-node8" class="node">
+<title>INSUMO</title>
+<polygon fill="#854d0e" stroke="none" points="34.61,-592.8 34.61,-618 90.61,-618 90.61,-592.8 34.61,-592.8"/>
+<text xml:space="preserve" text-anchor="start" x="40.61" y="-603.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">INSUMO</text>
+<polygon fill="none" stroke="#cbd5e1" points="33.61,-591.8 33.61,-619 91.61,-619 91.61,-591.8 33.61,-591.8"/>
+</g>
+<!-- INSUMO&#45;&gt;RESERVA_INSUMO -->
+<g id="view2-edge2" class="edge">
+<title>INSUMO&#45;&gt;RESERVA_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M91.6,-597.55C118.78,-589.92 161.39,-577.97 199.33,-567.33"/>
+<text xml:space="preserve" text-anchor="middle" x="187.95" y="-574.1" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="102.97" y="-584.77" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- INSUMO&#45;&gt;MOV_INSUMO -->
+<g id="view2-edge8" class="edge">
+<title>INSUMO&#45;&gt;MOV_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M91.55,-617.33C118.54,-628.16 160.85,-643.33 199.23,-649.4 383.77,-678.59 436.87,-657.66 617.89,-611.4 644.69,-604.55 673.26,-594.86 698.66,-585.35"/>
+<text xml:space="preserve" text-anchor="middle" x="688.11" y="-593.02" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="106.52" y="-613.42" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_OP -->
+<g id="view2-node9" class="node">
+<title>ITEM_OP</title>
+<polygon fill="#854d0e" stroke="none" points="251.91,-184.8 251.91,-210 312.2,-210 312.2,-184.8 251.91,-184.8"/>
+<text xml:space="preserve" text-anchor="start" x="257.91" y="-195.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_OP</text>
+<polygon fill="none" stroke="#cbd5e1" points="250.91,-183.8 250.91,-211 313.2,-211 313.2,-183.8 250.91,-183.8"/>
+</g>
+<!-- ITEM_OP&#45;&gt;APROVEITAMENTO_PRODUTO -->
+<g id="view2-edge7" class="edge">
+<title>ITEM_OP&#45;&gt;APROVEITAMENTO_PRODUTO</title>
+<path fill="none" stroke="#64748b" d="M313.02,-204.88C344.3,-212.69 394.87,-225.32 439.04,-236.34"/>
+<text xml:space="preserve" text-anchor="middle" x="424.31" y="-236.2" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="327.74" y="-199.02" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_OP&#45;&gt;MOV_PRODUTO -->
+<g id="view2-edge13" class="edge">
+<title>ITEM_OP&#45;&gt;MOV_PRODUTO</title>
+<path fill="none" stroke="#64748b" d="M313.16,-192.33C387.18,-179.87 580.18,-147.39 692.24,-128.52"/>
+<text xml:space="preserve" text-anchor="middle" x="679.89" y="-134.03" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="325.51" y="-180.83" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+<!-- ITEM_COMPRA -->
+<g id="view2-node10" class="node">
+<title>ITEM_COMPRA</title>
+<polygon fill="#854d0e" stroke="none" points="481.75,-355.8 481.75,-381 575.03,-381 575.03,-355.8 481.75,-355.8"/>
+<text xml:space="preserve" text-anchor="start" x="487.75" y="-366.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_COMPRA</text>
+<polygon fill="none" stroke="#cbd5e1" points="480.75,-354.8 480.75,-382 576.03,-382 576.03,-354.8 480.75,-354.8"/>
+</g>
+<!-- ITEM_COMPRA&#45;&gt;MOV_INSUMO -->
+<g id="view2-edge9" class="edge">
+<title>ITEM_COMPRA&#45;&gt;MOV_INSUMO</title>
+<path fill="none" stroke="#64748b" d="M575.72,-379.18C589.86,-383.61 605.05,-389.57 617.89,-397.4 647.05,-415.17 674.96,-439.3 699,-463.26"/>
+<text xml:space="preserve" text-anchor="middle" x="684.86" y="-455.27" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="590.61" y="-374.31" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+<!-- PRODUTO -->
+<g id="view2-node11" class="node">
+<title>PRODUTO</title>
+<polygon fill="#854d0e" stroke="none" points="494.89,-69.8 494.89,-95 561.89,-95 561.89,-69.8 494.89,-69.8"/>
+<text xml:space="preserve" text-anchor="start" x="500.89" y="-80.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">PRODUTO</text>
+<polygon fill="none" stroke="#cbd5e1" points="493.89,-68.8 493.89,-96 562.89,-96 562.89,-68.8 493.89,-68.8"/>
+</g>
+<!-- PRODUTO&#45;&gt;MOV_PRODUTO -->
+<g id="view2-edge12" class="edge">
+<title>PRODUTO&#45;&gt;MOV_PRODUTO</title>
+<path fill="none" stroke="#64748b" d="M562.67,-86.72C595.69,-91 647.64,-97.73 692.03,-103.49"/>
+<text xml:space="preserve" text-anchor="middle" x="677.73" y="-105.03" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="576.97" y="-79.18" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_EXPEDICAO -->
+<g id="view2-node12" class="node">
+<title>ITEM_EXPEDICAO</title>
+<polygon fill="#854d0e" stroke="none" points="473.8,-10.8 473.8,-36 582.98,-36 582.98,-10.8 473.8,-10.8"/>
+<text xml:space="preserve" text-anchor="start" x="479.8" y="-21.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_EXPEDICAO</text>
+<polygon fill="none" stroke="#cbd5e1" points="472.8,-9.8 472.8,-37 583.98,-37 583.98,-9.8 472.8,-9.8"/>
+</g>
+<!-- ITEM_EXPEDICAO&#45;&gt;MOV_PRODUTO -->
+<g id="view2-edge15" class="edge">
+<title>ITEM_EXPEDICAO&#45;&gt;MOV_PRODUTO</title>
+<path fill="none" stroke="#64748b" d="M572.32,-36.93C586.85,-41.65 603.13,-47.1 617.89,-52.4 642.05,-61.08 668.07,-71.02 691.89,-80.37"/>
+<text xml:space="preserve" text-anchor="middle" x="676.92" y="-78.32" font-family="Arial" font-size="10.00">0..1</text>
+<text xml:space="preserve" text-anchor="middle" x="587.21" y="-32.11" font-family="Arial" font-size="10.00">0..1</text>
+</g>
+</g>
+</svg>
+</div></section><section id="vista-4"><h2>4. Acesso e acompanhamento</h2><p>Perfis internos acumuláveis. Etapas de kanban são proposta de acompanhamento; não representam movimentação de estoque.</p><div class="diagram"><svg width="315pt" height="416pt"
+ viewBox="0.00 0.00 315.00 416.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="view3-graph0" class="graph" transform="scale(1 1) rotate(0) translate(15.84 400.24)">
+<polygon fill="white" stroke="none" points="-15.84,15.84 -15.84,-400.24 299.43,-400.24 299.43,15.84 -15.84,15.84"/>
+<!-- USUARIO -->
+<g id="view3-node1" class="node">
+<title>USUARIO</title>
+<polygon fill="#5b21b6" stroke="none" points="1.6,-211.6 1.6,-236.8 79.04,-236.8 79.04,-211.6 1.6,-211.6"/>
+<text xml:space="preserve" text-anchor="start" x="14.96" y="-221.9" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">USUARIO</text>
+<text xml:space="preserve" text-anchor="start" x="7.6" y="-194.6" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="7.6" y="-169.4" font-family="Arial" font-size="11.00">text nome</text>
+<text xml:space="preserve" text-anchor="start" x="7.6" y="-144.2" font-family="Arial" font-size="11.00">text email UK</text>
+<text xml:space="preserve" text-anchor="start" x="7.6" y="-119" font-family="Arial" font-size="11.00">boolean ativo</text>
+<polygon fill="none" stroke="#cbd5e1" points="0.6,-109.8 0.6,-237.8 80.04,-237.8 80.04,-109.8 0.6,-109.8"/>
+</g>
+<!-- USUARIO_PERFIL -->
+<g id="view3-node3" class="node">
+<title>USUARIO_PERFIL</title>
+<polygon fill="#5b21b6" stroke="none" points="155.64,-112.4 155.64,-137.6 282.59,-137.6 282.59,-112.4 155.64,-112.4"/>
+<text xml:space="preserve" text-anchor="start" x="171.14" y="-122.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">USUARIO_PERFIL</text>
+<text xml:space="preserve" text-anchor="start" x="161.64" y="-95.4" font-family="Arial" font-size="11.00">bigint usuario_id PK,FK</text>
+<text xml:space="preserve" text-anchor="start" x="161.64" y="-70.2" font-family="Arial" font-size="11.00">bigint perfil_id PK,FK</text>
+<polygon fill="none" stroke="#cbd5e1" points="154.64,-61 154.64,-138.6 283.59,-138.6 283.59,-61 154.64,-61"/>
+</g>
+<!-- USUARIO&#45;&gt;USUARIO_PERFIL -->
+<g id="view3-edge1" class="edge">
+<title>USUARIO&#45;&gt;USUARIO_PERFIL</title>
+<path fill="none" stroke="#64748b" d="M79.68,-157.74C101.62,-148.56 129.68,-136.81 154.8,-126.3"/>
+<text xml:space="preserve" text-anchor="middle" x="144.71" y="-134.4" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="89.77" y="-143.65" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- PERFIL -->
+<g id="view3-node2" class="node">
+<title>PERFIL</title>
+<polygon fill="#5b21b6" stroke="none" points="1,-51.4 1,-76.6 79.64,-76.6 79.64,-51.4 1,-51.4"/>
+<text xml:space="preserve" text-anchor="start" x="20.76" y="-61.7" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">PERFIL</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-34.4" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="7" y="-9.2" font-family="Arial" font-size="11.00">text nome UK</text>
+<polygon fill="none" stroke="#cbd5e1" points="0,0 0,-77.6 80.64,-77.6 80.64,0 0,0"/>
+</g>
+<!-- PERFIL&#45;&gt;USUARIO_PERFIL -->
+<g id="view3-edge2" class="edge">
+<title>PERFIL&#45;&gt;USUARIO_PERFIL</title>
+<path fill="none" stroke="#64748b" d="M80.56,-52.34C102.33,-59.85 129.93,-69.37 154.69,-77.91"/>
+<text xml:space="preserve" text-anchor="middle" x="139.77" y="-76.47" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="95.48" y="-47.78" font-family="Arial" font-size="10.00">1</text>
+</g>
+<!-- ITEM_OP -->
+<g id="view3-node4" class="node">
+<title>ITEM_OP</title>
+<polygon fill="#5b21b6" stroke="none" points="6.5,-307.8 6.5,-333 74.14,-333 74.14,-307.8 6.5,-307.8"/>
+<text xml:space="preserve" text-anchor="start" x="16.18" y="-318.1" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ITEM_OP</text>
+<text xml:space="preserve" text-anchor="start" x="12.5" y="-290.8" font-family="Arial" font-size="11.00">bigint id PK</text>
+<polygon fill="none" stroke="#cbd5e1" points="5.5,-281.6 5.5,-334 75.14,-334 75.14,-281.6 5.5,-281.6"/>
+</g>
+<!-- ETAPA_OP -->
+<g id="view3-node5" class="node">
+<title>ETAPA_OP</title>
+<polygon fill="#5b21b6" stroke="none" points="162.98,-358.2 162.98,-383.4 275.25,-383.4 275.25,-358.2 162.98,-358.2"/>
+<text xml:space="preserve" text-anchor="start" x="189.47" y="-368.5" font-family="Arial" font-weight="bold" font-size="11.00" fill="white">ETAPA_OP</text>
+<text xml:space="preserve" text-anchor="start" x="168.98" y="-341.2" font-family="Arial" font-size="11.00">bigint id PK</text>
+<text xml:space="preserve" text-anchor="start" x="168.98" y="-316" font-family="Arial" font-size="11.00">bigint item_op_id FK</text>
+<text xml:space="preserve" text-anchor="start" x="168.98" y="-290.8" font-family="Arial" font-size="11.00">text titulo</text>
+<text xml:space="preserve" text-anchor="start" x="168.98" y="-265.6" font-family="Arial" font-size="11.00">integer ordem</text>
+<text xml:space="preserve" text-anchor="start" x="168.98" y="-240.4" font-family="Arial" font-size="11.00">text situacao</text>
+<polygon fill="none" stroke="#cbd5e1" points="161.98,-231.2 161.98,-384.4 276.25,-384.4 276.25,-231.2 161.98,-231.2"/>
+</g>
+<!-- ITEM_OP&#45;&gt;ETAPA_OP -->
+<g id="view3-edge3" class="edge">
+<title>ITEM_OP&#45;&gt;ETAPA_OP</title>
+<path fill="none" stroke="#64748b" d="M74.99,-307.8C99.64,-307.8 133.64,-307.8 162.32,-307.8"/>
+<text xml:space="preserve" text-anchor="middle" x="148.72" y="-311.14" font-family="Arial" font-size="10.00">0..N</text>
+<text xml:space="preserve" text-anchor="middle" x="88.58" y="-298.46" font-family="Arial" font-size="10.00">1</text>
+</g>
+</g>
+</svg>
+</div></section></main></html>

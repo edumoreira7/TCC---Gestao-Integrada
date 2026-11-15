@@ -1,0 +1,13 @@
+sequenceDiagram
+    actor Responsavel
+    participant Receitas
+    participant Producao
+    participant Dados
+    Responsavel->>Receitas: Alterar rendimento ou composição
+    Receitas->>Receitas: Validar componentes e rendimento
+    Receitas->>Dados: Criar versão publicada, preservar versões anteriores, ativar somente a nova
+    Receitas->>Producao: Recalcular OPs não iniciadas pela nova versão e lotes inteiros
+    Producao->>Dados: Atualizar referências e planejamentos pendentes
+    Dados-->>Responsavel: Publicação e recálculo confirmados juntos ou falha sem efeitos parciais
+    Note over Receitas,Dados: Composição e rendimento publicados são imutáveis
+    Note over Producao,Dados: OP iniciada conserva versão, lotes e necessidades utilizadas

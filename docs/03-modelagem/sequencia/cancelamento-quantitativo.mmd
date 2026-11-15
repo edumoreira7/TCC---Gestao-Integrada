@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor Operador
+    participant Producao
+    participant Estoque
+    participant Dados
+    Operador->>Producao: Motivo, consumo e perdas por reserva, aproveitáveis por item da OP
+    Producao->>Dados: Obter OP em andamento, reservas e planejamento congelado
+    Dados-->>Producao: Vínculos e quantidades originais
+    Producao->>Producao: Apurar cada reserva inclusive zero, consumo exclui perdas
+    alt Encerrada, vínculos inválidos ou divergência quantitativa
+        Producao-->>Operador: Rejeitar sem truncar ou movimentar
+    else Apuração válida
+        Producao->>Estoque: Preparar baixas de consumo e perdas sem sobreposição
+        Estoque->>Dados: Baixar uma vez, liberar restante, receber aproveitáveis e cancelar juntos
+        Dados-->>Operador: Cancelada com apuração ou falha sem efeitos parciais
+    end
+    Note over Producao,Dados: Provisório do DER: consumo mais perdas até reservado, aproveitamento até planejado
+    Note over Producao,Estoque: Mesma OP, sem conclusão normal ou expedição parcial, repetição e conclusão incompatível bloqueadas

@@ -1,17 +1,23 @@
 flowchart TD
-    A([Início]) --> B[Produção consulta OP]
-    B --> C[Solicita início e sistema verifica disponibilidade atual]
+    A([Início]) --> B[Produção solicita início da OP]
+    B --> C[Recalcular pendente pela receita ativa e revalidar insumos disponíveis]
     C --> D{Todos os insumos disponíveis?}
-    D -- Não --> E[OP aguarda reposição]
-    E --> F[Estoque registra recebimento efetivo]
-    F --> C
-    D -- Sim --> G[Sistema reserva conjuntamente os insumos e registra início]
-    G --> H[Produção executa todos os itens da OP]
-    H --> I[Usuário solicita conclusão integral]
-    I --> J[Em uma única operação: baixar insumos uma vez, encerrar reservas e dar entrada dos acabados]
-    J --> K[OP concluída somente com todas as movimentações confirmadas]
-    K --> L([Fim])
-    G -.-> M[Reserva reduz disponibilidade sem baixa física no início]
-    J -.-> N[Se a operação falhar, não confirmar conclusão nem movimentações parciais]
-    G -.-> O[PD10: mecanismo técnico de concorrência pendente]
-    H -.-> P[Cancelamento e WIP: detalhamento pendente; não representam conclusão parcial]
+    D -- Não --> E[Aguardar reposição sem baixa física]
+    E --> C
+    D -- Sim --> F[Reservar conjuntamente; registrar início; congelar versão, lotes e necessidades]
+    F --> G[Executar etapas por produto da OP]
+    G --> H{Encerramento solicitado}
+    H -- Integral --> I[Preparar baixa única dos insumos, encerramento das reservas e entrada planejada]
+    I --> J[Confirmar conjuntamente a conclusão integral e os movimentos]
+    J --> K[Excedente produzido permanece em estoque]
+    H -- Cancelamento --> L[Registrar motivo; apurar cada reserva com consumo e perdas separados; produtos aproveitáveis da OP]
+    L --> M{Vínculos e quantidades válidos?}
+    M -- Não --> N[Rejeitar divergência sem truncar ou movimentar]
+    N --> L
+    M -- Sim --> O[Baixar consumo e perdas uma vez; liberar restante; receber aproveitáveis; encerrar como cancelada]
+    K --> P([Fim])
+    O --> P
+    G -.-> Q[Cards acompanham trabalho; não movimentam estoque]
+    M -.-> R[Provisório: consumo mais perdas até reservado; aproveitamento até planejado]
+    O -.-> S[OP cancelada não pode concluir ou liberar expedição do pedido]
+    J -.-> T[Backend futuro deve garantir transação e impedir encerramento duplicado ou incompatível]

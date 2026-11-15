@@ -1,25 +1,34 @@
 stateDiagram-v2
+    state "Criada" as Criada
+    state "Aguardando reposição" as AguardandoReposicao
+    state "Apta para iniciar" as AptaParaInicio
+    state "Em produção" as EmProducao
+    state "Concluída" as Concluida
+    state "Cancelada" as Cancelada
     [*] --> Criada
     Criada --> AguardandoReposicao: insumos insuficientes
     Criada --> AptaParaInicio: insumos disponíveis
     AguardandoReposicao --> AptaParaInicio: disponibilidade reavaliada após recebimento
-    AptaParaInicio --> AguardandoReposicao: faltam insumos na nova verificação
-    AptaParaInicio --> EmProducao: verifica disponibilidade e reserva conjuntamente / registra início
-    EmProducao --> Concluida: conclusão integral / baixa, encerra reservas e recebe acabados em uma operação
+    AptaParaInicio --> AguardandoReposicao: insumos insuficientes na revalidação
+    AptaParaInicio --> EmProducao: recalcula pendente pela ativa, reserva, inicia e congela versão e plano
+    EmProducao --> Concluida: baixa única, encerra reservas, recebe toda planejada
+    EmProducao --> Cancelada: motivo e apuração válidos, baixa consumo e perdas, libera restante, recebe aproveitáveis
     Concluida --> [*]
+    Cancelada --> [*]
     note right of Criada
-      Todo pedido gera uma única OP no registro.
-      OP manual admite vários produtos sem pedido.
-      PD12 pendente: efeito do estoque acabado.
-      Nomes e catálogo completo sujeitos à PD08.
+      OP única por pedido, manual sem pedido.
+      Solicitada, lotes e planejada separados.
+      Lotes inteiros em ambas, PD12 permanece aberta.
+      Publicar receita recalcula OP não iniciada.
     end note
     note right of EmProducao
-      Reserva não realiza baixa física.
-      Cancelamento, WIP, perdas e insumos usados
-      exigem detalhamento do grupo em PD03.
-      Não se define transição automática de cancelamento.
+      Versão, lotes e necessidades preservados.
+      Reserva não é baixa física, cards não movem estoque.
+      Consumo e perdas no cancelamento não se sobrepõem.
     end note
-    note right of Concluida
-      Baixa dos insumos e entrada dos acabados
-      confirmadas juntas, sem produção parcial.
+    note right of Cancelada
+      Sem repetição, reabertura ou conclusão incompatível.
+      Não libera expedição parcial do pedido.
+      Limites quantitativos do DER são provisórios.
+      Rejeitar divergências sem truncar.
     end note

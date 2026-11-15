@@ -1,36 +1,17 @@
 stateDiagram-v2
+    state "Compra registrada" as CompraRegistrada
+    state "Recebida integralmente" as RecebidaIntegralmente
     [*] --> CompraRegistrada
-
-    CompraRegistrada --> RecebimentoParcial: registra recebimento de parte da quantidade
-    CompraRegistrada --> RecebimentoConcluido: registra recebimento da quantidade total
-
-    RecebimentoParcial --> RecebimentoParcial: registra novo recebimento parcial
-    RecebimentoParcial --> RecebimentoConcluido: quantidade acumulada atinge o total comprado
-
-    RecebimentoConcluido --> [*]
-
+    CompraRegistrada --> CompraRegistrada: conferência incompleta / não confirmar recebimento
+    CompraRegistrada --> RecebidaIntegralmente: confirmar todos os itens uma única vez
+    RecebidaIntegralmente --> [*]
     note right of CompraRegistrada
-      Registrar a compra não altera o estoque.
-      A compra aguarda recebimentos físicos.
+      Registrar compra não altera saldo ou preço de referência.
+      Não existe estado de recebimento parcial.
     end note
-
-    note right of RecebimentoParcial
-      Cada recebimento gera entrada somente
-      da quantidade efetivamente recebida.
-      A soma recebida não pode ultrapassar
-      a quantidade comprada.
-      A disponibilidade das OPs é reavaliada
-      após cada recebimento.
-    end note
-
-    note right of RecebimentoConcluido
-      Toda a quantidade comprada foi recebida.
-      Cada recebimento já gerou sua própria
-      movimentação de entrada no estoque.
-    end note
-
-    note left of RecebimentoConcluido
-      Estados propostos para representar
-      a RN28. A nomenclatura e as transições
-      devem ser validadas pelo grupo.
+    note right of RecebidaIntegralmente
+      ID e data-hora do único recebimento.
+      Entradas de todos os itens e congelamento da compra.
+      Atualizar referência pelo recebimento mais recente.
+      Nova confirmação é rejeitada, sem duplicar entrada.
     end note

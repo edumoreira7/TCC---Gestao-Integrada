@@ -1,147 +1,201 @@
-%% DER lógico — Gestão Integrada de Estoque e Produção no Setor Alimentício
-%% Documentação-base para revisão do grupo — 02/11/2026
+%% DER lógico consolidado — 15/11/2026; PostgreSQL futuro; sem implantação
 erDiagram
-    CLIENTE ||--o{ PEDIDO : realiza
-    PEDIDO ||--|{ ITEM_PEDIDO : contem
-    PRODUTO ||--o{ ITEM_PEDIDO : referencia
-    PEDIDO o|--|| ORDEM_PRODUCAO : gera
-    ORDEM_PRODUCAO ||--|{ ITEM_ORDEM_PRODUCAO : contem
-    PRODUTO ||--o{ ITEM_ORDEM_PRODUCAO : produzido
-    PRODUTO ||--|| RECEITA : possui
-    RECEITA ||--|{ ITEM_RECEITA : composta_por
-    INSUMO ||--o{ ITEM_RECEITA : utilizado
-    FORNECEDOR ||--o{ COMPRA : fornece
-    COMPRA ||--|{ ITEM_COMPRA : contem
-    INSUMO ||--o{ ITEM_COMPRA : adquirido
-    COMPRA ||--o{ RECEBIMENTO_INSUMO : recebe
-    RECEBIMENTO_INSUMO ||--|{ ITEM_RECEBIMENTO : detalha
-    ITEM_COMPRA ||--o{ ITEM_RECEBIMENTO : recebido
-    PRODUTO o|--o{ MOVIMENTACAO_ESTOQUE : movimenta
-    INSUMO o|--o{ MOVIMENTACAO_ESTOQUE : movimenta
-    PEDIDO ||--o| EXPEDICAO : atendido_por
-    EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
-    PRODUTO ||--o{ ITEM_EXPEDICAO : expedido
-
-    CLIENTE {
-        int id_cliente PK
-        string nome
-        string documento
-        string contato
-    }
-    PEDIDO {
-        int id_pedido PK
-        int id_cliente FK
-        datetime data_registro
-        string status
-    }
-    ITEM_PEDIDO {
-        int id_item_pedido PK
-        int id_pedido FK
-        int id_produto FK
-        decimal quantidade
-        decimal preco_unitario_venda
-    }
-    PRODUTO {
-        int id_produto PK
-        string nome
-        string unidade_medida
-        decimal preco_venda
-    }
-    RECEITA {
-        int id_receita PK
-        int id_produto FK, UK
-        decimal rendimento
-        string unidade_rendimento
-        string instrucoes
-    }
-    ITEM_RECEITA {
-        int id_item_receita PK
-        int id_receita FK
-        int id_insumo FK
-        decimal quantidade_insumo
-        string unidade_medida
-    }
-    INSUMO {
-        int id_insumo PK
-        string nome
-        string unidade_medida
-    }
-    ORDEM_PRODUCAO {
-        int id_ordem_producao PK
-        int id_pedido FK, UK "opcional para OP manual"
-        datetime data_criacao
-        string tipo
-        string status
-        datetime data_inicio
-        datetime data_conclusao
-    }
-    ITEM_ORDEM_PRODUCAO {
-        int id_item_ordem PK
-        int id_ordem_producao FK
-        int id_produto FK
-        decimal quantidade_planejada
-        string unidade_medida
-    }
-    FORNECEDOR {
-        int id_fornecedor PK
-        string nome
-        string documento
-        string contato
-    }
-    COMPRA {
-        int id_compra PK
-        int id_fornecedor FK
-        datetime data_registro
-        string status
-    }
-    ITEM_COMPRA {
-        int id_item_compra PK
-        int id_compra FK
-        int id_insumo FK
-        decimal quantidade
-        string unidade_medida
-        decimal preco_unitario
-    }
-    RECEBIMENTO_INSUMO {
-        int id_recebimento PK
-        int id_compra FK
-        datetime data_recebimento
-    }
-    ITEM_RECEBIMENTO {
-        int id_item_recebimento PK
-        int id_recebimento FK
-        int id_item_compra FK
-        decimal quantidade_recebida
-        string unidade_medida
-    }
-    MOVIMENTACAO_ESTOQUE {
-        int id_movimentacao PK
-        int id_produto FK
-        int id_insumo FK
-        datetime data_hora
-        string tipo
-        decimal quantidade
-        string unidade_medida
-        string origem
-    }
-    EXPEDICAO {
-        int id_expedicao PK
-        int id_pedido FK, UK
-        datetime data_expedicao
-        string destinatario
-        string status
-    }
-    ITEM_EXPEDICAO {
-        int id_item_expedicao PK
-        int id_expedicao FK
-        int id_produto FK
-        decimal quantidade
-        string unidade_medida
-    }
-    REGISTRO_FINANCEIRO {
-        int id_registro_financeiro PK
-        datetime data_registro
-        string tipo
-        decimal valor
-        string descricao
-    }
+  CLIENTE ||--o{ PEDIDO : realiza
+  PEDIDO ||--|{ ITEM_PEDIDO : contem
+  PRODUTO ||--o{ ITEM_PEDIDO : vendido
+  PEDIDO o|--|| ORDEM_PRODUCAO : gera
+  ORDEM_PRODUCAO ||--|{ ITEM_OP : planeja
+  PRODUTO ||--o{ ITEM_OP : produzido
+  RECEITA_VERSAO ||--o{ ITEM_OP : referencia
+  ITEM_PEDIDO o|--|| ITEM_OP : origina
+  PEDIDO ||--o| EXPEDICAO : atendido
+  EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
+  ITEM_PEDIDO ||--o| ITEM_EXPEDICAO : atende
+  PRODUTO ||--o{ RECEITA_VERSAO : versiona
+  RECEITA_VERSAO ||--|{ ITEM_RECEITA : contem
+  INSUMO ||--o{ ITEM_RECEITA : compoe
+  FORNECEDOR ||--o{ COMPRA : fornece
+  COMPRA ||--|{ ITEM_COMPRA : contem
+  INSUMO ||--o{ ITEM_COMPRA : adquirido
+  COMPRA ||--o| RECEBIMENTO : recebido
+  ORDEM_PRODUCAO ||--o{ RESERVA_INSUMO : compromete
+  INSUMO ||--o{ RESERVA_INSUMO : reservado
+  ORDEM_PRODUCAO ||--o| CANCELAMENTO_OP : registra
+  CANCELAMENTO_OP ||--o{ APURACAO_INSUMO : apura
+  RESERVA_INSUMO ||--o| APURACAO_INSUMO : detalha
+  CANCELAMENTO_OP ||--o{ APROVEITAMENTO_PRODUTO : recebe
+  ITEM_OP ||--o| APROVEITAMENTO_PRODUTO : aproveitado
+  INSUMO ||--o{ MOV_INSUMO : historico
+  ITEM_COMPRA o|--o| MOV_INSUMO : entrada
+  RESERVA_INSUMO o|--o| MOV_INSUMO : baixa_normal
+  APURACAO_INSUMO o|--o| MOV_INSUMO : baixa_cancelamento
+  PRODUTO ||--o{ MOV_PRODUTO : historico
+  ITEM_OP o|--o| MOV_PRODUTO : entrada_normal
+  APROVEITAMENTO_PRODUTO o|--o| MOV_PRODUTO : entrada_cancelamento
+  ITEM_EXPEDICAO o|--o| MOV_PRODUTO : saida
+  USUARIO ||--o{ USUARIO_PERFIL : recebe
+  PERFIL ||--o{ USUARIO_PERFIL : atribuido
+  ITEM_OP ||--o{ ETAPA_OP : acompanha
+  CLIENTE {
+    bigint id PK
+    text nome
+    boolean ativo
+  }
+  PEDIDO {
+    bigint id PK
+    bigint cliente_id FK
+    timestamptz registrado_em
+    date entrega_prevista
+    text status
+  }
+  PRODUTO {
+    bigint id PK
+    text nome
+    numeric preco_venda
+    boolean ativo
+  }
+  ITEM_PEDIDO {
+    bigint id PK
+    bigint pedido_id FK
+    bigint produto_id FK
+    integer quantidade
+    numeric preco_unitario
+  }
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+    timestamptz criada_em
+    timestamptz iniciada_em
+    timestamptz finalizada_em
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    bigint item_pedido_id FK,UK "nulo na OP manual"
+    bigint receita_versao_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }
+  RECEITA_VERSAO {
+    bigint id PK
+    bigint produto_id FK
+    integer rendimento
+    integer versao
+    boolean ativa
+  }
+  EXPEDICAO {
+    bigint id PK
+    bigint pedido_id FK,UK
+    text destinatario
+    timestamptz expedida_em
+  }
+  ITEM_EXPEDICAO {
+    bigint id PK
+    bigint expedicao_id FK
+    bigint item_pedido_id FK,UK
+    integer quantidade
+  }
+  ITEM_RECEITA {
+    bigint receita_versao_id PK,FK
+    bigint insumo_id PK,FK
+    numeric quantidade_padrao
+  }
+  INSUMO {
+    bigint id PK
+    text nome
+    text unidade_padrao
+    numeric preco_inicial "opcional"
+    boolean ativo
+  }
+  FORNECEDOR {
+    bigint id PK
+    text nome
+    boolean ativo
+  }
+  COMPRA {
+    bigint id PK
+    bigint fornecedor_id FK
+    timestamptz registrada_em
+  }
+  ITEM_COMPRA {
+    bigint id PK
+    bigint compra_id FK
+    bigint insumo_id FK
+    numeric quantidade_padrao
+    numeric preco_unitario_padrao
+  }
+  RECEBIMENTO {
+    bigint id PK
+    bigint compra_id FK,UK
+    timestamptz recebido_em
+  }
+  RESERVA_INSUMO {
+    bigint id PK
+    bigint op_id FK
+    bigint insumo_id FK
+    numeric quantidade_reservada
+    timestamptz reservada_em
+    timestamptz encerrada_em
+  }
+  CANCELAMENTO_OP {
+    bigint id PK
+    bigint op_id FK,UK
+    text motivo
+    timestamptz cancelada_em
+  }
+  APURACAO_INSUMO {
+    bigint id PK
+    bigint cancelamento_id FK
+    bigint reserva_id FK,UK
+    numeric consumido
+    numeric perdido
+  }
+  APROVEITAMENTO_PRODUTO {
+    bigint id PK
+    bigint cancelamento_id FK
+    bigint item_op_id FK,UK
+    integer aproveitado
+  }
+  MOV_INSUMO {
+    bigint id PK
+    bigint insumo_id FK
+    bigint item_compra_id FK,UK
+    bigint reserva_id FK,UK
+    bigint apuracao_id FK,UK
+    text tipo
+    numeric quantidade
+    timestamptz ocorrida_em
+  }
+  MOV_PRODUTO {
+    bigint id PK
+    bigint produto_id FK
+    bigint item_op_id FK,UK
+    bigint aproveitamento_id FK,UK
+    bigint item_expedicao_id FK,UK
+    text tipo
+    integer quantidade
+    timestamptz ocorrida_em
+  }
+  USUARIO {
+    bigint id PK
+    text nome
+    text email UK
+    boolean ativo
+  }
+  PERFIL {
+    bigint id PK
+    text nome UK
+  }
+  USUARIO_PERFIL {
+    bigint usuario_id PK,FK
+    bigint perfil_id PK,FK
+  }
+  ETAPA_OP {
+    bigint id PK
+    bigint item_op_id FK
+    text titulo
+    integer ordem
+    text situacao
+  }

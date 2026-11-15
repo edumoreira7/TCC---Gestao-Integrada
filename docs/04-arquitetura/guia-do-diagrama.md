@@ -14,4 +14,4 @@ A arquitetura deve esclarecer como pedidos e planejamento se integram a receitas
 
 ## Base para elaboração
 
-O [diagrama e a proposta de arquitetura](README.md) detalham responsabilidades e integridade conforme o planejamento e o escopo. Módulos de negócio não implicam serviços separados; tecnologias definitivas de backend e banco e mecanismos concorrentes exigem validação do grupo.
+O [diagrama e a proposta de arquitetura](README.md) detalham responsabilidades e integridade conforme o planejamento e o escopo. Módulos de negócio não implicam serviços separados; PostgreSQL está confirmado para a implementação futura (DT01); backend, versão e mecanismos concorrentes permanecem a definir. Ver [decisão tecnológica](decisoes-tecnologicas.md) e [SVG de componentes](componentes.svg).

@@ -21,7 +21,7 @@ Entre as funcionalidades previstas estão:
 - Ordens de produção com vários produtos, criadas manualmente ou geradas automaticamente no registro de um pedido;
 - Conclusão integral da produção, com baixa de insumos e entrada de produtos acabados no estoque;
 - Expedição integral vinculada ao pedido, com saída dos produtos acabados do estoque;
-- Custo dos produtos calculado pela receita e pelo último preço de compra conhecido de cada insumo;
+- Custo dos produtos calculado pela receita e pelo preço da compra recebida mais recentemente de cada insumo, pela data-hora do recebimento, com preço inicial opcional;
 - Preço de venda cadastrado manualmente e acompanhamento simplificado dos valores das operações.
 
 Clientes e fornecedores são cadastros do sistema e não possuem acesso. Usuários internos poderão acumular perfis e permissões. O financeiro não inclui contas a pagar, contas a receber ou contabilidade completa.
@@ -39,13 +39,13 @@ A documentação do projeto está organizada na pasta [`docs/`](docs/).
 - [`01-visao-geral`](docs/01-visao-geral/) — visão geral e decisões do projeto;
 - [`02-requisitos`](docs/02-requisitos/) — escopo, requisitos e regras de negócio;
 - [`03-modelagem`](docs/03-modelagem/) — diagramas e modelos do sistema;
-- `04-arquitetura` — arquitetura e componentes;
-- `05-prototipos` — protótipos de interface;
-- `06-testes` — planejamento e resultados dos testes;
+- [`04-arquitetura`](docs/04-arquitetura/) — arquitetura e componentes;
+- [`05-prototipos`](docs/05-prototipos/) — protótipos de interface;
+- [`06-testes`](docs/06-testes/) — metodologia de validação; resultados definitivos futuros;
 - [`07-apresentacoes`](docs/07-apresentacoes/) — materiais das apresentações;
 - [`planejamento`](docs/planejamento/) — cronograma e planejamento do projeto.
 
-Algumas dessas pastas serão adicionadas conforme o desenvolvimento do TCC avançar.
+As pastas acima estão disponíveis. Elaboração de modelos não equivale a implementação ou aprovação externa.
 
 Documentos principais:
 
@@ -66,7 +66,7 @@ O cronograma do projeto está disponível em:
 
 [`docs/planejamento/Cronograma_TCC_Gestao_Integrada.xlsx`](docs/planejamento/Cronograma_TCC_Gestao_Integrada.xlsx)
 
-O planejamento revisado inclui validação do macrofluxo e metodologia de validação no TCC1, com apresentação final prevista para **17/11/2026**. A [revisão do planejamento](docs/planejamento/revisao-tcc1-2026-10-13.md) registra atividades, dependências e critérios de conclusão.
+O planejamento revisado inclui validação do macrofluxo e metodologia de validação no TCC1, com apresentação da disciplina prevista para **17/11/2026**. A data da banca não foi confirmada. A [revisão do planejamento](docs/planejamento/revisao-tcc1-2026-10-13.md) registra atividades, dependências e critérios de conclusão.
 
 A [revisão de consistência de 17/10/2026](docs/planejamento/revisao-de-consistencia-2026-10-17.md) registra o alinhamento entre branches, issues, documentos e planejamento.
 
@@ -103,6 +103,8 @@ A [revisão de consistência de 17/10/2026](docs/planejamento/revisao-de-consist
 
 ## Situação do projeto
 
-**TCC1 — levantamento de requisitos, modelagem e definição da arquitetura.**
+**TCC1 — requisitos, modelos e proposta de arquitetura elaborados; frontend local demonstrativo.**
+
+Consulte a [auditoria de 15/11/2026](docs/planejamento/auditoria-github-2026-11-15.md) para entregas, PR de alinhamento, integração pendente do protótipo e trabalho futuro de TCC II. PostgreSQL é a escolha futura; backend/API/autenticação real não foram implementados.
 
 A [revisão de 20/10/2026](docs/planejamento/revisao-de-consistencia-2026-10-20.md) registra a OP automática, a revisão dos casos de uso e o replanejamento do TCC1.

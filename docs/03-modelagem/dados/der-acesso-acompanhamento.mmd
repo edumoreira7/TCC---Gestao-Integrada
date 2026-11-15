@@ -1,0 +1,28 @@
+erDiagram
+  USUARIO ||--o{ USUARIO_PERFIL : recebe
+  PERFIL ||--o{ USUARIO_PERFIL : atribuido
+  ITEM_OP ||--o{ ETAPA_OP : acompanha
+  USUARIO {
+    bigint id PK
+    text nome
+    text email UK
+    boolean ativo
+  }
+  PERFIL {
+    bigint id PK
+    text nome UK
+  }
+  USUARIO_PERFIL {
+    bigint usuario_id PK,FK
+    bigint perfil_id PK,FK
+  }
+  ITEM_OP {
+    bigint id PK
+  }
+  ETAPA_OP {
+    bigint id PK
+    bigint item_op_id FK
+    text titulo
+    integer ordem
+    text situacao
+  }

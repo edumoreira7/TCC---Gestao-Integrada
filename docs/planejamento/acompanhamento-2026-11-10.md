@@ -28,3 +28,7 @@ Apresentação TCC1 prevista para **17/11/2026**. Datas originais preservadas no
 PD12, cancelamento/WIP, preço sem histórico e estados completos permanecem pendentes. O cronograma atualizado não aprova essas decisões nem encerra as issues #5–#8 e #10.
 
 Fontes: cronograma versionado; PRs #15 e #16; issues #5–#8 e #10; documentação de classes, guias de sequência/arquitetura e frontend/DECISOES.md na main. Nenhum merge foi realizado nesta atualização.
+
+## Atualização posterior — 15/11/2026
+
+Este texto permanece como registro histórico de 10/11. O estado atual e as evidências estão na [auditoria de 15/11](auditoria-github-2026-11-15.md). Diagramas de sequência e componentes existem; o PR #16 foi integrado. PostgreSQL está confirmado para implementação futura. A revisão da metodologia pelo orientador não ocorreu e foi retirada do critério da issue #10 por decisão explícita do solicitante; não houve aprovação presumida. A apresentação de 17/11/2026 é da disciplina; data da banca não confirmada.
