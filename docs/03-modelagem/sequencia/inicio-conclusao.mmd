@@ -1,0 +1,27 @@
+sequenceDiagram
+    actor Operador
+    participant Producao
+    participant Estoque
+    participant Dados
+    Operador->>Producao: Iniciar OP
+    Producao->>Producao: Recalcular OP não iniciada pela receita ativa e lotes inteiros
+    Producao->>Estoque: Verificar saldo disponível e reservar conjuntamente
+    alt Faltam insumos
+        Estoque-->>Producao: Faltas
+        Producao-->>Operador: Aguardando reposição, início bloqueado
+    else Insumos suficientes
+        Estoque->>Dados: Confirmar reserva, início e versão utilizada juntos
+        Dados-->>Producao: OP em produção
+        Note over Estoque,Dados: Reserva sem baixa física, concorrência técnica em PD10
+        Operador->>Producao: Concluir integralmente
+        Producao->>Dados: Validar OP em produção e obter composição preservada
+        Dados-->>Producao: Versão congelada, lotes e necessidades preservadas
+        Producao->>Estoque: Preparar baixa única pelos lotes e entrada da quantidade planejada integral
+        Estoque->>Dados: Transação: baixa, encerra reservas, entrada e conclusão
+        alt Transação confirmada
+            Dados-->>Operador: OP concluída e estoques atualizados
+        else Falha
+            Dados-->>Operador: Operação não confirmada, sem efeitos parciais
+        end
+    end
+    Note over Producao,Dados: Repetir conclusão não pode repetir movimentos

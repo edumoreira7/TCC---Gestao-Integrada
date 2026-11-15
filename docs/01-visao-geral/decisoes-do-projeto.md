@@ -76,7 +76,7 @@ A entrada dos produtos acabados também será registrada na conclusão.
 
 Produtos acabados sempre passam pelo estoque antes da expedição. Ordens manuais abastecem esse estoque e não originam, por si só, uma expedição.
 
-No cancelamento durante a produção, deverão ser registrados o motivo e a situação dos insumos e produtos envolvidos. Produtos acabados aproveitáveis poderão ser incorporados ao estoque. O tratamento das quantidades consumidas, perdas e movimentações dessa exceção ainda deverá ser detalhado.
+Cancelamento exige motivo e apuração quantitativa separada de consumo, perdas e produtos aproveitáveis. Baixar consumo e perdas uma única vez, liberar a reserva restante e registrar entrada dos aproveitáveis. Limites de divergência do DER são provisórios.
 
 ---
 
@@ -101,7 +101,7 @@ O controle financeiro terá escopo simplificado.
 
 Serão registrados valores básicos das operações de compra e venda/expedição. Esses registros não representam confirmação de pagamentos ou recebimentos bancários.
 
-As compras registram os preços dos insumos. O custo de um produto será calculado pela receita, utilizando o último preço de compra conhecido de cada insumo, com unidades compatíveis e considerando o rendimento da receita.
+As compras registram os preços dos insumos. O custo de um produto será calculado pela receita, utilizando o preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento de cada insumo, com unidades compatíveis e considerando o rendimento da receita.
 
 O preço de venda será cadastrado manualmente. A sugestão automática de preço com base no custo fica como evolução futura.
 
@@ -155,13 +155,19 @@ Ainda deverão ser definidos:
 - Movimentações no cancelamento durante a produção, incluindo consumo efetivo, perdas e aproveitamento de produtos;
 - Dados obrigatórios restantes e transições de pedidos e expedições;
 - Reserva de estoque e tratamento de ordens concorrentes, já que a baixa normal ocorre somente na conclusão;
-- Critério temporal do último preço de compra, ausência de preço e conversões entre unidades;
+- Desempate de recebimentos e conversões entre unidades; evento de preço e fallback definidos em 15/11/2026;
 - Funcionamento detalhado das movimentações financeiras;
 - Consulta ao estoque de produtos acabados antes de dimensionar a necessidade de produção e seu efeito nas quantidades (PD12), preservando uma única OP automática por pedido;
 - Metodologia definitiva de avaliação;
 - Requisitos não funcionais mensuráveis.
 
 Esses itens não devem ser considerados definidos até serem discutidos e documentados.
+
+## Banco de dados
+
+Em **01/11/2026**, o solicitante definiu o **PostgreSQL** como banco de dados da futura implementação. A escolha considera a modelagem relacional do domínio e a experiência prévia do solicitante e de outro integrante com essa tecnologia.
+
+A [decisão técnica DT01](../04-arquitetura/decisoes-tecnologicas.md) detalha a justificativa e os limites da escolha. A versão, a hospedagem, o backend e a composição da base de demonstração ainda serão definidos. Esta decisão não altera o protótipo frontend nem cria uma instância real do banco.
 
 ## Registro da revisão
 
@@ -174,6 +180,18 @@ Em 17/10/2026, o solicitante confirmou que a revisão do grupo sobre a base cons
 1. Reservar insumos no início da produção; baixa física normal na conclusão, com encerramento da reserva.
 2. Preservar na OP a composição e as quantidades originais da receita, incluindo unidades e rendimento.
 3. No cancelamento, apurar consumo e perdas sem sobreposição, baixar uma única vez, liberar o restante reservado e receber produtos aproveitáveis.
-4. Permitir vários recebimentos por compra, com controle do saldo pendente de cada item.
+4. Decisão histórica substituída em 15/11/2026: recebimento único e integral por compra.
 
 Essas decisões complementam RF34–RF36 e RN26–RN29 no escopo. Detalhes de autorização, concorrência técnica e revisão da composição após alteração de pedido permanecem explícitos.
+
+## Alinhamento confirmado pelo grupo — 15/11/2026
+
+Esta revisão prevalece sobre descrições históricas conflitantes. O [DER](../03-modelagem/dados/README.md) mantém o modelo de persistência proposto.
+
+- Recebimento único integral: uma compra admite zero ou um recebimento, sempre integral; confirmar gera todas as entradas uma única vez. Registrar a compra não altera estoque nem preço de referência.
+- Lotes inteiros, inclusive OP manual: lotes = teto(solicitada / rendimento); planejada = lotes × rendimento; insumos = composição por lote × lotes. Pedido de 15 com rendimento 10 gera entrada de 20 e expedição de 15; excedente de 5 fica em estoque. Uma OP automática por pedido. PD12 (abater estoque acabado) permanece pendente; a demo não abate.
+- Versões publicadas da receita têm composição e rendimento imutáveis, com no máximo uma ativa por produto. OP não iniciada acompanha a ativa e recalcula; iniciada preserva versão e quantidades.
+- Preço de referência: preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento; sem recebimento, preço inicial opcional; sem preço, custo indisponível. Desempate pelo maior ID de recebimento é provisório, conforme proposta do DER. Preços históricos dos pedidos são preservados.
+- Cancelamento exige motivo e apuração de cada insumo reservado, inclusive zero; consumo exclui perdas. Baixa ambos uma vez, libera a reserva restante e recebe produtos aproveitáveis vinculados à mesma OP. Não admite conclusão parcial normal ou expedição parcial. Limites provisórios: consumo + perdas até reservado; aproveitamento até planejado. Rejeitar divergências sem truncar. Justificativa: evitar saldo negativo ou entrada superior ao plano enquanto a política de exceções aguarda aprovação.
+- Kanban acompanha etapas por produto da OP e não movimenta estoque; conclusão integral registra baixas e entradas. Exigir todos os cards concluídos é uma escolha demonstrativa ainda sujeita a validação.
+- Frontend local acadêmico, sem backend, API, autenticação real, hospedagem ou PostgreSQL em execução. Reservas virtuais e troca de estado local demonstram regras; garantias de transação, segurança e concorrência multiusuário dependem do futuro backend. PostgreSQL permanece a escolha futura (DT01).

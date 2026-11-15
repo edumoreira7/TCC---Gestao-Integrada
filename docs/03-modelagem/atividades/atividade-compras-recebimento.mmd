@@ -1,22 +1,18 @@
-
 flowchart TD
-    A([Início]) --> B[Usuário identifica necessidade de compra]
-    B --> C[Consulta informações de estoque e necessidades]
-    C --> D[Informa fornecedor e itens da compra]
-    D --> E[Registra compra]
-    E --> F[Compra fica registrada aguardando recebimentos]
-    F --> G[Insumos são recebidos fisicamente]
-    G --> H[Usuário localiza a compra]
-    H --> I[Informa as quantidades efetivamente recebidas]
-    I --> J{Soma recebida ultrapassa<br/>a quantidade comprada?}
-    J -- Sim --> K[Corrige as quantidades informadas]
-    K --> I
-    J -- Não --> L[Registra o recebimento]
-    L --> M[Sistema registra entrada somente<br/>das quantidades efetivamente recebidas]
-    M --> N[Atualiza o saldo de insumos]
-    N --> O[Reavalia a disponibilidade<br/>dos insumos necessários às OPs]
-    O --> P{Há outro recebimento<br/>a realizar?}
-    P -- Sim --> G
-    P -- Não --> Q([Fim])
-
-    E -.-> R[Registrar a compra não aumenta<br/>o estoque por si só]
+    A([Início]) --> B[Compras informa fornecedor e itens com quantidades e preços]
+    B --> C[Registrar compra sem alterar estoque ou preço de referência]
+    C --> D[Estoque confere integralmente todos os itens]
+    D --> E{Compra já recebida?}
+    E -- Sim --> F[Rejeitar sem duplicar entradas]
+    E -- Não --> G{Todos os itens foram recebidos integralmente?}
+    G -- Não --> H[Não confirmar; parcial não admitido]
+    G -- Sim --> I[Preparar único recebimento com ID e data-hora]
+    I --> J[Confirmar recebimento, congelar itens e registrar todas as entradas juntos]
+    J --> K[Referência de preço pelo recebimento mais recente]
+    K --> L[Reavaliar disponibilidade das OPs]
+    L --> M([Fim])
+    F --> M
+    H --> D
+    J -.-> N[Modelo futuro: unicidade e transação no backend; falha não confirma efeitos parciais]
+    K -.-> O[Sem recebimento: preço inicial opcional; sem preço: custo indisponível]
+    K -.-> P[Desempate provisório pelo maior ID do recebimento]

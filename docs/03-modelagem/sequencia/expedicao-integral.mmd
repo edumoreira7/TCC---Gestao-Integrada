@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor Expedidor
+    participant Expedicao
+    participant Pedidos
+    participant Estoque
+    participant Dados
+    Expedidor->>Expedicao: Selecionar pedido e data
+    Expedicao->>Pedidos: Consultar todos os itens e expedição anterior
+    Pedidos-->>Expedicao: Destinatário, quantidades e situação da OP
+    Expedicao->>Estoque: Verificar saldo acabado para todos os itens
+    alt OP não concluída, pedido já expedido ou saldo insuficiente
+        Expedicao-->>Expedidor: Bloquear sem saída
+    else Atendimento integral possível
+        Expedicao->>Dados: Gravar expedição do pedido e saídas conjuntamente
+        Dados-->>Expedidor: Confirmação ou falha sem efeitos parciais
+    end
+    Note over Estoque,Dados: Expedir solicitada do pedido, preservar excedente da planejada no estoque

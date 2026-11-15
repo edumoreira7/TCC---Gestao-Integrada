@@ -1,0 +1,53 @@
+erDiagram
+  PRODUTO ||--o{ RECEITA_VERSAO : versiona
+  RECEITA_VERSAO ||--|{ ITEM_RECEITA : contem
+  INSUMO ||--o{ ITEM_RECEITA : compoe
+  FORNECEDOR ||--o{ COMPRA : fornece
+  COMPRA ||--|{ ITEM_COMPRA : contem
+  INSUMO ||--o{ ITEM_COMPRA : adquirido
+  COMPRA ||--o| RECEBIMENTO : recebido
+  PRODUTO {
+    bigint id PK
+    text nome
+  }
+  RECEITA_VERSAO {
+    bigint id PK
+    bigint produto_id FK
+    integer versao
+    integer rendimento
+    boolean ativa
+  }
+  ITEM_RECEITA {
+    bigint receita_versao_id PK,FK
+    bigint insumo_id PK,FK
+    numeric quantidade_padrao
+  }
+  INSUMO {
+    bigint id PK
+    text nome
+    text unidade_padrao
+    numeric preco_inicial "opcional"
+    boolean ativo
+  }
+  FORNECEDOR {
+    bigint id PK
+    text nome
+    boolean ativo
+  }
+  COMPRA {
+    bigint id PK
+    bigint fornecedor_id FK
+    timestamptz registrada_em
+  }
+  ITEM_COMPRA {
+    bigint id PK
+    bigint compra_id FK
+    bigint insumo_id FK
+    numeric quantidade_padrao
+    numeric preco_unitario_padrao
+  }
+  RECEBIMENTO {
+    bigint id PK
+    bigint compra_id FK,UK
+    timestamptz recebido_em
+  }

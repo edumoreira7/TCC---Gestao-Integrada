@@ -1,16 +1,23 @@
 stateDiagram-v2
-    [*] --> RegistradoComOP: registra pedido e gera automaticamente a única OP
-    RegistradoComOP --> RegistradoComOP: altera antes do início / atualiza mesma OP e necessidades
-    RegistradoComOP --> ProducaoIniciada: inicia produção da OP
-    ProducaoIniciada --> ProducaoConcluida: conclusão integral e entrada no estoque
-    ProducaoConcluida --> AtendidoPorExpedicao: expedição integral vinculada ao pedido
+    state "Registrado com OP" as RegistradoComOP
+    state "Produção iniciada" as ProducaoIniciada
+    state "Produção concluída" as ProducaoConcluida
+    state "OP cancelada" as OPCancelada
+    state "Atendido por expedição" as AtendidoPorExpedicao
+    [*] --> RegistradoComOP: registrar pedido e única OP automática
+    RegistradoComOP --> RegistradoComOP: alterar antes do início / atualizar mesma OP e necessidades
+    RegistradoComOP --> ProducaoIniciada: iniciar OP e preservar versão utilizada
+    ProducaoIniciada --> ProducaoConcluida: concluir quantidade planejada integralmente
+    ProducaoIniciada --> OPCancelada: cancelar OP com apuração quantitativa
+    ProducaoConcluida --> AtendidoPorExpedicao: expedir todos os itens nas quantidades do pedido
     AtendidoPorExpedicao --> [*]
     note right of RegistradoComOP
-      Estados ilustrativos sujeitos à PD02.
-      PD12 continua pendente: efeito do estoque
-      acabado no dimensionamento da produção.
+      Quantidade solicitada é histórica do pedido.
+      Planejada pode ser maior por lotes inteiros.
+      PD12 permanece pendente, sem abatimento na demo.
     end note
-    note right of ProducaoIniciada
-      Alteração do pedido bloqueada.
-      Cancelamento e WIP não detalhados aqui.
+    note right of OPCancelada
+      Bloqueia expedição do pedido.
+      Aproveitamento não autoriza atendimento parcial.
+      Replanejamento ou cancelamento do pedido não definidos.
     end note

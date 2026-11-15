@@ -1,12 +1,12 @@
 stateDiagram-v2
+    state "Não registrada" as NaoRegistrada
+    state "Registrada" as Registrada
     [*] --> NaoRegistrada
-    NaoRegistrada --> Registrada: registra expedição integral de pedido ainda não expedido com saldo suficiente
+    NaoRegistrada --> Registrada: OP concluída, pedido não expedido, saldo para todos os itens / confirmar integralmente
     Registrada --> [*]
     note right of Registrada
-      Vinculada obrigatoriamente a um pedido.
-      Todos os itens saem integralmente do estoque.
-      O registro gera saída correspondente
-      do estoque de produtos acabados (RN11).
-      Outros estados, cancelamento, devolução
-      e confirmação de entrega não definidos.
+      Um pedido e uma expedição, sem duplicação.
+      Saída das quantidades solicitadas, excedente fica em estoque.
+      Registro e saídas devem confirmar juntos no backend futuro.
+      Devolução, transporte e confirmação de entrega fora desta entrega.
     end note

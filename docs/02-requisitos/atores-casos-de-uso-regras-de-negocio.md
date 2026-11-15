@@ -16,7 +16,7 @@ Os atores representam papéis funcionais internos, não pessoas distintas. Um us
 | PCP (Planejamento e Controle da Produção) | Criar ordens manualmente e acompanhar as geradas automaticamente pelos pedidos; consultar receitas e necessidades de insumos; identificar faltas e acionar Compras; acompanhar ordens. |
 | Compras | Cadastrar e consultar fornecedores; registrar aquisições de insumos, quantidades e preços. |
 | Estoque | Consultar saldos e histórico; registrar recebimento de insumos; acompanhar as movimentações da conclusão da produção e da expedição. |
-| Produção | Iniciar, executar e concluir integralmente a produção; registrar informações de cancelamento, conforme regra ainda a detalhar. |
+| Produção | Iniciar, executar e concluir integralmente a produção; apurar cancelamento quantitativo conforme o DER; autorizações e limites de divergência permanecem pendentes. |
 | Expedição | Registrar a expedição integral vinculada a um pedido, com destinatário, produtos, quantidades e data. |
 | Financeiro | Consultar valores das operações e realizar registros básicos conforme eventos e permissões ainda a detalhar. |
 
@@ -82,7 +82,7 @@ Para CU01, CU02 e CU20, o diagrama usa a categoria genérica **Usuário interno 
 4. A disponibilidade para as ordens aguardando reposição é reavaliada.
 5. Somente com todos os insumos necessários disponíveis a produção poderá iniciar.
 
-**Limites:** sem criação/envio automático de pedidos de compra. Recebimentos parciais são permitidos: cada recebimento referencia os itens da compra, respeita o saldo pendente e movimenta somente o efetivamente recebido.
+**Limites:** sem criação/envio automático de pedidos de compra. Recebimento é único e integral por compra; confirmar movimenta todos os itens uma única vez, conforme RF36/RN28.
 
 ### CU13 e CU14: iniciar e concluir produção
 
@@ -114,7 +114,7 @@ Autorizações e tratamento de outras falhas seguem em PD03. O cancelamento é u
 
 ### CU17 a CU19: custos, preços e valores das operações
 
-O custo de insumos de uma receita corresponde à soma das quantidades de cada componente multiplicadas pelo seu último preço de compra conhecido, em unidades compatíveis. O custo por unidade do produto considera o rendimento da receita. Critério temporal do preço, ausência de preço e conversões ainda dependem de PD11.
+O custo de insumos de uma receita corresponde à soma das quantidades de cada componente multiplicadas pelo seu preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento, em unidades compatíveis. O custo por unidade do produto considera o rendimento da receita. Data/hora do recebimento define o preço; sem recebimento usa preço inicial opcional; sem preço, custo indisponível. Desempate e conversões seguem em PD11.
 
 O preço de venda é cadastrado manualmente. O acompanhamento financeiro registra valores básicos das operações, sem confirmar pagamentos bancários e sem contas a pagar/receber ou contabilidade completa. Eventos, automatização e estornos dependem de PD05.
 
@@ -122,7 +122,7 @@ O preço de venda é cadastrado manualmente. O acompanhamento financeiro registr
 
 Gerenciar engloba cadastrar, consultar, editar e inativar quando aplicável, preservando o histórico e os vínculos. CU01 a CU04 gerenciam os respectivos cadastros; CU02 inclui composição e rendimento da receita. CU05 consulta saldos e histórico. CU10 apresenta o estado da ordem e as faltas calculadas, permitindo ao PCP acionar Compras sem emissão automática de pedidos a fornecedores.
 
-Em CU17, o usuário seleciona um produto e o sistema consulta a receita e os últimos preços de compra conhecidos para apresentar o custo; entradas sem preço ou unidade compatível não devem produzir custo zero implícito. Em CU18, Comercial informa o preço de venda manualmente. CU19 registra/consulta valores básicos, com eventos e automatização ainda em PD05. CU20 representa a administração de acessos acumuláveis; seu fluxo de concessão e suas autorizações dependem de PD06.
+Em CU17, o usuário seleciona um produto e o sistema consulta a receita e os preços de referência por recebimento para apresentar o custo; entradas sem preço ou unidade compatível não devem produzir custo zero implícito. Em CU18, Comercial informa o preço de venda manualmente. CU19 registra/consulta valores básicos, com eventos e automatização ainda em PD05. CU20 representa a administração de acessos acumuláveis; seu fluxo de concessão e suas autorizações dependem de PD06.
 
 Essas descrições completam a visão funcional sem presumir exclusão física de registros, regras de aprovação ou soluções técnicas não definidas.
 
@@ -157,3 +157,15 @@ Em 17/10/2026, o solicitante confirmou que a revisão do grupo sobre a base cons
 O encerramento da Issue #2 registra a conclusão dessa modelagem funcional. Não representa implementação, encerramento da Issue #3 nem aprovação dos detalhamentos que continuam identificados por PD.
 
 A regra pedido versus estoque acabado foi confirmada nesta revisão: todo pedido deverá gerar uma ordem de produção. Classes e DER devem refletir essa obrigação, além da validação coletiva do fluxo. Permanecem abertas as regras de cancelamento, reserva/concorrência, estados completos, matriz de permissões, eventos financeiros e tratamento dos preços/unidades.
+
+## Alinhamento confirmado pelo grupo — 15/11/2026
+
+Esta revisão prevalece sobre descrições históricas conflitantes. O [DER](../03-modelagem/dados/README.md) mantém o modelo de persistência proposto.
+
+- Recebimento único integral: uma compra admite zero ou um recebimento, sempre integral; confirmar gera todas as entradas uma única vez. Registrar a compra não altera estoque nem preço de referência.
+- Lotes inteiros, inclusive OP manual: lotes = teto(solicitada / rendimento); planejada = lotes × rendimento; insumos = composição por lote × lotes. Pedido de 15 com rendimento 10 gera entrada de 20 e expedição de 15; excedente de 5 fica em estoque. Uma OP automática por pedido. PD12 (abater estoque acabado) permanece pendente; a demo não abate.
+- Versões publicadas da receita têm composição e rendimento imutáveis, com no máximo uma ativa por produto. OP não iniciada acompanha a ativa e recalcula; iniciada preserva versão e quantidades.
+- Preço de referência: preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento; sem recebimento, preço inicial opcional; sem preço, custo indisponível. Desempate pelo maior ID de recebimento é provisório, conforme proposta do DER. Preços históricos dos pedidos são preservados.
+- Cancelamento exige motivo e apuração de cada insumo reservado, inclusive zero; consumo exclui perdas. Baixa ambos uma vez, libera a reserva restante e recebe produtos aproveitáveis vinculados à mesma OP. Não admite conclusão parcial normal ou expedição parcial. Limites provisórios: consumo + perdas até reservado; aproveitamento até planejado. Rejeitar divergências sem truncar. Justificativa: evitar saldo negativo ou entrada superior ao plano enquanto a política de exceções aguarda aprovação.
+- Kanban acompanha etapas por produto da OP e não movimenta estoque; conclusão integral registra baixas e entradas. Exigir todos os cards concluídos é uma escolha demonstrativa ainda sujeita a validação.
+- Frontend local acadêmico, sem backend, API, autenticação real, hospedagem ou PostgreSQL em execução. Reservas virtuais e troca de estado local demonstram regras; garantias de transação, segurança e concorrência multiusuário dependem do futuro backend. PostgreSQL permanece a escolha futura (DT01).

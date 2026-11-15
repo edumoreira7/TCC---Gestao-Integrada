@@ -1,10 +1,10 @@
 # Escopo e Requisitos do Sistema
 
 **Projeto:** Gestão Integrada de Estoque e Produção no Setor Alimentício: uma abordagem baseada em receitas e necessidades de insumo<br>
-**Versão:** 0.5<br>
+**Versão:** 0.6<br>
 **Etapa:** TCC1 — Levantamento de requisitos e análise<br>
 **Status:** Base consolidada; revisão coletiva informada pelo solicitante em 17/10/2026; detalhamentos pendentes identificados abaixo<br>
-**Revisão:** 20/10/2026
+**Revisão:** 15/11/2026
 
 ---
 
@@ -91,7 +91,7 @@ Uma ordem poderá ser criada de duas formas:
 1. Manualmente por um usuário;
 2. A partir de um pedido de cliente.
 
-Quando a ordem for criada manualmente, o usuário deverá informar os produtos e as respectivas quantidades que serão produzidas.
+Quando a ordem for criada manualmente, o usuário deverá informar os produtos e as quantidades solicitadas; o sistema calcula lotes inteiros e a quantidade planejada que será produzida.
 
 Uma ordem contém um ou mais produtos. Quando tiver origem em um pedido, estará vinculada somente a esse pedido. Cada pedido poderá estar associado a no máximo uma ordem de produção, mesmo quando possuir mais de um produto.
 
@@ -101,7 +101,7 @@ A ordem de produção poderá ser criada mesmo quando não houver quantidade suf
 
 Nessa situação, a ordem deverá permanecer aguardando reposição e não poderá iniciar enquanto os insumos necessários não estiverem disponíveis.
 
-O consumo dos insumos será registrado somente na conclusão da ordem de produção.
+A baixa normal dos insumos ocorre na conclusão integral; cancelamento após início é exceção quantitativa descrita abaixo.
 
 No mesmo momento, deverá ser registrada a entrada dos produtos acabados correspondentes no estoque.
 
@@ -158,7 +158,7 @@ Não estão previstos, na primeira versão:
 
 O sistema deverá permitir registrar e consultar os valores básicos das operações de compra e venda/expedição, sem tratar o registro como confirmação de pagamento ou recebimento bancário.
 
-As compras registram os preços dos insumos. O custo do produto será calculado pela receita e pelo último preço de compra conhecido de cada insumo, considerando quantidades, unidades compatíveis e rendimento. O preço de venda será cadastrado manualmente.
+As compras registram os preços dos insumos. O custo do produto será calculado pela receita e pelo preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento de cada insumo, considerando quantidades, unidades compatíveis e rendimento. O preço de venda será cadastrado manualmente.
 
 Contas a pagar, contas a receber, contabilidade completa e sugestão automática de preço ficam fora da primeira versão.
 
@@ -166,7 +166,7 @@ Contas a pagar, contas a receber, contabilidade completa e sugestão automática
 
 Ainda deverá ser definido quais eventos gerarão registros financeiros e quais registros serão manuais ou automáticos.
 
-Também serão definidos o critério temporal do último preço de compra, o tratamento de insumos sem preço e as conversões de unidades. A ausência de preço não deve ser tratada implicitamente como custo zero.
+Preço pela data/hora do último recebimento; sem recebimento usa preço inicial opcional; sem preço o custo é indisponível. Desempate por ID é provisório; conversões seguem pendentes.
 
 ### 4.8. Perfis e responsabilidades
 
@@ -180,7 +180,7 @@ Os perfis funcionais de referência são Comercial, PCP, Compras, Estoque, Produ
 | Pedido → ordem de produção | Uma ordem gerada automaticamente no registro de todo pedido, inclusive com estoque acabado suficiente. |
 | Ordem de produção → pedido | 0..1 pedido de origem; ordens manuais não exigem pedido. |
 | Ordem de produção → produtos | 1..N itens com produtos e quantidades. |
-| Produto → receita | Uma ficha técnica/receita de referência para produção e custo; versionamento não definido. |
+| Produto → receita | Versões imutáveis; no máximo uma ativa por produto; OP iniciada preserva a referência usada. |
 | Receita → insumos | 1..N componentes, com quantidades e unidades de medida. |
 | Expedição → pedido | Um pedido obrigatório por expedição; sem atendimento parcial inicialmente. |
 
@@ -234,7 +234,7 @@ Sua inclusão deverá ser avaliada pelo grupo considerando relevância, impacto 
 | RF11 | O sistema deverá permitir ao PCP criar manualmente ordens de produção com um ou mais produtos e suas quantidades, sem exigir pedido de origem. |
 | RF12 | O sistema deverá permitir ao Comercial registrar pedidos vinculados a clientes cadastrados, com um ou mais produtos e suas quantidades. |
 | RF13 | O sistema deverá gerar automaticamente, no registro de cada pedido, uma única ordem de produção vinculada a ele, com todos os seus produtos e quantidades, mesmo com estoque acabado suficiente. |
-| RF14 | O sistema deverá calcular os insumos necessários para uma ordem de produção a partir das receitas dos produtos e das quantidades solicitadas. |
+| RF14 | Calcular lotes inteiros = teto(solicitada / rendimento), planejada = lotes × rendimento e insumos por lotes inteiros, inclusive OP manual; separar solicitada, planejada e expedida. |
 | RF15 | O sistema deverá identificar e informar os insumos cuja quantidade disponível seja insuficiente para uma ordem de produção. |
 | RF16 | O sistema deverá permitir que uma ordem de produção seja criada mesmo quando houver insuficiência de insumos. |
 | RF17 | O sistema deverá manter uma ordem de produção aguardando reposição quando não houver insumos suficientes para seu início. |
@@ -250,7 +250,7 @@ Sua inclusão deverá ser avaliada pelo grupo considerando relevância, impacto 
 | RF27 | O sistema deverá reavaliar a disponibilidade dos insumos após seu recebimento e verificar sua suficiência antes de iniciar a produção. |
 | RF28 | O sistema deverá concluir integralmente a ordem de produção, sem conclusão parcial na primeira versão. |
 | RF29 | O sistema deverá registrar motivo, quantidades consumidas, perdidas e aproveitáveis no cancelamento; baixar consumo e perdas sem duplicidade, liberar a reserva não utilizada e dar entrada nos produtos aproveitáveis. |
-| RF30 | O sistema deverá calcular o custo dos produtos pela receita e pelo último preço de compra conhecido de cada insumo. |
+| RF30 | O sistema deverá calcular o custo dos produtos pela receita e pelo preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento de cada insumo. |
 | RF31 | O sistema deverá permitir cadastrar manualmente o preço de venda dos produtos. |
 | RF32 | O sistema deverá controlar o acesso dos usuários internos e permitir acumular perfis ou conjuntos de permissões, conforme matriz ainda a definir. |
 | RF33 | O sistema deverá permitir consultar os valores básicos registrados para acompanhamento financeiro das operações. |
@@ -264,12 +264,12 @@ Esta é uma relação inicial de requisitos. Os requisitos serão detalhados e r
 | ID | Regra |
 |---|---|
 | RN01 | Cada produto possui uma receita de referência com rendimento e um ou mais insumos, suas quantidades e unidades de medida. |
-| RN02 | A necessidade de cada insumo em uma ordem de produção deve ser calculada com base nas receitas dos produtos incluídos e nas quantidades solicitadas. |
+| RN02 | Dimensionar insumos por lotes inteiros e receber toda quantidade planejada. Expedir somente solicitado no pedido; excedente permanece em estoque. OP manual usa a mesma regra. |
 | RN03 | O sistema deve informar ao usuário quando a quantidade disponível de um ou mais insumos for inferior à quantidade necessária para a ordem de produção. |
 | RN04 | Uma ordem de produção pode ser criada mesmo quando houver insuficiência de insumos. |
 | RN05 | Quando houver insuficiência de insumos, a ordem de produção deve permanecer aguardando reposição antes de iniciar. |
 | RN06 | O recebimento de insumos adquiridos deve gerar a entrada correspondente no estoque de insumos. |
-| RN07 | O consumo dos insumos deve ser registrado somente na conclusão da ordem de produção. |
+| RN07 | A baixa normal ocorre na conclusão integral; no cancelamento aplicar RN21/RN29. |
 | RN08 | A entrada dos produtos acabados no estoque deve ser registrada na conclusão da ordem de produção. |
 | RN09 | Uma ordem de produção poderá ter origem manual ou estar vinculada a um pedido de cliente. |
 | RN10 | Todo pedido contém um ou mais produtos e gera automaticamente uma única ordem de produção no registro, mesmo com estoque acabado suficiente; não há atendimento direto sem ordem. |
@@ -284,7 +284,7 @@ Esta é uma relação inicial de requisitos. Os requisitos serão detalhados e r
 | RN19 | Toda expedição está vinculada a um pedido e atende seus itens integralmente, sem expedição parcial inicialmente. |
 | RN20 | Pedidos podem ser alterados somente até antes do início da produção; alterações devem refletir na ordem vinculada e no cálculo de insumos. |
 | RN21 | Cancelamento durante a produção exige motivo e apuração das quantidades consumidas, perdidas e aproveitáveis; baixa consumo e perdas sem duplicidade, libera a reserva não utilizada e recebe os produtos aproveitáveis. |
-| RN22 | O custo do produto utiliza sua receita e o último preço de compra conhecido de cada insumo, com unidades compatíveis e rendimento da receita. |
+| RN22 | O custo do produto utiliza sua receita e o preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento de cada insumo, com unidades compatíveis e rendimento da receita. |
 | RN23 | O preço de venda é informado manualmente. Sugestão automática de preço não faz parte da primeira versão. |
 | RN24 | Usuários internos podem acumular perfis ou conjuntos de permissões. |
 | RN25 | Registros financeiros acompanham os valores das operações; não constituem controle bancário, contas a pagar, contas a receber ou contabilidade completa. |
@@ -366,7 +366,7 @@ A metodologia definitiva de avaliação ainda deverá ser discutida com o orient
 | DC10 | Comercial registra pedidos; clientes e fornecedores não acessam o sistema. |
 | DC11 | O PCP identifica faltas e aciona Compras; a compra só aumenta o estoque após o recebimento. |
 | DC12 | Produção e expedição serão integrais inicialmente. Produtos acabados sempre passam pelo estoque. |
-| DC13 | O custo usa receitas e o último preço de compra dos insumos; o preço de venda é manual. |
+| DC13 | O custo usa receitas e o preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento dos insumos; o preço de venda é manual. |
 | DC14 | Usuários internos podem acumular perfis; pedidos podem ser alterados até antes do início da produção. |
 
 ---
@@ -384,7 +384,7 @@ A metodologia definitiva de avaliação ainda deverá ser discutida com o orient
 | PD07 | Quais critérios mensuráveis serão utilizados na validação e nos requisitos não funcionais? |
 | PD08 | Quais serão todos os estados e transições possíveis de uma ordem de produção? |
 | PD10 | Regra confirmada: reserva ao iniciar a produção, com baixa normal na conclusão. Falta definir o mecanismo de integridade para inícios concorrentes na arquitetura. |
-| PD11 | Como definir o último preço de compra, tratar ausência de preço e converter unidades no cálculo de custo? |
+| PD11 | Evento de preço e fallback definidos: último recebimento ou preço inicial; sem preço, custo indisponível. Validar desempate e conversões de unidades. |
 | PD12 | Consultar o estoque de produtos acabados antes de dimensionar a necessidade de produção? Como essa consulta afetará as quantidades, preservando a geração automática de uma única OP por pedido? |
 
 PD09 foi resolvida nesta revisão: todo pedido deverá gerar uma ordem de produção, inclusive com estoque acabado suficiente. O identificador foi mantido neste registro histórico e não será reutilizado como nova pendência.
@@ -404,8 +404,20 @@ O [diagrama de casos de uso](../03-modelagem/casos-de-uso/README.md) utiliza est
 ## Decisões complementares — 20/10/2026
 
 - **RF34 / RN26 — Reserva:** ao iniciar a produção, verificar e reservar conjuntamente todos os insumos necessários. Reserva não é baixa física; o saldo disponível corresponde ao saldo físico menos reservas ativas. Outro início não pode usar o saldo já reservado. Na conclusão, consumir os insumos e encerrar a reserva sem subtrair duas vezes do disponível. O mecanismo técnico será definido na arquitetura (PD10).
-- **RF35 / RN27 — Composição preservada:** cada item da OP guarda a composição, as quantidades, unidades e rendimento da receita usados no dimensionamento. Alterar o cadastro da receita não altera automaticamente ordens existentes. Alterações de itens do pedido antes do início continuam exigindo recálculo; a política de revisão da composição nessa situação precisa ser detalhada.
-- **RF36 / RN28 — Recebimentos parciais:** uma compra admite vários recebimentos. Cada item recebido referencia seu item comprado; a soma recebida não excede a quantidade comprada. Cada recebimento movimenta apenas a quantidade efetiva e reavalia as faltas das ordens.
+- **RF35 / RN27 — Receita versionada:** composição e rendimento publicados são imutáveis; editar cria versão nova, no máximo uma ativa por produto. OP não iniciada acompanha versão atual e recalcula; OP iniciada preserva referência e quantidades utilizadas.
+- **RF36 / RN28 — Recebimento único integral:** uma compra admite zero ou um recebimento, sempre integral; confirmar gera todas as entradas uma única vez. Registrar a compra não altera estoque nem preço de referência.
 - **RN29 — Cancelamento:** consumo e perdas são quantidades separadas, na unidade do insumo, sem sobreposição. Sua soma é baixada uma única vez; o restante da reserva é liberado e os produtos aproveitáveis entram no estoque. Esse encerramento excepcional não permite conclusão parcial normal nem expedição parcial. Autorizações e falhas não decorrentes de cancelamento seguem em PD03.
 
 As regras acima foram confirmadas pelo solicitante nesta conversa. PD03 e PD10 ficam parcialmente resolvidas; seus detalhamentos técnicos e de autorização não são presumidos.
+
+## Alinhamento confirmado pelo grupo — 15/11/2026
+
+Esta revisão prevalece sobre descrições históricas conflitantes. O [DER](../03-modelagem/dados/README.md) mantém o modelo de persistência proposto.
+
+- Recebimento único integral: uma compra admite zero ou um recebimento, sempre integral; confirmar gera todas as entradas uma única vez. Registrar a compra não altera estoque nem preço de referência.
+- Lotes inteiros, inclusive OP manual: lotes = teto(solicitada / rendimento); planejada = lotes × rendimento; insumos = composição por lote × lotes. Pedido de 15 com rendimento 10 gera entrada de 20 e expedição de 15; excedente de 5 fica em estoque. Uma OP automática por pedido. PD12 (abater estoque acabado) permanece pendente; a demo não abate.
+- Versões publicadas da receita têm composição e rendimento imutáveis, com no máximo uma ativa por produto. OP não iniciada acompanha a ativa e recalcula; iniciada preserva versão e quantidades.
+- Preço de referência: preço da compra efetivamente recebida mais recentemente, pela data/hora do recebimento; sem recebimento, preço inicial opcional; sem preço, custo indisponível. Desempate pelo maior ID de recebimento é provisório, conforme proposta do DER. Preços históricos dos pedidos são preservados.
+- Cancelamento exige motivo e apuração de cada insumo reservado, inclusive zero; consumo exclui perdas. Baixa ambos uma vez, libera a reserva restante e recebe produtos aproveitáveis vinculados à mesma OP. Não admite conclusão parcial normal ou expedição parcial. Limites provisórios: consumo + perdas até reservado; aproveitamento até planejado. Rejeitar divergências sem truncar. Justificativa: evitar saldo negativo ou entrada superior ao plano enquanto a política de exceções aguarda aprovação.
+- Kanban acompanha etapas por produto da OP e não movimenta estoque; conclusão integral registra baixas e entradas. Exigir todos os cards concluídos é uma escolha demonstrativa ainda sujeita a validação.
+- Frontend local acadêmico, sem backend, API, autenticação real, hospedagem ou PostgreSQL em execução. Reservas virtuais e troca de estado local demonstram regras; garantias de transação, segurança e concorrência multiusuário dependem do futuro backend. PostgreSQL permanece a escolha futura (DT01).

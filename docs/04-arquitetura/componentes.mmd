@@ -1,0 +1,27 @@
+flowchart LR
+    U[Usuário interno com perfis acumuláveis] --> UI[Interface web: React e TypeScript no protótipo]
+    UI --> API[API da aplicação: proposta para TCC2]
+    API --> AC[Acesso e autorização]
+    API --> CAD[Cadastros e receitas]
+    API --> PED[Pedidos]
+    API --> PCP[PCP e produção]
+    API --> COM[Compras e recebimentos]
+    API --> EXP[Expedição]
+    API --> FIN[Custos e valores básicos]
+    PED --> PCP
+    PCP --> CAD
+    PCP --> EST[Estoque e movimentações]
+    COM --> EST
+    EXP --> PED
+    EXP --> EST
+    FIN --> CAD
+    FIN --> COM
+    CAD --> P[Persistência e unidade de trabalho]
+    PED --> P
+    PCP --> P
+    COM --> P
+    EXP --> P
+    FIN --> P
+    AC --> P
+    EST --> P
+    P --> DB[(PostgreSQL: implementação futura)]

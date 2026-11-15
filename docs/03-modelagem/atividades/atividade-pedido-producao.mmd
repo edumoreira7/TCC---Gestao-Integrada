@@ -1,15 +1,19 @@
 flowchart TD
-    A([Início]) --> B[Comercial informa cliente cadastrado e um ou mais produtos]
-    B --> C[Sistema registra pedido e gera automaticamente sua única OP]
-    C --> D[Calcula necessidade de insumos pelas receitas e rendimento]
-    D --> E[Compara necessidade com disponibilidade de insumos]
-    E --> F{Todos os insumos disponíveis?}
-    F -- Não --> G[OP aguarda reposição e PCP identifica faltas]
-    G --> H[Compras registra compra sem alterar estoque]
-    H --> I[Estoque registra recebimento efetivo]
-    I --> E
-    F -- Sim --> J[OP apta para início sujeito à nova verificação no início]
-    J --> K([Fim deste fluxo])
-    C -.-> L[Alterações do pedido até o início atualizam a mesma OP e as necessidades]
-    D -.-> M[PD12 pendente: efeito do estoque acabado no dimensionamento]
-    N[OP manual contém um ou mais produtos e não exige pedido] --> D
+    A([Início]) --> B[Comercial informa cliente e produtos com quantidades solicitadas]
+    B --> C[Preparar pedido e sua única OP automática]
+    N[PCP informa produtos e quantidades solicitadas na OP manual] --> D
+    C --> D[Obter versão ativa imutável de cada receita]
+    D --> E[Calcular lotes pelo teto da solicitada dividida pelo rendimento]
+    E --> F[Planejada igual a lotes vezes rendimento; insumos por lotes inteiros]
+    F --> G[Consultar físico menos reservas abertas e calcular faltas]
+    G --> H[Gravar pedido e OP juntos; manual sem pedido]
+    H --> I{Insumos disponíveis?}
+    I -- Não --> J[Aguardar reposição; PCP aciona Compras]
+    J --> K[Compra sem alterar saldo ou referência de preço]
+    K --> L[Confirmar único recebimento integral]
+    L --> G
+    I -- Sim --> M[OP pronta; revalidar antes de iniciar]
+    M --> O([Fim do planejamento])
+    D -.-> P[Publicar nova versão recalcula OP não iniciada; iniciada preserva versão e quantidades]
+    E -.-> Q[PD12 aberta: não abater estoque acabado no dimensionamento]
+    F -.-> R[Exemplo: solicita 15; rendimento 10; planeja 20; expede 15; sobra 5]

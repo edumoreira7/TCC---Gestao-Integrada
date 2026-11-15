@@ -1,0 +1,22 @@
+sequenceDiagram
+    actor Comercial
+    participant Pedidos
+    participant Producao
+    participant Receitas
+    participant Estoque
+    participant Dados
+    Comercial->>Pedidos: Registrar cliente cadastrado e 1..N itens
+    Pedidos->>Pedidos: Validar cliente, produtos e quantidades
+    Pedidos->>Producao: Preparar única OP com todos os itens
+    Producao->>Receitas: Obter versão ativa, composição e rendimento
+    Receitas-->>Producao: Versão publicada imutável e composição por lote
+    Producao->>Producao: Lotes = teto(solicitada / rendimento), planejada = lotes vezes rendimento
+    Producao->>Producao: Agregar insumos por lotes inteiros
+    Producao->>Estoque: Consultar disponibilidade de insumos
+    Estoque-->>Producao: Suficiência e faltas
+    Producao-->>Pedidos: OP preparada, inclusive com faltas
+    Pedidos->>Dados: Gravar pedido e única OP juntos
+    Dados-->>Pedidos: Confirmação ou falha sem gravação parcial
+    Pedidos-->>Comercial: Pedido e OP ou erro
+    Note over Pedidos,Producao: Alteração antes do início atualiza a mesma OP e necessidades
+    Note over Producao,Estoque: PD12 pendente: efeito do estoque acabado no dimensionamento

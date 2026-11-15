@@ -1,0 +1,10 @@
+sequenceDiagram
+    actor Compras
+    participant Aquisicoes
+    participant Dados
+    Compras->>Aquisicoes: Informar fornecedor, insumos, quantidades e preços
+    Aquisicoes->>Aquisicoes: Validar cadastros e itens
+    Aquisicoes->>Dados: Gravar compra e itens
+    Dados-->>Aquisicoes: Compra registrada
+    Aquisicoes-->>Compras: Compra aguardando recebimento
+    Note over Aquisicoes,Dados: Não movimenta estoque, não muda preço de referência e não envia pedido ao fornecedor

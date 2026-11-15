@@ -15,3 +15,5 @@ Ao registrar um pedido com um ou mais produtos, o sistema gera automaticamente s
 ## 4. Base para elaboração
 
 Escopo e requisitos, catálogo de casos de uso, regras de negócio RN01–RN29, decisões complementares registradas em 20/10/2026; PD12 permanece pendente. Situações ainda não definidas são identificadas como pendências, sem serem tratadas como requisitos aprovados.
+
+Fontes editáveis e visualizações SVG estão no [inventário da pasta](README.md). Elaboração concluída; nomes/estados completos e propostas marcadas no DER não ganham aprovação definitiva pelo desenho.

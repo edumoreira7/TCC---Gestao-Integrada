@@ -10,8 +10,10 @@ Ajuda a definir o comportamento de pedidos, ordens de produção, compras/recebi
 
 ## 3. Exemplo no nosso sistema
 
-Uma OP com faltas aguarda reposição. No início, os insumos são reservados sem baixa física. Na conclusão integral, o sistema baixa insumos e recebe acabados em uma única operação. Cancelamento e WIP continuam sujeitos a detalhamento.
+Uma OP com faltas aguarda reposição. No início, os insumos são reservados sem baixa física. Na conclusão integral, o sistema baixa insumos e recebe acabados em uma única operação. Cancelamento quantitativo segue o DER; limites de divergência e WIP formal permanecem pendentes.
 
 ## 4. Base para elaboração
 
-Escopo e requisitos, catálogo de casos de uso e regras de negócio RN01–RN29, incluindo as decisões complementares registradas em 20/10/2026. Quando o catálogo oficial de estados e transições não está definido, o desenho é identificado como proposta para validação do grupo. Pendências como PD02, PD03, PD04, PD08 e PD10 devem permanecer explícitas.
+Escopo e requisitos, catálogo de casos de uso e regras de negócio RN01–RN29, incluindo as decisões confirmadas e alinhadas em 15/11/2026. Quando o catálogo oficial de estados e transições não está definido, o desenho é identificado como proposta para validação do grupo. Pendências como PD02, PD03, PD04, PD08 e PD10 devem permanecer explícitas.
+
+Fontes editáveis e visualizações SVG estão no [inventário da pasta](README.md). Elaboração concluída; nomes/estados completos e propostas marcadas no DER não ganham aprovação definitiva pelo desenho.
