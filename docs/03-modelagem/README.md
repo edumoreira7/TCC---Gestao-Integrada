@@ -19,3 +19,10 @@ Fonte editável não é sinônimo de diagrama homologado. SVGs foram exportados 
 Para regenerar SVGs, usar Node.js e `@mermaid-js/mermaid-cli` (conferido com 12.2.0), instalado como ferramenta de documentação fora das dependências do frontend: `node docs/03-modelagem/render_mermaid.mjs --cli <caminho/mermaid-cli/src/cli.js>`. Se necessário, passar `--puppeteer <configuração-local.json>` para localizar o navegador. A configuração visual padrão está em [mermaid-config.json](mermaid-config.json); `--only docs/03-modelagem/estados` limita a regeneração a uma pasta após alterações localizadas. Não versionar pacotes temporários ou caminhos particulares do navegador.
 
 PD12, desempate de preços, limites de cancelamento, conversões, estados completos, permissões e financeiro permanecem identificados. As decisões confirmadas não aprovam automaticamente as propostas. Ver [auditoria](../planejamento/auditoria-github-2026-11-15.md), [requisitos](../02-requisitos/escopo-e-requisitos.md) e [decisões](../01-visao-geral/decisoes-do-projeto.md).
+
+## Complementos de 20/11/2026
+
+- [RNF numerados](../02-requisitos/requisitos-nao-funcionais.md) e [rastreabilidade RF/RNF](../06-testes/matriz-rastreabilidade.md).
+- [Extensão estatística do DER](dados/reposicao.md), vinculada a RF37–RF42.
+- [Fluxo resumido e mapa para apresentação](../07-apresentacoes/mapa-da-modelagem.md).
+- [Plano de avaliação de uso](../06-testes/avaliacao-de-uso.md), com possível confeitaria ainda sem participação confirmada.

@@ -64,3 +64,7 @@ Esta revisão prevalece sobre descrições históricas conflitantes. O [DER](../
 - Frontend local acadêmico, sem backend, API, autenticação real, hospedagem ou PostgreSQL em execução. Reservas virtuais e troca de estado local demonstram regras; garantias de transação, segurança e concorrência multiusuário dependem do futuro backend. PostgreSQL permanece a escolha futura (DT01).
 
 Exportações PNG/JPG regeneráveis a partir do draw.io com `python docs/03-modelagem/render_drawio.py` (Pillow, Arial ou DejaVu Sans).
+
+## Vista resumida de apresentação — 20/11/2026
+
+[Fonte editável](apresentacao-resumida.mmd) e [SVG](apresentacao-resumida.svg) condensam o caminho do pedido para público que conhece o sistema pela primeira vez. A reposição agrupa suas etapas internas; a vista não altera o modelo oficial nem dispensa OP, recebimento e regras de estoque. Ver [mapa da apresentação](../../07-apresentacoes/mapa-da-modelagem.md).

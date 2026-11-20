@@ -1,0 +1,8 @@
+flowchart LR
+    P[Pedido] --> R[Planejar ingredientes pelas receitas]
+    R --> E{Ingredientes disponíveis?}
+    E -->|Sim| F[Produzir e acompanhar etapas]
+    E -->|Não| C[Repor insumos]
+    C --> E
+    F --> T[Preparar para entrega]
+    T --> X[Entregar pedido]

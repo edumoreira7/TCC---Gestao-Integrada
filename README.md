@@ -4,7 +4,7 @@ Sistema voltado a pequenas e médias empresas do setor alimentício, integrando 
 
 ## Objetivo
 
-Desenvolver um sistema integrado de apoio à gestão de estoque e produção para pequenas e médias empresas do setor alimentício, relacionando receitas, necessidades de insumos, compras, ordens de produção, estoque de produtos acabados e expedição.
+Desenvolver e avaliar um sistema integrado de estoque e produção baseado em receitas, para apoiar a otimização dos processos operacionais e a melhoria do nível de serviço em pequenas e médias empresas do setor alimentício.
 
 ## Escopo
 
@@ -108,3 +108,7 @@ A [revisão de consistência de 17/10/2026](docs/planejamento/revisao-de-consist
 Consulte a [auditoria de 15/11/2026](docs/planejamento/auditoria-github-2026-11-15.md) para entregas, PR de alinhamento, integração pendente do protótipo e trabalho futuro de TCC II. PostgreSQL é a escolha futura; backend/API/autenticação real não foram implementados.
 
 A [revisão de 20/10/2026](docs/planejamento/revisao-de-consistencia-2026-10-20.md) registra a OP automática, a revisão dos casos de uso e o replanejamento do TCC1.
+
+## Modelagem e avaliação — atualização de 20/11/2026
+
+A base de produto e seus limites permanecem. Os complementos incluem [RF37–RF43](docs/02-requisitos/reposicao-estatistica.md), [RNF01–RNF13](docs/02-requisitos/requisitos-nao-funcionais.md), [matriz de rastreabilidade](docs/06-testes/matriz-rastreabilidade.md), [extensão de dados de reposição](docs/03-modelagem/dados/reposicao.md), [avaliação de uso](docs/06-testes/avaliacao-de-uso.md) e [mapa da apresentação](docs/07-apresentacoes/mapa-da-modelagem.md). A arquitetura incorpora o componente estatístico previsto. São especificações e planos; não implementam backend, ES/PR ou validação com empresa.

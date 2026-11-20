@@ -169,3 +169,7 @@ Esta revisão prevalece sobre descrições históricas conflitantes. O [DER](../
 - Cancelamento exige motivo e apuração de cada insumo reservado, inclusive zero; consumo exclui perdas. Baixa ambos uma vez, libera a reserva restante e recebe produtos aproveitáveis vinculados à mesma OP. Não admite conclusão parcial normal ou expedição parcial. Limites provisórios: consumo + perdas até reservado; aproveitamento até planejado. Rejeitar divergências sem truncar. Justificativa: evitar saldo negativo ou entrada superior ao plano enquanto a política de exceções aguarda aprovação.
 - Kanban acompanha etapas por produto da OP e não movimenta estoque; conclusão integral registra baixas e entradas. Exigir todos os cards concluídos é uma escolha demonstrativa ainda sujeita a validação.
 - Frontend local acadêmico, sem backend, API, autenticação real, hospedagem ou PostgreSQL em execução. Reservas virtuais e troca de estado local demonstram regras; garantias de transação, segurança e concorrência multiusuário dependem do futuro backend. PostgreSQL permanece a escolha futura (DT01).
+
+## Extensão de reposição — 20/11/2026
+
+O [complemento funcional](reposicao-estatistica.md) acrescenta CU21 (configurar política) e CU22 (consultar reposição), ligados a RF37–RF42. RF43 explicita o quadro de etapas em CU10/CU13. A [matriz RF/RNF](../06-testes/matriz-rastreabilidade.md) amplia a cobertura sem renumerar a base anterior. Os novos comportamentos estatísticos são planejados, sem implementação declarada.

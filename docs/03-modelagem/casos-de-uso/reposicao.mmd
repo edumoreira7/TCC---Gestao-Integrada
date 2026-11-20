@@ -1,0 +1,8 @@
+flowchart LR
+    U[Usuário interno autorizado - PCP como referência]
+    subgraph S[Sistema de gestão integrada - extensão planejada]
+        C21([CU21 Configurar política por insumo])
+        C22([CU22 Consultar reposição e resultados])
+    end
+    U --- C21
+    U --- C22

@@ -1,0 +1,43 @@
+erDiagram
+    INSUMO ||--o{ CONFIG_REPOSICAO : possui
+    INSUMO ||--o{ SERIE_CONSUMO : possui
+    SERIE_CONSUMO ||--|{ CONSUMO_PERIODO : contem
+    CONFIG_REPOSICAO ||--o{ CALCULO_REPOSICAO : parametriza
+    SERIE_CONSUMO ||--o{ CALCULO_REPOSICAO : fundamenta
+    CONFIG_REPOSICAO {
+        bigint id PK
+        bigint insumo_id FK
+        integer versao
+        numeric nivel_servico
+        numeric prazo_periodos
+        text periodo_base
+        text janela
+        timestamptz registrada_em
+    }
+    SERIE_CONSUMO {
+        bigint id PK
+        bigint insumo_id FK
+        text unidade
+        text periodo_base
+        text origem_versao
+        text cobertura
+    }
+    CONSUMO_PERIODO {
+        bigint serie_id PK,FK
+        date periodo_inicio PK
+        numeric quantidade
+        boolean observado
+    }
+    CALCULO_REPOSICAO {
+        bigint id PK
+        bigint configuracao_id FK
+        bigint serie_id FK
+        numeric media
+        numeric desvio
+        numeric z
+        numeric estoque_seguranca
+        numeric ponto_reposicao
+        text estimador_versao
+        text situacao
+        timestamptz calculado_em
+    }

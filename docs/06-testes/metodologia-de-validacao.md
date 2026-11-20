@@ -4,7 +4,7 @@ Elaborada em 10/11/2026 e alinhada em 15/11/2026 — issue #10. Planejamento de 
 
 ## Objetivo e estratégia
 
-Avaliar se a solução integra pedido, receitas, necessidades, compras, recebimento, produção e expedição com consistência dos saldos e rastreabilidade. Realizar estudo aplicado com construção de software e verificação funcional por cenários controlados com dados sintéticos. Comparar os resultados observados com um oráculo calculado a partir das receitas e regras. A avaliação não depende de uma empresa parceira.
+Avaliar se a solução integra pedido, receitas, necessidades, compras, recebimento, produção e expedição com consistência dos saldos e rastreabilidade. Realizar estudo aplicado com construção de software e verificação funcional por cenários controlados com dados sintéticos. Comparar os resultados observados com um oráculo calculado a partir das receitas e regras. A base técnica é reproduzível sem empresa; a avaliação de uso e utilidade segue o [plano específico](avaliacao-de-uso.md), atualizado em 20/11/2026, e não é demonstrada somente por estes cálculos.
 
 Executar testes de domínio, integração com persistência e cenários ponta a ponta. O protótipo pode antecipar avaliação de fluxo e interface, mas não comprova transações, segurança ou concorrência do sistema final. Usar uma base reinicializada por cenário; identificar versão do software e dados. Os testes de integração devem usar o SGBD escolhido na arquitetura definitiva.
 
@@ -66,13 +66,36 @@ Critérios propostos para revisão: todos os cenários obrigatórios executávei
 
 Analisar defeitos por requisito, severidade, causa e correção. Relatar falhas e limitações, sem generalizar a pequenas e médias empresas a partir de um único conjunto sintético. Não há meta de desempenho inventada; carga, tempo de resposta e ambiente serão acordados quando os RNF forem mensuráveis.
 
-## Avaliação complementar de uso
+## Avaliação de uso do produto
 
-Se houver participantes disponíveis, convidar usuários com experiência em operação alimentícia para executar registro de pedido, identificação de faltas, recebimento e consulta da produção. Registrar conclusão da tarefa, erros, necessidade de ajuda, duração e comentários, com consentimento e dados sem identificação pessoal desnecessária. Quantidade e perfil dos participantes, instrumento e eventual exigência institucional devem ser combinados com orientador. Sem participantes, manter a validação funcional e declarar que usabilidade externa não foi avaliada. Não inventar entrevistas ou resultados.
+O [plano de avaliação de uso](avaliacao-de-uso.md) define U01–U05, observação de tarefas, SUS como possibilidade e alternativa de recrutamento. A tarefa principal escolhida é planejar e acompanhar uma encomenda. Há possível contato com confeitaria, sem participação ou histórico confirmados. Testes técnicos continuam necessários e não substituem evidência de uso.
+
+A ausência de empresa não impede a base sintética de verificação. Se não houver participantes, registrar ausência de avaliação externa e discutir a suficiência das conclusões com o orientador, sem declarar que utilidade ou usabilidade foram comprovadas.
 
 ## Dependências de confirmação
 
 - Revisão do orientador: dispensada como critério de encerramento da issue #10 por decisão explícita do solicitante em 15/11/2026. Não ocorreu revisão nem aprovação. Eventuais exigências institucionais para pesquisa com pessoas continuam a verificar antes dessa pesquisa.
-- Grupo: confirmar disponibilidade de participantes; ausência não bloqueia a estratégia principal.
+- Grupo: confirmar disponibilidade e perfil de participantes e discutir o plano alternativo de uso; ver PD15. Ausência não invalida os cálculos técnicos nem comprova utilidade do produto.
 - Grupo: resolver PD12, limites/desempate provisórios, WIP formal, permissões e catálogo completo de estados antes dos cenários específicos dessas decisões. Não presumir resultados para políticas pendentes.
 - TCC2: executar cenários e analisar resultados. Este documento conclui a elaboração da proposta, não sua execução, integração de backend ou aprovação externa.
+
+## Cobertura e cenários complementares — 20/11/2026
+
+A [matriz de rastreabilidade](matriz-rastreabilidade.md) cobre RF01–RF43 e RNF01–RNF13. V01–V22 são preservados. Os procedimentos novos abaixo são planejamento; não foram executados nesta entrega documental.
+
+| ID | Procedimento | Resultado esperado |
+|---|---|---|
+| V23 | Cadastrar, consultar e inativar insumo e produto com vínculos existentes. | Campos válidos preservados, consulta correta e histórico/vínculos conservados; nenhuma exclusão destrutiva implícita. |
+| V24 | Cadastrar receita com rendimento e itens válidos; tentar quantidade/unidade inválida; consultar versões. | Composição e rendimento corretos, rejeição de inválidos e preservação das versões publicadas. |
+| V25 | Cadastrar e consultar fornecedor e cliente; tentar usar registro incompatível/inativo em nova operação. | Dados e vínculos válidos preservados; política de inativação aplicada conforme cadastro; cliente e fornecedor sem login. |
+| V26 | Consultar saldos e histórico antes e depois de recebimento, reserva, conclusão, cancelamento e expedição. | Saldo físico/disponível e origem das movimentações correspondem ao cenário e à regra de sinal/unidade. |
+| V27 | Criar OP com faltas, consultar estado/necessidades e repor. | OP permanece acompanhável e aguardando enquanto faltar insumo; reavalia disponibilidade após reposição. |
+| V28 | Registrar/consultar valores de compra e venda e alterar preço de cadastro. | Valores operacionais e históricos preservados conforme eventos definidos em PD05; sem apresentar fluxo bancário ou lucro contábil. Bloqueado enquanto eventos não estiverem definidos. |
+| V29 | Criar etapas por produto da OP e mover cartões entre situações permitidas. | Quadro corresponde às etapas; movimento de cartão não altera saldo físico nem conclui por si a OP. Pré-condições definitivas em aberto devem ser marcadas no ensaio. |
+| E01 | Salvar 90/95/99%, prazo e janela; alterar configuração; tentar prazo não positivo e meta 100%. | Parâmetros válidos versionados; anteriores preservados; entradas inválidas rejeitadas. |
+| E02 | Preparar série com zeros, ausências, unidades distintas e fontes selecionadas. | Zero e ausência distintos; cobertura/versão rastreáveis; unidades incompatíveis e histórico insuficiente geram motivo explícito, conforme PD14. |
+| E03 | Comparar média, desvio, z, ES e PR com programa/planilha independente. | Erro dentro de RNF06; exemplo fictício 10 kg/dia, desvio 2 kg, prazo 3, z≈1,645 apresenta ES≈5,7 kg e PR≈35,7 kg. Resultado preserva configuração e referência da série. |
+| E04 | Usar desvio zero, L=1, curto histórico, sazonalidade/correlação e períodos incompatíveis. | Casos elegíveis coincidem com referência; inelegíveis apresentam limitação ou indisponibilidade. Não prometer frequência nominal sem adequação das hipóteses. |
+| E05 | Simular reserva, compra pendente dentro/fora do horizonte, atualização e repetição de alerta. | Regra de posição/horizonte aprovada é respeitada sem dupla contagem e sem compra/movimento automático. Bloqueado até PD13; não inventar oráculo enquanto a política não estiver definida. |
+
+N01–N13 estão especificados nos [RNF](../02-requisitos/requisitos-nao-funcionais.md), incluindo ambiente, critérios e dependências. Registrar simulações estatísticas com parâmetros, sementes e incerteza amostral; não exigir exatamente 95% em amostra finita. O alerta de mínimos sintéticos do protótipo não é evidência de E01–E05.

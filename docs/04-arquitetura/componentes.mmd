@@ -8,6 +8,9 @@ flowchart LR
     API --> COM[Compras e recebimentos]
     API --> EXP[Expedição]
     API --> FIN[Custos e valores básicos]
+    API --> REP[Reposição estatística - prevista]
+    REP --> CAD
+    REP --> EST
     PED --> PCP
     PCP --> CAD
     PCP --> EST[Estoque e movimentações]
@@ -24,4 +27,5 @@ flowchart LR
     FIN --> P
     AC --> P
     EST --> P
+    REP --> P
     P --> DB[(PostgreSQL: implementação futura)]

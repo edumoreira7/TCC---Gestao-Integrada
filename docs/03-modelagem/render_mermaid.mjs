@@ -43,5 +43,9 @@ for(const source of sources){
   if(config)parameters.push('-c',config);
   if(/\.m?js$/.test(cli))execFileSync(process.execPath,[cli,...parameters],{stdio:'inherit',windowsHide:true});
   else execFileSync(cli,parameters,{stdio:'inherit',windowsHide:true});
+  // Preserve word-leading spaces across Mermaid tspans in SVG consumers.
+  const output=source.replace(/\.mmd$/,'.svg');
+  const svg=await fs.readFile(output,'utf8');
+  if(!svg.includes('xml:space='))await fs.writeFile(output,svg.replace('<svg ','<svg xml:space="preserve" '));
   console.log(path.relative(root,source));
 }

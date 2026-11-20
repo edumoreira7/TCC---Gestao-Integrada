@@ -1,10 +1,10 @@
 # Escopo e Requisitos do Sistema
 
 **Projeto:** Gestão Integrada de Estoque e Produção no Setor Alimentício: uma abordagem baseada em receitas e necessidades de insumo<br>
-**Versão:** 0.6<br>
+**Versão:** 0.7<br>
 **Etapa:** TCC1 — Levantamento de requisitos e análise<br>
 **Status:** Base consolidada; revisão coletiva informada pelo solicitante em 17/10/2026; detalhamentos pendentes identificados abaixo<br>
-**Revisão:** 15/11/2026
+**Revisão:** 20/11/2026
 
 ---
 
@@ -20,7 +20,7 @@ A proposta possui escopo delimitado e não pretende desenvolver um ERP de abrang
 
 ## 2. Objetivo geral
 
-Desenvolver um sistema integrado de apoio à gestão de estoque e produção para pequenas e médias empresas do setor alimentício, relacionando receitas, necessidades de insumos, compras, ordens de produção, estoque de produtos acabados e expedição.
+Desenvolver e avaliar um sistema integrado de estoque e produção baseado em receitas, para apoiar a otimização dos processos operacionais e a melhoria do nível de serviço em pequenas e médias empresas do setor alimentício.
 
 ---
 
@@ -295,58 +295,19 @@ Outras regras de negócio serão acrescentadas conforme os pontos pendentes fore
 
 ## 8. Requisitos não funcionais
 
-Os requisitos não funcionais ainda serão especificados de maneira mensurável após a definição da arquitetura e das tecnologias utilizadas.
+Os [RNF01–RNF13](requisitos-nao-funcionais.md) especificam autenticação, autorização, transações, concorrência, repetição de comandos, precisão, auditoria, desempenho, recuperação, usabilidade, erros, reprodução e operação web. Contêm critérios e cenários verificáveis para a implementação futura, sem alegar garantias do protótipo local.
 
-Inicialmente, deverão ser considerados os seguintes aspectos:
-
-- Controle de acesso;
-- Integridade e consistência dos dados;
-- Usabilidade;
-- Tratamento adequado de erros;
-- Clareza das mensagens apresentadas ao usuário;
-- Manutenibilidade;
-- Organização do código;
-- Testabilidade;
-- Documentação.
-
-Não serão definidos valores ou metas arbitrárias nesta etapa.
-
-Os critérios deverão ser especificados posteriormente de forma que possam ser verificados ou avaliados.
+A [matriz de rastreabilidade](../06-testes/matriz-rastreabilidade.md) liga RF/RNF a casos de uso, modelos, componentes e cenários. Metas iniciais de ensaio devem ser confrontadas com piloto antes da coleta definitiva. PD06/PD10 e a arquitetura física continuam sujeitos às definições registradas.
 
 ---
 
 ## 9. Estratégia preliminar de validação
 
-A validação principal do software não dependerá da disponibilidade de uma empresa parceira.
+A estratégia reúne [verificação técnica](../06-testes/metodologia-de-validacao.md) e [avaliação de uso e utilidade](../06-testes/avaliacao-de-uso.md). A tarefa central escolhida é planejar e acompanhar uma encomenda. A confeitaria é cenário de referência; existe possível contato, sem participação, usuários ou acesso ao histórico confirmados.
 
-A validação funcional será planejada a partir dos requisitos e regras de negócio definidos neste documento.
+Cenários sintéticos e cálculos independentes sustentam a verificação reproduzível. Tarefas com usuários e possível estudo de caso investigam adequação ao trabalho real e usabilidade. Uma modalidade não substitui automaticamente a outra. Sem empresa, procurar participantes do domínio; sem participantes, limitar as conclusões à inspeção interna e aos testes técnicos e discutir com o orientador a suficiência da avaliação.
 
-Será utilizada uma base de dados sintética contendo informações representativas do domínio, como:
-
-- Insumos;
-- Produtos;
-- Receitas;
-- Fornecedores;
-- Clientes;
-- Compras;
-- Pedidos;
-- Ordens de produção;
-- Movimentações de estoque.
-
-Serão elaborados cenários contendo:
-
-1. Dados de entrada;
-2. Operações executadas;
-3. Resultados esperados;
-4. Resultados obtidos.
-
-Esses cenários permitirão verificar o comportamento do sistema diante das regras especificadas.
-
-Caso seja possível estabelecer parceria com uma empresa do setor alimentício, poderá ser realizada uma avaliação complementar com usuários e/ou dados reais, mediante autorização.
-
-Essa participação será considerada complementar e não será requisito para a conclusão do projeto.
-
-A metodologia definitiva de avaliação ainda deverá ser discutida com o orientador.
+A definição de amostra, protocolo final, comparação, dados reais e cronograma permanece em PD15. Não há pesquisa de campo, SUS aplicado ou benefício operacional demonstrado nesta entrega.
 
 ---
 
@@ -359,7 +320,7 @@ A metodologia definitiva de avaliação ainda deverá ser discutida com o orient
 | DC03 | O sistema identificará insuficiências de insumos, enquanto o registro das compras será realizado pelo usuário. |
 | DC04 | O financeiro acompanha valores básicos das operações, sem contas a pagar, contas a receber ou contabilidade completa. |
 | DC05 | A expedição será vinculada a pedido e registrará destinatário, produtos, quantidades e data, sem atendimento parcial. |
-| DC06 | A validação principal não dependerá da disponibilização de dados de uma empresa parceira. |
+| DC06 | Base técnica sintética preservada; estratégia de uso ampliada em 20/11/2026, com possível confeitaria e participação ainda não confirmada. Ver PD15. |
 | DC07 | Uma ordem de produção poderá ser criada mesmo sem estoque suficiente, permanecendo aguardando reposição antes do início. |
 | DC08 | O consumo dos insumos e a entrada dos produtos acabados serão registrados na conclusão da ordem de produção. |
 | DC09 | Todo pedido deverá gerar uma única ordem para seus produtos, inclusive com estoque acabado suficiente; atendimento direto sem ordem não faz parte do fluxo. |
@@ -381,11 +342,14 @@ A metodologia definitiva de avaliação ainda deverá ser discutida com o orient
 | PD04 | Quais dados obrigatórios restantes e transições serão usados na expedição integral vinculada ao pedido? |
 | PD05 | Quais registros financeiros serão manuais e quais decorrerão automaticamente de outras operações? |
 | PD06 | Qual será a matriz de permissões dos perfis funcionais de referência e como será feita a administração de acesso? |
-| PD07 | Quais critérios mensuráveis serão utilizados na validação e nos requisitos não funcionais? |
+| PD07 | RNF01–RNF13 e cenários elaborados em 20/11/2026; validar perfil/metas após piloto e congelar protocolo antes da execução definitiva. |
 | PD08 | Quais serão todos os estados e transições possíveis de uma ordem de produção? |
 | PD10 | Regra confirmada: reserva ao iniciar a produção, com baixa normal na conclusão. Falta definir o mecanismo de integridade para inícios concorrentes na arquitetura. |
 | PD11 | Evento de preço e fallback definidos: último recebimento ou preço inicial; sem preço, custo indisponível. Validar desempate e conversões de unidades. |
 | PD12 | Consultar o estoque de produtos acabados antes de dimensionar a necessidade de produção? Como essa consulta afetará as quantidades, preservando a geração automática de uma única OP por pedido? |
+| PD13 | Definir posição/horizonte e comportamento dos alertas estatísticos, considerando reservas e compras pendentes sem dupla contagem. |
+| PD14 | Definir origem, calendário, elegibilidade, janela, amostra e estimador do histórico de consumo. |
+| PD15 | Fechar protocolo de uso, possível confeitaria/usuários, referência de comparação e plano alternativo. |
 
 PD09 foi resolvida nesta revisão: todo pedido deverá gerar uma ordem de produção, inclusive com estoque acabado suficiente. O identificador foi mantido neste registro histórico e não será reutilizado como nova pendência.
 
@@ -421,3 +385,12 @@ Esta revisão prevalece sobre descrições históricas conflitantes. O [DER](../
 - Cancelamento exige motivo e apuração de cada insumo reservado, inclusive zero; consumo exclui perdas. Baixa ambos uma vez, libera a reserva restante e recebe produtos aproveitáveis vinculados à mesma OP. Não admite conclusão parcial normal ou expedição parcial. Limites provisórios: consumo + perdas até reservado; aproveitamento até planejado. Rejeitar divergências sem truncar. Justificativa: evitar saldo negativo ou entrada superior ao plano enquanto a política de exceções aguarda aprovação.
 - Kanban acompanha etapas por produto da OP e não movimenta estoque; conclusão integral registra baixas e entradas. Exigir todos os cards concluídos é uma escolha demonstrativa ainda sujeita a validação.
 - Frontend local acadêmico, sem backend, API, autenticação real, hospedagem ou PostgreSQL em execução. Reservas virtuais e troca de estado local demonstram regras; garantias de transação, segurança e concorrência multiusuário dependem do futuro backend. PostgreSQL permanece a escolha futura (DT01).
+
+## Complementos de modelagem — 20/11/2026
+
+- [RF37–RF43 e CU21/CU22](reposicao-estatistica.md): configuração por insumo, histórico, ES/PR, consulta e alertas estatísticos, com acompanhamento visual explicitado. Implementação estatística planejada para TCC II.
+- [RNF01–RNF13](requisitos-nao-funcionais.md): requisitos de qualidade com critérios de aceitação e cenários.
+- [Rastreabilidade completa](../06-testes/matriz-rastreabilidade.md): cobertura RF01–RF43 e RNF01–RNF13.
+- PD13: posição, horizonte e regra de alerta sem dupla contagem. PD14: histórico e condições estatísticas. PD15: avaliação de uso e possível estudo de caso. São pendências novas; não reutilizam identificadores anteriores.
+
+A elaboração foi autorizada pelo grupo nesta revisão; não representa validação do orientador, execução de testes definitivos ou inclusão de IA/validade no escopo. O objetivo de apoiar melhorias de processo e serviço será avaliado por indicadores a definir no protocolo.

@@ -290,3 +290,7 @@ Usuários internos acumulam perfis. Clientes e fornecedores não têm acesso. Ma
 | Base de demonstração | Padaria/confeitaria sintética proposta; confirmar composição e cenários com o orientador. |
 
 **Próxima etapa:** validar o modelo com o orientador, harmonizar a documentação e detalhar restrições e tipos no esquema físico PostgreSQL. Este DER não é um script de implantação.
+
+## Extensão de reposição — 20/11/2026
+
+O [modelo complementar](reposicao.md), com [fonte](reposicao-dados.mmd) e [SVG](reposicao-dados.svg), propõe dados de configuração, série de consumo e resultados para RF37–RF42. As quatro vistas acima continuam a base do fluxo operacional; a extensão distingue proposta estatística e implementação futura.

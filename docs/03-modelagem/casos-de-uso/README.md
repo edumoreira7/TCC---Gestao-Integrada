@@ -60,3 +60,9 @@ Os fluxos principais estão no catálogo funcional: pedido/alteração; ordens p
 | Disponibilizar editável e imagem | `casos-de-uso.drawio` e `casos-de-uso.png`. |
 
 O diagrama é uma modelagem funcional. Seu fornecimento não resolve as pendências PD nem substitui classes, DER, estados, sequência ou arquitetura das issues seguintes.
+
+## Complemento funcional de 20/11/2026
+
+CU21 e CU22, descritos no [complemento de reposição](../../02-requisitos/reposicao-estatistica.md), ampliam o catálogo sem reusar CU08 ou alterar atores da base. O diagrama acima representa a base anterior CU01–CU20; apresentá-lo junto da extensão quando o assunto incluir configuração e consulta estatística.
+
+[Diagrama visual da extensão CU21/CU22](reposicao.md) · [Fonte](reposicao.mmd) · [SVG](reposicao.svg).

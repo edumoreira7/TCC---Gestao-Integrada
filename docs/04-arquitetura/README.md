@@ -1,6 +1,6 @@
 # Arquitetura e componentes
 
-Revisão: 15/11/2026. Projeto técnico inicial para o TCC1 (issue #8). A implementação definitiva e a escolha do backend ficam para o TCC2; PostgreSQL está confirmado como escolha futura (DT01); esta entrega não afirma que a API já existe.
+Revisão: 20/11/2026. Base anterior de 15/11/2026. Projeto técnico inicial para o TCC1 (issue #8). A implementação definitiva e a escolha do backend ficam para o TCC2; PostgreSQL está confirmado como escolha futura (DT01); esta entrega não afirma que a API já existe.
 
 ## Organização
 
@@ -21,6 +21,9 @@ flowchart LR
     API --> COM[Compras e recebimentos]
     API --> EXP[Expedição]
     API --> FIN[Custos e valores básicos]
+    API --> REP[Reposição estatística - prevista]
+    REP --> CAD
+    REP --> EST
     PED --> PCP
     PCP --> CAD
     PCP --> EST[Estoque e movimentações]
@@ -37,6 +40,7 @@ flowchart LR
     FIN --> P
     AC --> P
     EST --> P
+    REP --> P
     P --> DB[(PostgreSQL: implementação futura)]
 ```
 
@@ -50,6 +54,7 @@ flowchart LR
 | Estoque | Histórico de entradas/saídas, referência exclusiva a insumo ou produto e saldo derivado. |
 | Expedição | Atendimento integral de um pedido, com saldo acabado e sem duplicação da saída. |
 | Custos/valores | Custo pela receita e preço pelo recebimento mais recente, ou inicial; sem preço custo indisponível; preço de venda manual e valores operacionais; eventos financeiros ainda em PD05. |
+| Reposição estatística | Série elegível, parâmetros versionados, média/desvio, ES/PR e consulta de alertas, com limitações e origem dos dados. RF37–RF42, ainda sem implementação. Não emite compra automaticamente. |
 | Persistência | Fronteiras transacionais, unicidade, integridade referencial e prevenção de gravações parciais. |
 
 ## Integridade exigida e decisões técnicas abertas
@@ -71,3 +76,13 @@ Permanecem pendentes PD12, aprovação dos limites de cancelamento e do desempat
 [Fonte editável](componentes.mmd) · [SVG](componentes.svg)
 
 ![Componentes propostos da implementação futura](componentes.svg)
+
+## Contratos de componentes para a avaliação
+
+[RNF01–RNF13](../02-requisitos/requisitos-nao-funcionais.md) e [matriz](../06-testes/matriz-rastreabilidade.md) tornam os contratos verificáveis. Interface apresenta e envia comandos; API verifica identidade/permissão; módulos validam regras; persistência confirma a unidade de trabalho; o banco aplica integridade relacional. Reposição lê dados de insumos/histórico e guarda versões de configuração e cálculo conforme a [extensão do DER](../03-modelagem/dados/reposicao.md).
+
+Contratos lógicos, sem endpoints ou framework aprovados: registrar pedido e OP; iniciar/reservar; concluir; receber compra; cancelar; expedir; publicar receita; preparar série/calcular reposição. Cada comando retorna confirmação ou erro e conserva o vínculo com a operação. Alertas não movimentam estoque. Não há comunicação distribuída ou microserviços presumidos.
+
+Para inícios concorrentes, a implementação deverá proteger conjuntamente saldo/reservas e estado da OP e testar a disputa N04; escolher entre bloqueio de registros em ordem estável, controle de versão ou isolamento apropriado no desenho físico. Não basta declarar uma transação em isolamento padrão. Referência: [isolamento de transações no PostgreSQL](https://www.postgresql.org/docs/current/transaction-iso.html). A escolha concreta permanece em PD10; testes de serialização/repetição fazem parte do aceite.
+
+A regra de posição/horizonte do alerta permanece em PD13. Sem ela, o componente pode apresentar ES/PR e sinalizar que a política de alerta não está configurada, sem inventar uma equação definitiva. Não há API, serviço de autenticação ou banco implantado por este documento.

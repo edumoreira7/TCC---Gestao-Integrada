@@ -159,7 +159,7 @@ Ainda deverão ser definidos:
 - Funcionamento detalhado das movimentações financeiras;
 - Consulta ao estoque de produtos acabados antes de dimensionar a necessidade de produção e seu efeito nas quantidades (PD12), preservando uma única OP automática por pedido;
 - Metodologia definitiva de avaliação;
-- Requisitos não funcionais mensuráveis.
+- Revisão das metas iniciais dos [RNF mensuráveis](../02-requisitos/requisitos-nao-funcionais.md), elaborados em 20/11/2026, e congelamento do protocolo após piloto.
 
 Esses itens não devem ser considerados definidos até serem discutidos e documentados.
 
@@ -195,3 +195,9 @@ Esta revisão prevalece sobre descrições históricas conflitantes. O [DER](../
 - Cancelamento exige motivo e apuração de cada insumo reservado, inclusive zero; consumo exclui perdas. Baixa ambos uma vez, libera a reserva restante e recebe produtos aproveitáveis vinculados à mesma OP. Não admite conclusão parcial normal ou expedição parcial. Limites provisórios: consumo + perdas até reservado; aproveitamento até planejado. Rejeitar divergências sem truncar. Justificativa: evitar saldo negativo ou entrada superior ao plano enquanto a política de exceções aguarda aprovação.
 - Kanban acompanha etapas por produto da OP e não movimenta estoque; conclusão integral registra baixas e entradas. Exigir todos os cards concluídos é uma escolha demonstrativa ainda sujeita a validação.
 - Frontend local acadêmico, sem backend, API, autenticação real, hospedagem ou PostgreSQL em execução. Reservas virtuais e troca de estado local demonstram regras; garantias de transação, segurança e concorrência multiusuário dependem do futuro backend. PostgreSQL permanece a escolha futura (DT01).
+
+## Direção do produto e avaliação — 20/11/2026
+
+O grupo escolheu foco em produto e avaliação de uso, com tarefa central de planejar e acompanhar encomenda. Reposição estatística é complementar. Há possível contato com confeitaria, sem parceria, usuários, modo de produção ou histórico definidos. A conversa com o estabelecimento ainda será realizada.
+
+[RF37–RF43](../02-requisitos/reposicao-estatistica.md), [RNF01–RNF13](../02-requisitos/requisitos-nao-funcionais.md), [matriz de cobertura](../06-testes/matriz-rastreabilidade.md) e [avaliação de uso](../06-testes/avaliacao-de-uso.md) detalham a proposta. PD13–PD15 identificam políticas e dados estatísticos/avaliação ainda pendentes. O objetivo de melhorar processos e serviço é intenção a avaliar, sem ganhos demonstrados. IA, comparação de políticas como eixo principal e validade/FEFO não foram aprovados como ampliação de escopo.
