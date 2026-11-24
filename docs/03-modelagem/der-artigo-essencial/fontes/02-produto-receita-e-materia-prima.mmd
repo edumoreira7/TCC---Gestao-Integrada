@@ -1,0 +1,25 @@
+erDiagram
+PRODUTO ||--o{ RECEITA_VERSAO : versiona
+RECEITA_VERSAO ||--|{ ITEM_RECEITA : contem
+INSUMO ||--o{ ITEM_RECEITA : compoe
+  PRODUTO {
+    bigint id PK
+    text nome
+  }
+  RECEITA_VERSAO {
+    bigint id PK
+    bigint produto_id FK
+    integer rendimento
+    integer versao
+    boolean ativa
+  }
+  ITEM_RECEITA {
+    bigint receita_versao_id PK,FK
+    bigint insumo_id PK,FK
+    numeric quantidade_padrao
+  }
+  INSUMO {
+    bigint id PK
+    text nome
+    text unidade_padrao
+  }

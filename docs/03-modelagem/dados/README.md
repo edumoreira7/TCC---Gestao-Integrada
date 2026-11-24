@@ -1,5 +1,7 @@
 # DER — Gestão Integrada de Estoque e Produção
 
+[Seleção enxuta para o artigo: visão geral do núcleo e quatro recortes essenciais](../der-artigo-essencial/README.md), preparada em 24/11/2026. Para uma explicação legível de pedido, produção, receita e estoque, prefira esta seleção; o modelo lógico completo abaixo permanece a referência técnica.
+
 [Pacote para o artigo: PDF, SVG e PNG, com cinco vistas e recortes adicionais](../figuras-artigo/README.md). A exportação de 23/11/2026 inclui a extensão de reposição e preserva rendimento e lotes da base publicada.
 
 **Revisão:** 15/11/2026 · **Status:** modelo lógico concluído para revisão do orientador.

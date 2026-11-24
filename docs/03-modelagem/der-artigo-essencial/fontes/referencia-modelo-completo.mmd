@@ -1,0 +1,246 @@
+erDiagram
+%% DER lógico consolidado — 15/11/2026; PostgreSQL futuro; sem implantação
+
+  CLIENTE ||--o{ PEDIDO : realiza
+  PEDIDO ||--|{ ITEM_PEDIDO : contem
+  PRODUTO ||--o{ ITEM_PEDIDO : vendido
+  PEDIDO o|--|| ORDEM_PRODUCAO : gera
+  ORDEM_PRODUCAO ||--|{ ITEM_OP : planeja
+  PRODUTO ||--o{ ITEM_OP : produzido
+  RECEITA_VERSAO ||--o{ ITEM_OP : referencia
+  ITEM_PEDIDO o|--|| ITEM_OP : origina
+  PEDIDO ||--o| EXPEDICAO : atendido
+  EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
+  ITEM_PEDIDO ||--o| ITEM_EXPEDICAO : atende
+  PRODUTO ||--o{ RECEITA_VERSAO : versiona
+  RECEITA_VERSAO ||--|{ ITEM_RECEITA : contem
+  INSUMO ||--o{ ITEM_RECEITA : compoe
+  FORNECEDOR ||--o{ COMPRA : fornece
+  COMPRA ||--|{ ITEM_COMPRA : contem
+  INSUMO ||--o{ ITEM_COMPRA : adquirido
+  COMPRA ||--o| RECEBIMENTO : recebido
+  ORDEM_PRODUCAO ||--o{ RESERVA_INSUMO : compromete
+  INSUMO ||--o{ RESERVA_INSUMO : reservado
+  ORDEM_PRODUCAO ||--o| CANCELAMENTO_OP : registra
+  CANCELAMENTO_OP ||--o{ APURACAO_INSUMO : apura
+  RESERVA_INSUMO ||--o| APURACAO_INSUMO : detalha
+  CANCELAMENTO_OP ||--o{ APROVEITAMENTO_PRODUTO : recebe
+  ITEM_OP ||--o| APROVEITAMENTO_PRODUTO : aproveitado
+  INSUMO ||--o{ MOV_INSUMO : historico
+  ITEM_COMPRA o|--o| MOV_INSUMO : entrada
+  RESERVA_INSUMO o|--o| MOV_INSUMO : baixa_normal
+  APURACAO_INSUMO o|--o| MOV_INSUMO : baixa_cancelamento
+  PRODUTO ||--o{ MOV_PRODUTO : historico
+  ITEM_OP o|--o| MOV_PRODUTO : entrada_normal
+  APROVEITAMENTO_PRODUTO o|--o| MOV_PRODUTO : entrada_cancelamento
+  ITEM_EXPEDICAO o|--o| MOV_PRODUTO : saida
+  USUARIO ||--o{ USUARIO_PERFIL : recebe
+  PERFIL ||--o{ USUARIO_PERFIL : atribuido
+  ITEM_OP ||--o{ ETAPA_OP : acompanha
+  CLIENTE {
+    bigint id PK
+    text nome
+    boolean ativo
+  }
+  PEDIDO {
+    bigint id PK
+    bigint cliente_id FK
+    timestamptz registrado_em
+    date entrega_prevista
+    text status
+  }
+  PRODUTO {
+    bigint id PK
+    text nome
+    numeric preco_venda
+    boolean ativo
+  }
+  ITEM_PEDIDO {
+    bigint id PK
+    bigint pedido_id FK
+    bigint produto_id FK
+    integer quantidade
+    numeric preco_unitario
+  }
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+    timestamptz criada_em
+    timestamptz iniciada_em
+    timestamptz finalizada_em
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    bigint item_pedido_id FK,UK "nulo na OP manual"
+    bigint receita_versao_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }
+  RECEITA_VERSAO {
+    bigint id PK
+    bigint produto_id FK
+    integer rendimento
+    integer versao
+    boolean ativa
+  }
+  EXPEDICAO {
+    bigint id PK
+    bigint pedido_id FK,UK
+    text destinatario
+    timestamptz expedida_em
+  }
+  ITEM_EXPEDICAO {
+    bigint id PK
+    bigint expedicao_id FK
+    bigint item_pedido_id FK,UK
+    integer quantidade
+  }
+  ITEM_RECEITA {
+    bigint receita_versao_id PK,FK
+    bigint insumo_id PK,FK
+    numeric quantidade_padrao
+  }
+  INSUMO {
+    bigint id PK
+    text nome
+    text unidade_padrao
+    numeric preco_inicial "opcional"
+    boolean ativo
+  }
+  FORNECEDOR {
+    bigint id PK
+    text nome
+    boolean ativo
+  }
+  COMPRA {
+    bigint id PK
+    bigint fornecedor_id FK
+    timestamptz registrada_em
+  }
+  ITEM_COMPRA {
+    bigint id PK
+    bigint compra_id FK
+    bigint insumo_id FK
+    numeric quantidade_padrao
+    numeric preco_unitario_padrao
+  }
+  RECEBIMENTO {
+    bigint id PK
+    bigint compra_id FK,UK
+    timestamptz recebido_em
+  }
+  RESERVA_INSUMO {
+    bigint id PK
+    bigint op_id FK
+    bigint insumo_id FK
+    numeric quantidade_reservada
+    timestamptz reservada_em
+    timestamptz encerrada_em
+  }
+  CANCELAMENTO_OP {
+    bigint id PK
+    bigint op_id FK,UK
+    text motivo
+    timestamptz cancelada_em
+  }
+  APURACAO_INSUMO {
+    bigint id PK
+    bigint cancelamento_id FK
+    bigint reserva_id FK,UK
+    numeric consumido
+    numeric perdido
+  }
+  APROVEITAMENTO_PRODUTO {
+    bigint id PK
+    bigint cancelamento_id FK
+    bigint item_op_id FK,UK
+    integer aproveitado
+  }
+  MOV_INSUMO {
+    bigint id PK
+    bigint insumo_id FK
+    bigint item_compra_id FK,UK
+    bigint reserva_id FK,UK
+    bigint apuracao_id FK,UK
+    text tipo
+    numeric quantidade
+    timestamptz ocorrida_em
+  }
+  MOV_PRODUTO {
+    bigint id PK
+    bigint produto_id FK
+    bigint item_op_id FK,UK
+    bigint aproveitamento_id FK,UK
+    bigint item_expedicao_id FK,UK
+    text tipo
+    integer quantidade
+    timestamptz ocorrida_em
+  }
+  USUARIO {
+    bigint id PK
+    text nome
+    text email UK
+    boolean ativo
+  }
+  PERFIL {
+    bigint id PK
+    text nome UK
+  }
+  USUARIO_PERFIL {
+    bigint usuario_id PK,FK
+    bigint perfil_id PK,FK
+  }
+  ETAPA_OP {
+    bigint id PK
+    bigint item_op_id FK
+    text titulo
+    integer ordem
+    text situacao
+  }
+
+
+    INSUMO ||--o{ CONFIG_REPOSICAO : possui
+    INSUMO ||--o{ SERIE_CONSUMO : possui
+    SERIE_CONSUMO ||--|{ CONSUMO_PERIODO : contem
+    CONFIG_REPOSICAO ||--o{ CALCULO_REPOSICAO : parametriza
+    SERIE_CONSUMO ||--o{ CALCULO_REPOSICAO : fundamenta
+    CONFIG_REPOSICAO {
+        bigint id PK
+        bigint insumo_id FK
+        integer versao
+        numeric nivel_servico
+        numeric prazo_periodos
+        text periodo_base
+        text janela
+        timestamptz registrada_em
+    }
+    SERIE_CONSUMO {
+        bigint id PK
+        bigint insumo_id FK
+        text unidade
+        text periodo_base
+        text origem_versao
+        text cobertura
+    }
+    CONSUMO_PERIODO {
+        bigint serie_id PK,FK
+        date periodo_inicio PK
+        numeric quantidade
+        boolean observado
+    }
+    CALCULO_REPOSICAO {
+        bigint id PK
+        bigint configuracao_id FK
+        bigint serie_id FK
+        numeric media
+        numeric desvio
+        numeric z
+        numeric estoque_seguranca
+        numeric ponto_reposicao
+        text estimador_versao
+        text situacao
+        timestamptz calculado_em
+    }

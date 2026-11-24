@@ -1,0 +1,36 @@
+erDiagram
+ORDEM_PRODUCAO ||--|{ ITEM_OP : planeja
+PRODUTO ||--o{ ITEM_OP : produzido
+PRODUTO ||--o{ MOV_PRODUTO : historico
+ITEM_OP o|--o| MOV_PRODUTO : entrada_normal
+ITEM_OP ||--o{ ETAPA_OP : acompanha
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }
+  PRODUTO {
+    bigint id PK
+    text nome
+  }
+  ETAPA_OP {
+    bigint id PK
+    bigint item_op_id FK
+    text titulo
+    integer ordem
+    text situacao
+  }
+  MOV_PRODUTO {
+    bigint id PK
+    bigint produto_id FK
+    bigint item_op_id FK,UK
+    text tipo
+    integer quantidade
+  }

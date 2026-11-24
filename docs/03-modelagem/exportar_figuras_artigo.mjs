@@ -5,20 +5,22 @@ import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 
 const base = path.dirname(fileURLToPath(import.meta.url));
-const destino = path.join(base, 'figuras-artigo');
 const argumentos = process.argv.slice(2);
-const parametro = nome => argumentos[argumentos.indexOf(nome) + 1];
+const parametro = nome => argumentos.includes(nome) ? argumentos[argumentos.indexOf(nome) + 1] : undefined;
+const destino = path.resolve(parametro('--destino') ?? path.join(base, 'figuras-artigo'));
 const runtime = parametro('--runtime');
 const navegador = parametro('--browser');
 const cli = parametro('--mermaid');
+const somente = parametro('--somente');
 if (!runtime || !navegador || !cli) throw new Error('Informe --runtime, --browser e --mermaid com caminhos locais.');
 const require = createRequire(path.join(runtime, 'package.json'));
 const {chromium} = require('playwright');
 const manifesto = JSON.parse(await fs.readFile(path.join(destino, 'manifesto.json'), 'utf8'));
-const config = path.join(base, 'mermaid-config.json');
+const config = parametro('--config') ?? path.join(base, 'mermaid-config.json');
 const puppeteer = path.join(destino, 'puppeteer-local.json');
 await fs.writeFile(puppeteer, JSON.stringify({executablePath:navegador,headless:true}));
-for (const nome of ['00-der-completo', '09-arquitetura-componentes', ...manifesto.detalhes]) {
+for (const nome of manifesto.renderizar ?? ['00-der-completo', '09-arquitetura-componentes', ...manifesto.detalhes]) {
+  if (somente && nome !== somente) continue;
   execFileSync(process.execPath, [cli, '-i', path.join(destino,'fontes',nome+'.mmd'), '-o', path.join(destino,nome+'.svg'), '-c',config,'-p',puppeteer,'-t','neutral','-b','white','--no-font-embed','--quiet'], {stdio:'inherit',windowsHide:true});
   const arquivo = path.join(destino, nome+'.svg');
   const svg = await fs.readFile(arquivo,'utf8');
@@ -28,6 +30,7 @@ await fs.unlink(puppeteer);
 const browser = await chromium.launch({executablePath:navegador,headless:true});
 try {
   for (const nome of manifesto.arquivos) {
+    if (somente && nome !== somente) continue;
     const page = await browser.newPage({deviceScaleFactor:2});
     const svg = await fs.readFile(path.join(destino,nome+'.svg'),'utf8');
     const partes = svg.match(/viewBox="([^\"]+)"/)[1].split(/\s+/).map(Number);

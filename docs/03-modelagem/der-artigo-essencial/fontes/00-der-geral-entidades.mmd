@@ -1,0 +1,32 @@
+erDiagram
+  CLIENTE["Cliente"]
+  PEDIDO["Pedido"]
+  ITEM_PEDIDO["Item do pedido"]
+  PRODUTO["Produto"]
+  ORDEM_PRODUCAO["Ordem de produção"]
+  ITEM_OP["Item da OP"]
+  RECEITA_VERSAO["Versão de receita"]
+  ITEM_RECEITA["Item da receita"]
+  INSUMO["Insumo"]
+  RESERVA_INSUMO["Reserva de insumo"]
+  MOV_INSUMO["Movimento de insumo"]
+  MOV_PRODUTO["Movimento de produto"]
+  ETAPA_OP["Etapa da OP"]
+CLIENTE ||--o{ PEDIDO : " "
+PEDIDO ||--|{ ITEM_PEDIDO : " "
+PRODUTO ||--o{ ITEM_PEDIDO : " "
+PEDIDO o|--|| ORDEM_PRODUCAO : " "
+ORDEM_PRODUCAO ||--|{ ITEM_OP : " "
+PRODUTO ||--o{ ITEM_OP : " "
+RECEITA_VERSAO ||--o{ ITEM_OP : " "
+ITEM_PEDIDO o|--|| ITEM_OP : " "
+PRODUTO ||--o{ RECEITA_VERSAO : " "
+RECEITA_VERSAO ||--|{ ITEM_RECEITA : " "
+INSUMO ||--o{ ITEM_RECEITA : " "
+ORDEM_PRODUCAO ||--o{ RESERVA_INSUMO : " "
+INSUMO ||--o{ RESERVA_INSUMO : " "
+INSUMO ||--o{ MOV_INSUMO : " "
+RESERVA_INSUMO o|--o| MOV_INSUMO : " "
+PRODUTO ||--o{ MOV_PRODUTO : " "
+ITEM_OP o|--o| MOV_PRODUTO : " "
+ITEM_OP ||--o{ ETAPA_OP : " "

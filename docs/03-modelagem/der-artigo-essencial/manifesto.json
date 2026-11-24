@@ -1,0 +1,54 @@
+{
+  "base": "b39d9a36b28f191c4de299986039a8f9a9dd8167",
+  "arquivos": [
+    "00-der-geral-entidades",
+    "01-pedido-e-producao",
+    "02-produto-receita-e-materia-prima",
+    "03-reserva-e-consumo-de-materia-prima",
+    "04-producao-etapas-e-produtos-acabados"
+  ],
+  "renderizar": [
+    "00-der-geral-entidades",
+    "01-pedido-e-producao",
+    "02-produto-receita-e-materia-prima",
+    "03-reserva-e-consumo-de-materia-prima",
+    "04-producao-etapas-e-produtos-acabados"
+  ],
+  "entidades_geral": [
+    "CLIENTE",
+    "ETAPA_OP",
+    "INSUMO",
+    "ITEM_OP",
+    "ITEM_PEDIDO",
+    "ITEM_RECEITA",
+    "MOV_INSUMO",
+    "MOV_PRODUTO",
+    "ORDEM_PRODUCAO",
+    "PEDIDO",
+    "PRODUTO",
+    "RECEITA_VERSAO",
+    "RESERVA_INSUMO"
+  ],
+  "relacoes_geral": 18,
+  "relacoes_modelo_completo": 41,
+  "rotulos_geral": {
+    "MOV_INSUMO": "Movimento de insumo",
+    "ETAPA_OP": "Etapa da OP",
+    "PRODUTO": "Produto",
+    "RECEITA_VERSAO": "Versão de receita",
+    "CLIENTE": "Cliente",
+    "MOV_PRODUTO": "Movimento de produto",
+    "ITEM_RECEITA": "Item da receita",
+    "RESERVA_INSUMO": "Reserva de insumo",
+    "PEDIDO": "Pedido",
+    "INSUMO": "Insumo",
+    "ORDEM_PRODUCAO": "Ordem de produção",
+    "ITEM_PEDIDO": "Item do pedido",
+    "ITEM_OP": "Item da OP"
+  },
+  "fontes": {
+    "docs/03-modelagem/dados/der-gestao-integrada.mmd": "e556204c0c3194797dc7f28cc2bc4f809a9d7ef45a20df0918ddc90f130da8d1",
+    "docs/03-modelagem/dados/reposicao-dados.mmd": "9e475f647eee8bed2de42aea64bcb26bab3fe6c3b66eba17acbb4e7a6b2d5c0f"
+  },
+  "aviso": "Visão geral sem atributos e recortes com atributos essenciais; não substituem o modelo lógico completo."
+}

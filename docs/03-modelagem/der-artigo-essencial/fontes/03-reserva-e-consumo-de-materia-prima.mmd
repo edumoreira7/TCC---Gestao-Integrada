@@ -1,0 +1,28 @@
+erDiagram
+ORDEM_PRODUCAO ||--o{ RESERVA_INSUMO : compromete
+INSUMO ||--o{ RESERVA_INSUMO : reservado
+INSUMO ||--o{ MOV_INSUMO : historico
+RESERVA_INSUMO o|--o| MOV_INSUMO : baixa_normal
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+  }
+  RESERVA_INSUMO {
+    bigint id PK
+    bigint op_id FK
+    bigint insumo_id FK
+    numeric quantidade_reservada
+  }
+  INSUMO {
+    bigint id PK
+    text nome
+    text unidade_padrao
+  }
+  MOV_INSUMO {
+    bigint id PK
+    bigint insumo_id FK
+    bigint reserva_id FK,UK
+    text tipo
+    numeric quantidade
+  }

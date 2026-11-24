@@ -1,0 +1,41 @@
+erDiagram
+CLIENTE ||--o{ PEDIDO : realiza
+PEDIDO ||--|{ ITEM_PEDIDO : contem
+PRODUTO ||--o{ ITEM_PEDIDO : vendido
+PEDIDO o|--|| ORDEM_PRODUCAO : gera
+ORDEM_PRODUCAO ||--|{ ITEM_OP : planeja
+PRODUTO ||--o{ ITEM_OP : produzido
+ITEM_PEDIDO o|--|| ITEM_OP : origina
+  CLIENTE {
+    bigint id PK
+    text nome
+  }
+  PEDIDO {
+    bigint id PK
+    bigint cliente_id FK
+    text status
+  }
+  ITEM_PEDIDO {
+    bigint id PK
+    bigint pedido_id FK
+    bigint produto_id FK
+    integer quantidade
+  }
+  PRODUTO {
+    bigint id PK
+    text nome
+  }
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    bigint item_pedido_id FK,UK "nulo na OP manual"
+    bigint receita_versao_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }

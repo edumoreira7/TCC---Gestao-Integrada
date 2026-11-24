@@ -1,0 +1,16 @@
+{
+  "theme": "neutral",
+  "fontFamily": "Arial, sans-serif",
+  "fontSize": 20,
+  "htmlLabels": false,
+  "er": {
+    "useMaxWidth": false,
+    "fontSize": 20,
+    "minEntityWidth": 100,
+    "minEntityHeight": 42,
+    "entityPadding": 12,
+    "nodeSpacing": 28,
+    "rankSpacing": 55,
+    "layoutDirection": "TB"
+  }
+}
