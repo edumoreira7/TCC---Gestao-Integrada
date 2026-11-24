@@ -1,5 +1,7 @@
 # Arquitetura e componentes
 
+[Versão vetorial para o artigo, com conexões preservadas e disposição vertical](../03-modelagem/figuras-artigo/09-arquitetura-componentes.pdf) · [Pacote completo e instruções](../03-modelagem/figuras-artigo/README.md).
+
 Revisão: 20/11/2026. Base anterior de 15/11/2026. Projeto técnico inicial para o TCC1 (issue #8). A implementação definitiva e a escolha do backend ficam para o TCC2; PostgreSQL está confirmado como escolha futura (DT01); esta entrega não afirma que a API já existe.
 
 ## Organização

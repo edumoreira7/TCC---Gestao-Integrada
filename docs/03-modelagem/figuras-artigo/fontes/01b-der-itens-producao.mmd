@@ -1,0 +1,44 @@
+erDiagram
+  PRODUTO ||--o{ ITEM_PEDIDO : vendido
+  ORDEM_PRODUCAO ||--|{ ITEM_OP : planeja
+  PRODUTO ||--o{ ITEM_OP : produzido
+  RECEITA_VERSAO ||--o{ ITEM_OP : referencia
+  ITEM_PEDIDO o|--|| ITEM_OP : origina
+  PRODUTO ||--o{ RECEITA_VERSAO : versiona
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+    timestamptz criada_em
+    timestamptz iniciada_em
+    timestamptz finalizada_em
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    bigint item_pedido_id FK,UK "nulo na OP manual"
+    bigint receita_versao_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }
+  ITEM_PEDIDO {
+    bigint id PK
+    bigint pedido_id FK
+    bigint produto_id FK
+    integer quantidade
+    numeric preco_unitario
+  }
+  PRODUTO {
+    bigint id PK
+    text nome
+    numeric preco_venda
+    boolean ativo
+  }
+  RECEITA_VERSAO {
+    bigint id PK
+    bigint produto_id FK
+    integer rendimento
+    integer versao
+    boolean ativa
+  }

@@ -1,0 +1,44 @@
+erDiagram
+  PRODUTO ||--o{ ITEM_OP : produzido
+  ITEM_OP ||--o| APROVEITAMENTO_PRODUTO : aproveitado
+  PRODUTO ||--o{ MOV_PRODUTO : historico
+  ITEM_OP o|--o| MOV_PRODUTO : entrada_normal
+  APROVEITAMENTO_PRODUTO o|--o| MOV_PRODUTO : entrada_cancelamento
+  ITEM_EXPEDICAO o|--o| MOV_PRODUTO : saida
+  PRODUTO {
+    bigint id PK
+    text nome
+    numeric preco_venda
+    boolean ativo
+  }
+  MOV_PRODUTO {
+    bigint id PK
+    bigint produto_id FK
+    bigint item_op_id FK,UK
+    bigint aproveitamento_id FK,UK
+    bigint item_expedicao_id FK,UK
+    text tipo
+    integer quantidade
+    timestamptz ocorrida_em
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    bigint item_pedido_id FK,UK "nulo na OP manual"
+    bigint receita_versao_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }
+  APROVEITAMENTO_PRODUTO {
+    bigint id PK
+    bigint cancelamento_id FK
+    bigint item_op_id FK,UK
+    integer aproveitado
+  }
+  ITEM_EXPEDICAO {
+    bigint id PK
+    bigint expedicao_id FK
+    bigint item_pedido_id FK,UK
+    integer quantidade
+  }

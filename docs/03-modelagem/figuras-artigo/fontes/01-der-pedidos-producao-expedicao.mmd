@@ -1,0 +1,71 @@
+erDiagram
+  CLIENTE ||--o{ PEDIDO : realiza
+  PEDIDO ||--|{ ITEM_PEDIDO : contem
+  PRODUTO ||--o{ ITEM_PEDIDO : vendido
+  PEDIDO o|--|| ORDEM_PRODUCAO : gera
+  ORDEM_PRODUCAO ||--|{ ITEM_OP : planeja
+  PRODUTO ||--o{ ITEM_OP : produzido
+  RECEITA_VERSAO ||--o{ ITEM_OP : referencia
+  ITEM_PEDIDO o|--|| ITEM_OP : origina
+  PEDIDO ||--o| EXPEDICAO : atendido
+  EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
+  ITEM_PEDIDO ||--o| ITEM_EXPEDICAO : atende
+  CLIENTE {
+    bigint id PK
+    text nome
+    boolean ativo
+  }
+  PEDIDO {
+    bigint id PK
+    bigint cliente_id FK
+    timestamptz registrado_em
+    date entrega_prevista
+    text status
+  }
+  PRODUTO {
+    bigint id PK
+    text nome
+    numeric preco_venda
+    boolean ativo
+  }
+  ITEM_PEDIDO {
+    bigint id PK
+    bigint pedido_id FK
+    bigint produto_id FK
+    integer quantidade
+    numeric preco_unitario
+  }
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+    timestamptz criada_em
+    timestamptz iniciada_em
+    timestamptz finalizada_em
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    bigint item_pedido_id FK,UK "nulo na OP manual"
+    bigint receita_versao_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }
+  RECEITA_VERSAO {
+    bigint id PK
+    bigint produto_id FK
+    integer rendimento
+  }
+  EXPEDICAO {
+    bigint id PK
+    bigint pedido_id FK,UK
+    text destinatario
+    timestamptz expedida_em
+  }
+  ITEM_EXPEDICAO {
+    bigint id PK
+    bigint expedicao_id FK
+    bigint item_pedido_id FK,UK
+    integer quantidade
+  }

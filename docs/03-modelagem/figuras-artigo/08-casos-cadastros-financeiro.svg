@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 1100 732" width="1100" height="732" font-family="Arial, sans-serif" fill="#172033">
+<rect width="1100" height="732" fill="white"/>
+<text x="550" y="35" text-anchor="middle" font-size="24" font-weight="bold">Cadastros, acessos e valores operacionais</text>
+<rect x="300" y="65" width="770" height="622" fill="#fafcfe" stroke="#334155" stroke-width="2"/>
+<text x="685" y="91" text-anchor="middle" font-size="17" font-weight="normal">Sistema de gestão integrada — vista funcional</text>
+<g stroke="#334155" stroke-width="2.4" fill="none"><circle cx="130" cy="237.0" r="14"/><path d="M130 251.0 v46 m-32 -28 h64 m-32 28 l-25 33 m25 -33 l25 33"/></g>
+<text x="130" y="352.0" text-anchor="middle" font-size="18" font-weight="normal">Usuário interno</text><text x="130" y="375.0" text-anchor="middle" font-size="18" font-weight="normal">autorizado</text>
+<path d="M162 269.0 H260 V160 H380" fill="none" stroke="#64748b" stroke-width="1.6"/>
+<ellipse cx="710" cy="160" rx="330" ry="44" fill="white" stroke="#334155" stroke-width="1.6"/>
+<text x="710" y="166" text-anchor="middle" font-size="19" font-weight="normal">CU01 Gerenciar insumos</text>
+<path d="M162 269.0 H260 V266 H380" fill="none" stroke="#64748b" stroke-width="1.6"/>
+<ellipse cx="710" cy="266" rx="330" ry="44" fill="white" stroke="#334155" stroke-width="1.6"/>
+<text x="710" y="272" text-anchor="middle" font-size="19" font-weight="normal">CU02 Gerenciar produtos e fichas técnicas/receitas</text>
+<path d="M162 269.0 H260 V372 H380" fill="none" stroke="#64748b" stroke-width="1.6"/>
+<ellipse cx="710" cy="372" rx="330" ry="44" fill="white" stroke="#334155" stroke-width="1.6"/>
+<text x="710" y="378" text-anchor="middle" font-size="19" font-weight="normal">CU20 Gerenciar perfis e permissões acumuláveis</text>
+<g stroke="#334155" stroke-width="2.4" fill="none"><circle cx="130" cy="538.0" r="14"/><path d="M130 552.0 v46 m-32 -28 h64 m-32 28 l-25 33 m25 -33 l25 33"/></g>
+<text x="130" y="653.0" text-anchor="middle" font-size="18" font-weight="normal">Financeiro</text>
+<path d="M162 570.0 H260 V514 H380" fill="none" stroke="#64748b" stroke-width="1.6"/>
+<ellipse cx="710" cy="514" rx="330" ry="44" fill="white" stroke="#334155" stroke-width="1.6"/>
+<text x="710" y="520" text-anchor="middle" font-size="19" font-weight="normal">CU17 Consultar custo do produto</text>
+<path d="M162 570.0 H260 V620 H380" fill="none" stroke="#64748b" stroke-width="1.6"/>
+<ellipse cx="710" cy="620" rx="330" ry="44" fill="white" stroke="#334155" stroke-width="1.6"/>
+<text x="710" y="614" text-anchor="middle" font-size="19" font-weight="normal">CU19 Registrar/consultar valores básicos das</text><text x="710" y="638" text-anchor="middle" font-size="19" font-weight="normal">operações (eventos: PD05)</text>
+<text x="550" y="716" text-anchor="middle" font-size="14" font-weight="normal">Associações sem setas. Papéis acumuláveis; permissões específicas permanecem em PD06.</text>
+</svg>

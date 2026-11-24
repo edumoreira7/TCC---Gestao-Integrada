@@ -1,5 +1,7 @@
 # Diagrama de Casos de Uso
 
+[Exportações para o artigo em três vistas, incluindo CU21/CU22](../figuras-artigo/README.md). A sigla CU da documentação foi preservada; não houve renumeração para UC.
+
 **Revisão:** 20/10/2026<br>
 **Escopo:** Issue #3, derivada da base consolidada da Issue #2 e do PR #13.
 

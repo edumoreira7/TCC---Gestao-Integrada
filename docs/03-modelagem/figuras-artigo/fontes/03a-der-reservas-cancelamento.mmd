@@ -1,0 +1,60 @@
+erDiagram
+  ORDEM_PRODUCAO ||--|{ ITEM_OP : planeja
+  ORDEM_PRODUCAO ||--o{ RESERVA_INSUMO : compromete
+  INSUMO ||--o{ RESERVA_INSUMO : reservado
+  ORDEM_PRODUCAO ||--o| CANCELAMENTO_OP : registra
+  CANCELAMENTO_OP ||--o{ APURACAO_INSUMO : apura
+  RESERVA_INSUMO ||--o| APURACAO_INSUMO : detalha
+  CANCELAMENTO_OP ||--o{ APROVEITAMENTO_PRODUTO : recebe
+  ITEM_OP ||--o| APROVEITAMENTO_PRODUTO : aproveitado
+  ORDEM_PRODUCAO {
+    bigint id PK
+    bigint pedido_id FK,UK "nulo na OP manual"
+    text status
+    timestamptz criada_em
+    timestamptz iniciada_em
+    timestamptz finalizada_em
+  }
+  INSUMO {
+    bigint id PK
+    text nome
+    text unidade_padrao
+    numeric preco_inicial "opcional"
+    boolean ativo
+  }
+  RESERVA_INSUMO {
+    bigint id PK
+    bigint op_id FK
+    bigint insumo_id FK
+    numeric quantidade_reservada
+    timestamptz reservada_em
+    timestamptz encerrada_em
+  }
+  CANCELAMENTO_OP {
+    bigint id PK
+    bigint op_id FK,UK
+    text motivo
+    timestamptz cancelada_em
+  }
+  APURACAO_INSUMO {
+    bigint id PK
+    bigint cancelamento_id FK
+    bigint reserva_id FK,UK
+    numeric consumido
+    numeric perdido
+  }
+  ITEM_OP {
+    bigint id PK
+    bigint op_id FK
+    bigint produto_id FK
+    bigint item_pedido_id FK,UK "nulo na OP manual"
+    bigint receita_versao_id FK
+    integer quantidade_solicitada
+    integer lotes_planejados
+  }
+  APROVEITAMENTO_PRODUTO {
+    bigint id PK
+    bigint cancelamento_id FK
+    bigint item_op_id FK,UK
+    integer aproveitado
+  }

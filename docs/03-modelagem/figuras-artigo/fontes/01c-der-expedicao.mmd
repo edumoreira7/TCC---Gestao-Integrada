@@ -1,0 +1,31 @@
+erDiagram
+  PEDIDO ||--|{ ITEM_PEDIDO : contem
+  PEDIDO ||--o| EXPEDICAO : atendido
+  EXPEDICAO ||--|{ ITEM_EXPEDICAO : contem
+  ITEM_PEDIDO ||--o| ITEM_EXPEDICAO : atende
+  PEDIDO {
+    bigint id PK
+    bigint cliente_id FK
+    timestamptz registrado_em
+    date entrega_prevista
+    text status
+  }
+  EXPEDICAO {
+    bigint id PK
+    bigint pedido_id FK,UK
+    text destinatario
+    timestamptz expedida_em
+  }
+  ITEM_PEDIDO {
+    bigint id PK
+    bigint pedido_id FK
+    bigint produto_id FK
+    integer quantidade
+    numeric preco_unitario
+  }
+  ITEM_EXPEDICAO {
+    bigint id PK
+    bigint expedicao_id FK
+    bigint item_pedido_id FK,UK
+    integer quantidade
+  }
